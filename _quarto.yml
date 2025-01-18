@@ -1,0 +1,136 @@
+project:
+  type: book
+  resources:
+    - "images/logo.png"
+    - "*.xlsx"
+    - "*.mkv"
+    - "*.webm"
+    - "*.ogv"
+    - "*.pdf"
+    - "*.docx"
+    - "*.odt"
+    - "*.ods"
+    - "*.gpkg"
+    - "share"
+book:
+  title: "Species distribution modeling"
+  subtitle: "Using Maxent in GRASS GIS"
+  date: "December 24, 2024"
+  author:
+    - name: Paulo van Breugel
+      url: https://ecodiv.earth/about.html
+      affiliations:
+        - name: HAS green academy
+          Department: Applied Geo-information Science
+          country: the Netherlands
+          url: https://has.nl/en
+
+  #cover-image: images/bookcover.png
+  #downloads: [pdf, epub]
+
+  site-url: https://ecodiv.earth/
+  favicon: images/favicon.ico
+  page-footer: "&copy; <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>CC BY-NC-SA 4.0</a> by Paulo van Breugel, Ecodiv.earth,  2024."
+  language: en
+  repo-url: https://github.com/ecodiv/grassgis_maxent_sdm
+  repo-branch: main
+  repo-actions: [edit, issue]
+
+  chapters:
+    - index.qmd
+    - 1_introduction.qmd
+    - part: the_basics.qmd
+      chapters:
+      - 2_obtaining_data.qmd
+      - 3_data_preparation.qmd
+      - 4_model_training.qmd
+      - 5_model_prediction.qmd
+    - part: beyond_the_basics.qmd
+      chapters:
+      - 6_modelvalidation.qmd
+      - 7_finetuning.qmd
+      - 8_automatization.qmd
+    - references.qmd
+  appendices:
+    - A1_grassbasics.qmd
+    - A3_sampledata.qmd
+    - A4_scriptmap.qmd
+
+  bread-crumbs: false
+  page-navigation: true
+  reader-mode: false
+
+  # navbar:
+  #   pinned: false
+  #   background: primary
+  #   logo: images/logo.png
+  #   search: true
+  #   right:
+  #     - icon: home
+  #       text: "Ecodiv.earth"
+  #       file: https://ecodiv.earth
+
+  sidebar:
+      logo: "images/logo_SDM2.png"
+      style: "floating"
+      search: true
+      collapse-level: 0
+      # footer: |
+      #    <p style="color:lightgrey;"><a href="https://has.nl/en">HAS green academy</a><br>
+      #    <a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-innovatieve-biomonitoring/">Innovative Biomonitoring</a><br>
+      #    First published: 10-12-2024</p>
+  sharing: [twitter, facebook, linkedin]
+  open-graph: true
+  twitter-card:
+    site: "@ecodiv"
+  # other-links:
+  #  - text: Ecodiv.earth
+  #    href: https://ecodiv.earth
+  #  - text: HAS green academy
+  #    href: https://has.nl
+
+cite-method: citeproc
+bibliography: references.bib
+csl: diabetologia.csl #nature-no-superscript.csl
+link-citations: true
+
+crossref:
+  appendix-title: "Appendix"
+  appendix-delim: ". "
+
+format:
+  html:
+    footnotes-hover: true
+    reference-location: document
+    lightbox: true
+    code-overflow: scroll
+    code-line-numbers: true
+    code-annotations: select
+    copyright: "Paulo van Breugel, Ecodiv.earth,  2024"
+    license: CC BY-NC-SA
+    pagetitle: "Ecodiv.earth | sdm in grass gis"
+    author-meta: "Paulo van Breugel"
+    link-external-icon: false
+    link-external-newwindow: true
+    theme:
+      light: [cosmo, defaults.scss]
+      dark: [slate, defaults.sccs]
+    fontsize: 1em
+    mainfont: Helvetica
+    number-sections: true
+    crossref:
+      sec-prefix: Chapter
+      fig-title: Figure
+      tbl-title: Table
+      fig-prefix: Figure
+      tbl-prefix: Table
+      exr-title: Q
+      exr-prefix: Q
+      exm-title: Step
+      exm-prefix: Step
+      appendix-title: ""
+      appendix-delim: ". "
+    smooth-scroll: true
+    nocite: |
+      @vanswaay2010, |
+

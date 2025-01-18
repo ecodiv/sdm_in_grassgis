@@ -1,0 +1,560 @@
+# Model prediction {#sec-modelprediction}
+
+A species distribution model trained on one set of environmental variables can be projected onto future climate scenarios to forecast potential shifts in habitat suitability over time (@fig-Flowchartmodelpredict2). Similarly, models based on a species' native distribution can help predict its potential range in new areas outside its current habitat. This approach is valuable for assessing the potential risk of species becoming invasive in new regions.
+
+![A) The developing of a species distribution model. B) Using the model to predict the potential distribution of a species under future climate conditions. Step B is the focus of this chapter.](images/Flowchart_model_predict2.png){#fig-Flowchartmodelpredict2 width="450" fig-align="left"}
+
+In this section, we’ll use the model developed in @sec-4trainthemodel to project the current and the future potential distribution of the Almond-eyed Ringlet.
+
+## Current distribution {#sec-WZPnHz9gkh}
+
+When we ran the [r.maxent.train]{.style-function} in @sec-4trainthemodel, we used the [predictionlayer]{.style-parameter} parameter to instruct the function to create a probability distribution map of our species under current conditions. Alternatively, we could use the [r.maxent.predict](https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.predict.html) addon to achieve the same result. Let's try it out.
+
+The minimum input requirements of [r.maxent.predict]{.style-function} are the names of the input raster layers, the [lambdas]{.style-output} file and the raster layers corresponding to the predictor variables described in the lambdas file. The [lambdas]{.style-output} file, one of the outputs from the [r.maxent.train]{.style-function} module, can be found in the output folder [model_01]{.style-output}. It has the extension *.lambdas* and describes the Maxent model.
+
+::: {#exm-VwlODGvXBe .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Make sure you are working in the working directory
+cd path_to_working_directory
+
+# Create the future potential distribution map
+r.maxent.predict \
+lambda=model_01/Erebia_alberganus_obs.lambdas \
+rasters=bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9 \
+output=E_alberganus_probability2 \
+memory=1000
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Make sure you are working in the working directory
+os.chdir("replace-for-path-to-working-directory")
+
+# Create the future potential distribution map
+gs.run_command(
+    "r.maxent.predict",
+    lambdafile="model_01/Erebia_alberganus_obs.lambdas",
+    rasters="bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9",
+    output="E_alberganus_probability2",
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [r.maxent.predict]{.style-function} dialog and run it with the following parameter settings:
+
+| Parameter  | Value                                                     |
+|------------|-----------------------------------------------------------|
+| lambdafile | model_01/Erebia_alberganus_obs.lambdas                    |
+| rasters    | bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9 |
+| output     | E_alberganus_probability2                                 |
+
+: {tbl-colwidths="\[35,65\]"}
+:::
+
+To confirm that the resulting map [E_alberganus_probability2]{.style-data} is identical to the map [E_alberganus_probability]{.style-data} that we created earlier in @sec-4trainthemodel, we compute the difference between the two maps using the [r.mapcalc]{.style-function} module.
+
+::: {#exm-iZAJ53ha7v .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.mapcalc expression="diff = E_alberganus_probability-E_alberganus_probability"
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "r.mapcalc",
+    flags="r",
+    expression="diff = E_alberganus_probability-E_alberganus_probability",
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Run the \[r.mapcalc{.style-function} function with the following parameters:
+
+| Parameter  | Value                                             |
+|------------|---------------------------------------------------|
+| Output     | diff                                              |
+| Expression | E_alberganus_probability-E_alberganus_probability |
+
+: {tbl-colwidths="\[35,65\]"}
+:::
+
+Next, verify that all raster cells in the diff map are zero using the [r.univar](https://grass.osgeo.org/grass-stable/manuals/r.univar.html). Alternatively, check the metadata by right-clicking the layer in the [layer window]{.style-menu} and selecting [metadata]{.style-menu}).
+
+## Future distribution {#sec-e8039LmOdu}
+
+We will now use the same model that we used in the previous paragraph, and which we created in @sec-4trainthemodel, to project the future potential distribution of the almond-eyed ringlet butterfly for the period 2081–2100. This projection will be based on the *SSP585* climate scenario from the *EC-Earth3-Veg* general circulation model (GCM).
+
+In @sec-obtainfutureclimatelayers, we downloaded the climate layers for the above-mentioned SSP and GCM and saved them in the mapset [climate_EC_Earth3_Veg]{.style-db}. Let's first make sure we have access to this mapset from the current mapset. As you might remember, we can use the [g.mapsets](https://grass.osgeo.org/grass-stable/manuals/g.mapsets.html) module for that.
+
+::: {#exm-HXKf6KsqSt .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+g.mapsets mapset=climate_EC_Earth3_Veg operation=add
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "g.mapsets", mapset=["climate_EC_Earth3_Veg"], operation="add"
+)
+```
+
+## {{< fa regular window-restore >}}
+
+In the menu, go to [Settings → GRASS working environment → Mapset access]{.style-menu} and select the mapsets [climate_EC_Earth3_Veg]{.style-db}.
+:::
+
+We now use the [r.maxent.predict]{.style-function} addon to apply the Maxent model to this set of climate raster data. The settings are similar to those used in the previous paragraph, with one exception: the raster names of the future climate layers do not match the variable names used to create the Maxent model. To address this, we use the [variables]{.style-parameter} parameter to provide the corresponding variable names[^5_model_prediction-1].
+
+[^5_model_prediction-1]: Alternatively, the [alias_file]{.style-parameter} parameter can be used to provide a CSV file with the names of the explanatory variables (first column) and the names of the corresponding raster layers (second column).
+
+::: {#exm-CZnP5gebFx .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Make sure you are working in the working directory
+cd path_to_working_directory
+
+# Create the future potential distribution map
+r.maxent.predict \
+lambda=model_01/Erebia_alberganus_obs.lambdas \
+rasters=bio.1,bio.13,bio.14,bio.15,bio.19,bio.2,bio.4,bio.8,bio.9 \
+variables=bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9 \ # <1>
+output=E_alberganus_futprob
+```
+
+1.  The names of the future bioclim layers differ from the variables, so we need to provide the variable names. Note that they must be provided in the same order as the corresponding raster layers.
+
+## {{< fa brands python >}}
+
+``` python
+# Make sure you are working in the working directory
+os.chdir("replace-for-path-to-working-directory")
+
+# Create the future potential distribution map
+gs.run_command(
+    "r.maxent.predict",
+    lambdafile="model_01/Erebia_alberganus_obs.lambdas",
+    rasters="bio.1,bio.13,bio.14,bio.15,bio.19,bio.2,bio.4,bio.8,bio.9",
+    variables="bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9", # <1>
+    output="E_alberganus_futprob",
+)
+```
+
+1.  The names of the future bioclim layers differ from the variables, so we need to provide the variable names. Note that they must be provided in the same order as the corresponding raster layers.
+
+## {{< fa regular window-restore >}}
+
+Open the [r.maxent.predict]{.style-function} dialog and run it with the following parameter settings:
+
+| Parameter | Value |
+|----|----|
+| lambdafile | model_01/Erebia_alberganus_obs.lambdas |
+| rasters | bio.1,bio.13,bio.14,bio.15,bio.19,bio.2,bio.4,bio.8,bio.9 |
+| variables [^5_model_prediction-2] | bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9 |
+| output | E_alberganus_futprob |
+
+: {tbl-colwidths="\[35,65\]"}
+:::
+
+[^5_model_prediction-2]: The names of the future bioclim layers differ from the variables, so we need to provide the variable names. Note that they must be provided in the same order as the corresponding raster layers.
+
+We have now projected both the current and future potential distribution of the Almond-eyed Ringlet butterfly under different climate scenarios. Next step is to compare them.
+
+## Current vs future distribution
+
+### Comparing probability maps
+
+There are several ways to compare the predicted current and future distributions of our species. For a visual comparison of the probability maps, it’s essential that both maps use the same color table. To achieve this, we can use the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) module to match the color table of the future probability distribution map with that of the current climate distribution layer ([E_alberganus_probability]{.style-data}). This ensures that any differences we see are due to changes in distribution, not color scale variations.
+
+::: {#exm-jsOr4IpXRP .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.colors map=E_alberganus_futprob raster=E_alberganus_probability
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "r.colors", map="E_alberganus_futprob", raster="E_alberganus_probability"
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [r.colors]{.style-function} dialog and run it with the following parameter settings:
+
+| Parameter | Value                    |
+|-----------|--------------------------|
+| map       | E_alberganus_futprob     |
+| raster    | E_alberganus_probability |
+
+: {tbl-colwidths="\[35,65\]"}
+:::
+
+Examining the resulting map reveals that by 2081, the potential distribution area of the Almond-eyed Ringlet is projected to decrease significantly under SSP585 (compare @fig-probdistmodel01b with @fig-futdistr01). In the Alps, its range is expected to shift to higher altitudes, while in other areas, the species may dissapear entirely.
+
+::: {.panel-tabset .exercise}
+## Future climate conditions
+
+![The raster layer [E_alberganus_futprob]{.style-data} with the predicted probability of occurrences of *Erebia alberganus* in 2081-2100 under the SSP585 climate scenario, based on model_01.](images/E_alberganus_futprob.png){#fig-futdistr01 group="presfut"}
+
+## Current climate conditions
+
+![The raster layer [E_alberganus_probability]{.style-data} with the predicted probability of occurrences of *Erebia alberganus*, based on model_01.](images/E_alberganus_probability.png){#fig-probdistmodel01b group="presfut"}
+:::
+
+To highlight areas where the changes are expected to happen, we can create a change map by calculating the differences in habitat suitability scores between current and future distributions.
+
+::: {#exm-VjtxwilsRu .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Calculate the change map
+r.mapcalc \
+expression="E_alb_diff = E_alberganus_futprob - E_alberganus_probability"
+
+# Assign a color table that emphasize differences
+r.colors map=E_alb_diff color=differences
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Calculate the change map
+gs.run_command(
+    "r.mapcalc",
+    expression="E_alb_diff = E_alberganus_futprob - E_alberganus_probability",
+)
+
+# Assign a color table that emphasize differences
+gs.run_command("r.colors", map="E_alb_diff", color="differences")
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [raster map calculator]{.style-function} from the [raster]{.style-menu} and run it with the following expression.
+
+![Use the raster map calculator to calculate the differences in habitat suitability scores between current and future distributions.](images/rastercalculator_changemap01.png){#fig-rastmapchangemap fig-align="left"}
+
+Next, open the [r.colors]{.style-function} module, and run it with the following parameters.
+
+| Parameter | Value       |
+|-----------|-------------|
+| map       | E_alb_diff  |
+| color     | differences |
+
+: {tbl-colwidths="\[35,65\]"}
+:::
+
+The resulting map (@fig-changemap01) reinforces our earlier observations: in most areas, climate conditions are predicted to become less suitable, while at higher elevations in the Alps, climate conditions may become more favorable[^5_model_prediction-3]
+
+[^5_model_prediction-3]: These maps should be interpreted with caution, as they reflect only projected changes in climate conditions and do not account for other potentially important factors.
+
+::: {.panel-tabset .exercise}
+## Change map
+
+![The change map with negative values (blue) representing where climate conditions are predicted to become (less) suitable for the species, and positive values representing areas where climate conditions are predicted to become more suitable (red). Te inset map shows the region where the species may shift towards higher elevations.](images/change_map_01.png){#fig-changemap01}
+:::
+
+### Presence-absence maps
+
+While the change map is useful for highlighting areas of change, it doesn’t indicate where conditions are, and will remain, unsuitable - or conversely, where they are and will remain suitable. Another way to approach this is to convert the probability maps to presence-absence maps, and subsequently compare these.
+
+For the first step we need to select a threshold value. Raster cells with a probably \> threshold value will be converted to 1 (presence), and the other raster cells will be converted to 0 (absence). We'll use the threshold value that balances the sensitivity[^5_model_prediction-4] and specificity[^5_model_prediction-5]. In @tbl-tresholdvalues_model01, we can see that for our model, this is 0.6. After creating the presence-absence map, we assign it a color table using the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) module.
+
+[^5_model_prediction-4]: The ability of the model to correctly identify presence locations, or true positives.
+
+[^5_model_prediction-5]: Normally, this is the ability of the model to correctly identify absence locations (true negatives). However, for presence-only models this can be defined as the fraction of the background points predicted to be absent.
+
+::: {#exm-Yc5f3VPPR2 .hiddendiv}
+:::
+
+:::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Convert the probability under current conditions
+r.mapcalc expression="E_alberganus_bin = if(E_alberganus_probability <0.6,0,1)"
+
+# Convert the probability under future conditions
+r.mapcalc expression="E_alberganus_futbin = if(E_alberganus_futprob <0.6,0,1)"
+
+# Assign white to absence (0) and green to presence (1)
+echo -e "0 white\n1 green" | r.colors map=E_alberganus_bin rules=- # <1> 
+echo -e "0 white\n1 green" | r.colors map=E_alberganus_futprob rules=-
+```
+
+1.  With [echo -e]{.style-function} you normally print a text to the screen. Here, these are the color instructions. The '\|' (pipe) symbol, takes what would have been printed on the screen and sends it directly into the next command, [r.colors]{.style-function}, as input. The [rules=-]{.style-parameter} part tells [r.colors]{.style-function} to get its color instructions from the previous command (instead of a file). The dash (-) means "read from the pipeline," which is the output of echo.
+
+## {{< fa brands python >}}
+
+``` python
+# Convert the probability to presence-absence under current conditions
+gs.run_command(
+    "r.mapcalc",
+    expression="E_alberganus_presabs = if(E_alberganus_probability <0.6,0,1)",
+)
+
+# Convert the probability to presence-absence under future conditions
+gs.run_command(
+    "r.mapcalc",
+    expression="E_alberganus_presabsfut = if(E_alberganus_futprob <0.6,0,1)",
+)
+
+# Assign white to absence (0) and green to presence (1)
+COLORS = "0 white\n1 green"
+gs.write_command(
+    "r.colors",   # <1>
+    map="E_alberganus_presabs",
+    rules="-",
+    stdin=COLORS,
+) 
+gs.write_command(
+    "r.colors",  # <2>
+    map="E_alberganus_presabsfut",
+    rules="-",
+    stdin=COLORS,
+)
+```
+
+1.  This sets the color table for the raster map E_alberganus_presabs, using the color rules defined in the COLORS variable (0 as white, 1 as green). The color rules are provided directly in the code and passed to the r.colors command via [stdin]{.style-parameter} parameter, eliminating the need for an external file.
+2.  This sets the color table for the raster map E_alberganus_presabsfut, using the color rules defined in the COLORS variable (0 as white, 1 as green). The color rules are provided directly in the code and passed to the r.colors command via [stdin]{.style-parameter} parameter, eliminating the need for an external file.
+
+## {{< fa regular window-restore >}}
+
+Open the [raster map calculator]{.style-menu} in the menu [raster → raster map calculator → raster map calculator]{.style-menu}
+
+::: {#fig-catcross layout-ncol="2"}
+![Current conditions](images/presabs_current_bal.png){#fig-presabscurrentbal fig-align="left" group="rmapcalc"}
+
+![Future conditions](images/presabs_future_bal.png){#fig-presabsfuturebal fig-align="left" group="rmapcalc"}
+
+Convert current and future probability maps to binary maps using the r.mapcalc module.
+:::
+
+Now, assign colors to the two categories absence (0 = white) and presence (1 = green):
+
+{{< video "https://ecodiv.earth/share/sdm_in_grassgis/definecolortableinteractively.mp4" >}}
+::::
+
+Now we can compare the two maps to identify areas where the species is present both now and in the future, present now but will be absent in the future, absent now but will be present in the future, and absent both now and in the future. We can do this with the [r.cross](https://grass.osgeo.org/grass-stable/manuals/r.cross.html) function, which creates a cross product of the category values from multiple raster map layers.
+
+::: {#exm-ZRtKwPOjl3 .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.cross -z \
+input=E_alberganus_presabs,E_alberganus_presabsfut \
+output=E_alberganus_presabschange # <1>
+```
+
+1.  The [-z]{.style-parameter} flag tells r.cross to ignore raster cells with no data.
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "r.cross",
+    flags="n",  # <1>
+    input="E_alberganus_presabs,E_alberganus_presabsfut",
+    output="E_alberganus_presabschange",
+)
+```
+
+1.  The [-z]{.style-parameter} flag tells r.cross to ignore raster cells with no data.
+
+## {{< fa regular window-restore >}}
+
+Open the [r.cross]{.style-menu} module and run it with the following parameters.
+
+| Parameter | Value |
+|----|----|
+| input | E_alberganus_presabs,E_alberganus_presabsfut |
+| output | E_alberganus_presabschange |
+| Non-NULL data only (z) [^5_model_prediction-6] | ✅ |
+
+: {tbl-colwidths="\[35,65\]"}
+:::
+
+[^5_model_prediction-6]: The [-z]{.style-parameter} flag tells r.cross to ignore raster cells with no data.
+
+To gain a more quantitative perspective on the predicted changes, we can use the [r.report](https://grass.osgeo.org/grass-stable/manuals/r.report.html) module, which provides area statistics for each category (@fig-rcrossreport01).
+
+::: {#exm-fY8ZAeGbFo .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.report -n map=E_alberganus_presabschange \# <1>
+units=kilometers,percent # <2>
+```
+
+1.  The [-n]{.style-parameter} flag tells r.report to not report on no data values.
+2.  You can choose in what unit(s) [r.report]{.style-function} should report the area statistics.
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "r.report",
+    flags="n",   # <1>
+    units="kilometers,percent", # <2>
+    map="E_alberganus_presabschange",  
+)
+```
+
+1.  The [-n]{.style-parameter} flag tells r.report to not report on no data values.
+2.  You can choose in what unit(s) [r.report]{.style-function} should report the area statistics.
+
+## {{< fa regular window-restore >}}
+
+Open the [r.report]{.style-menu} module and run it with the following parameters.
+
+| Parameter | Value |
+|----|----|
+| map | E_alberganus_presabschange |
+| units [^5_model_prediction-7] | kilometers,percent |
+| Do not report no data value (n) [^5_model_prediction-8] | ✅ |
+
+: {tbl-colwidths="\[35,65\]"}
+:::
+
+[^5_model_prediction-7]: You can choose in what unit(s) [r.report]{.style-function} should report the area statistics.
+
+[^5_model_prediction-8]: The [-n]{.style-parameter} flag tells r.report to not report on no data values.
+
+The map we created in @exm-ZRtKwPOjl3 shows the predicted presence and absence of *Erebia_alberganus* under current and future conditions (@fig-rcross01). According to the statistics we calculated in @exm-fY8ZAeGbFo, about 98% of the study area is and will remain unsuitable for our species. Currently, 2.15% of the area is classified as suitable for the species. However, projections suggest that the surface area with suitable conditions will significantly decrease, with only 0.1% remaining suitable by 2081-2100. Additionally, 0.07% of the area may become newly suitable for the species over this period (@fig-rcrossreport01).
+
+::: {.panel-tabset .exercise}
+## The map
+
+![The raster layer [E_alberganus_presabschange]{.style-data} with four categories: Category 0 shows areas where the species is predicted to be absent under both current and future conditions; category 1 represents areas where the species is absent now but predicted to be present in the future; category 2 highlights areas where the species is present now but predicted to be absent in the future; and category 3 indicates areas where the species is predicted to be present under both current and future conditions](images/E_alberganus_presabschange.png){#fig-rcross01}
+
+## Statistics
+
+![The area statistics for the categorical layer [E_alberganus_binchange]{.style-data}.](images/r_cross_report_01.png){#fig-rcrossreport01 fig-align="left"}
+:::
+
+The categories aren't easy to read, and the colors of the map aren't necessarily the best to bring out the different categories. We can therefore assign a different color table to the map using [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) and rename the categories using [r.category](https://grass.osgeo.org/grass-stable/manuals/r.category.html).
+
+::: {#exm-uupyYBTjnJ .hiddendiv}
+:::
+
+:::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Give the categories more meaningfull names
+r.category E_alberganus_presabschange separator=":" rules=- << EOF
+0:Absent  - Absent
+1:Absent  - Present
+2:Present - Absent
+3:Present - Present
+EOF
+
+r.colors map=E_alberganus_futprob rules=- << EOF
+0 white
+1 77:175:74
+2 251:154:153
+3 55:126:184
+EOF
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Give the categories more meaningfull names
+CATS = (
+    "0: Absent  - Absent\n"
+    "1: Absent  - Present\n"
+    "2: Present - Absent\n"
+    "3: Present - Present\n"
+)
+gs.write_command(
+    "r.category",
+    map="E_alberganus_presabschange",
+    separator=":",
+    rules="-",
+    stdin=CATS,
+)
+
+# Define colors per category
+COLORS = "0 white\n1 77:175:74\n2 251:154:153\n3 55:126:184"
+gs.write_command(
+    "r.colors",
+    map="E_alberganus_presabschange",
+    rules="-",
+    stdin=COLORS,
+)
+```
+
+## {{< fa regular window-restore >}}
+
+You can find the [r.category]{.style-function} in the [raster]{.style-menu} menu.
+
+::: {#fig-catcross layout-ncol="3"}
+![](images/r_category_crossproduct_00.png){group="rcat"}
+
+![](images/r_category_crossproduct_02.png){group="rcat"}
+
+![](images/r_category_crossproduct_01.png){group="rcat"}
+
+Using [r.category]{.style-function} to rename the categories of the raster layer [E_alberganus_presabschange]{.style-data} (click on the images to enlarge).
+:::
+
+To change the colors of the categories, see @exm-Yc5f3VPPR2.
+::::
+
+Now we can create the map and report with area statistics again by repeating @exm-fY8ZAeGbFo The results are, obviously, the same, but hopefully easier to read/interpret.
+
+::: {.panel-tabset .exercise}
+## The map
+
+![The raster layer [E_alberganus_presabschange]{.style-data} with four categories: Category 0 shows areas where the species is predicted to be absent under both current and future conditions; category 1 represents areas where the species is absent now but predicted to be present in the future; category 2 highlights areas where the species is present now but predicted to be absent in the future; and category 3 indicates areas where the species is predicted to be present under both current and future conditions](images/change_map_02.png){#fig-changemap02}
+
+## Statistics
+
+![The area statistics for the categorical layer [E_alberganus_binchange]{.style-data}.](images/r_cross_report_02.png){#fig-rcrossreport01 fig-align="left"}
+:::
+
+GRASS GIS includes various other modules that compute and visualize different (change) statistics. A good starting point is to explore the [toolbox](https://grass.osgeo.org/grass-stable/manuals/index.html) and the [list of addons](https://grass.osgeo.org/grass-stable/manuals/addons/). You have now completed the basic steps to create and use a species distribution model using Maxent in GRASS GIS. In subsequent sections we’ll dive deeper into the options, choices, and parameter settings to validate and fine-tune the model.
+
+<br><br>
+
+## Footnotes {.unlisted .unnumbered .hidefootnotes}

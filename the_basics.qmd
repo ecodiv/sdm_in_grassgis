@@ -1,0 +1,58 @@
+# The basic steps {#sec-basics}
+
+In this part we'll go through the basic steps of species distribution modeling: acquiring and importing data (section [2](#sec-data)), preparing the data (section [3](#sec-dataprep)), training, validating and evaluating distribution models (section [4](#sec-modeltraining)), and using these models to predict the future potential distribution of the almond-eyed ringlet butterfly (section [5](#sec-modelprediction)). By the end of this section, you will know how to build a species distribution model using Maxent, and how to visualize the results.
+
+![The four main steps in species distribution modeling and the corresponding GRASS GIS addon[^the_basics-1].](images/modeling_workflow.png){#fig-modeling_workflow fig-align="left"}
+
+[^the_basics-1]: The rationale for having separate addons for each step is to encourage and help the user to carefully consider the assumptions and considerations at each stage of the modeling process. The tutorial follows the same structure.
+
+[^the_basics-2]: The rationale for having separate addons for each step is to encourage and help the user to carefully consider the assumptions and considerations at each stage of the modeling process. The tutorial follows the same structure.
+
+This is just the beginning of your journey into species distribution modeling. You normally will further explore various ways to fine-tune your model. This includes experimenting with different input data, adjusting parameters, and evaluating the outcomes to identify the best model or set of models for your needs. Some of these steps are explored in the second part of this reader, 'Beyond the Basics', where we dive deeper into techniques for refining and validating your models.
+
+<!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->
+
+```{=html}
+<script src="https://formspree.io/js/formbutton-v1.min.js" defer></script>
+```
+
+```{=html}
+<script>
+  /* paste this line in verbatim */
+  window.formbutton=window.formbutton||function(){(formbutton.q=formbutton.q||[]).push(arguments)};
+  /* customize formbutton below*/     
+  formbutton("create", {
+    action: "https://formspree.io/f/xjvppyvg",
+    title: "Feedback", 
+    fields: [
+      { 
+        type: "email", 
+        label: "Email:", 
+        name: "email",
+        required: true,
+        placeholder: "your@email.com"
+      },
+      {
+        type: "hidden",
+        label: "",
+        value: "sdmingrass - 1 Introduction",
+      },
+      {
+        type: "textarea",
+        label: "Message:",
+        name: "message",
+        placeholder: "Question or feedback? Send a message.",
+      },
+      { type: "submit" }      
+    ],
+    styles: {
+      title: {
+        backgroundColor: "#57B444"
+      },
+      button: {
+        backgroundColor: "#57B444"
+      }
+    }
+  });
+</script>
+```

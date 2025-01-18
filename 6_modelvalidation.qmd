@@ -1,0 +1,550 @@
+# Model evaluation {#sec-modelvalidation}
+
+So far, we have discussed how to build a model and use it to predict the distribution of a species. However, understanding how to interpret and evaluate the results of the model is equally important. A critical step in this process, known as *model validation*, is assessing the accuracy of the model’s predictions.
+
+In @sec-4evalstats, we introduced the AUC-ROC, a statistic that provides a measure of model performance. However, evaluating a model on the same data it was trained on often leads to overly optimistic assessments, as models tend to perform worse on new, unseen data. To truly assess a model's predictive power under new conditions or in untested areas, it must be tested on a separate dataset that wasn't used during training (paragraph [-@sec-crossvalidation]).
+
+Another important consideration is the context in which predictions are made. For example, predictions under climate conditions that deviate strongly from those represented in the training data (novel climates) introduce uncertainty. In such cases, the model's assumptions and extrapolations may no longer hold, potentially compromising the reliability of its predictions (paragraph [-@sec-novelclimates]).
+
+## Cross-validation {#sec-crossvalidation}
+
+A common way to assess the ability of a model to generalize beyond the data on which it was trained is to split presence data into two parts: one for training the model and another for testing its performance. This approach is available in [r.maxent.train]{.style-function} through the [randomtestpoints]{.style-parameter} parameter. For example, we can instruct [r.maxent.train]{.style-function} to use 80% of the presence points to train the model, and the remaining 20% to test the model's performance.
+
+While this approach is straightforward, it has one drawback: the results can vary depending on which 20% of the points are selected for testing. A more robust and commonly used technique for estimating the accuracy of a predictive model is [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)). There are different types of cross-validation, but we'll focus on k-fold cross-validation here. In k-fold cross-validation, the original sample is randomly partitioned into **k** subsamples with an approximately equal number of records, as further explained in @fig-vkgSx6qmBy.
+
+![Schematic explanation of a 4-fold cross-validation. The presence data is randomly partitioned into 4 groups with an approximately equal number of records. One group is set aside as the validation data for testing the model, while the remaining subsamples are combined to train the model. The model is then used to predict the presence of the locations of the validation subset. The results of the prediction are then compared with the known presence and background designations in the validation subset. This process is repeated as many times as there are subsamples, whereby each of the subsamples is used exactly once as the validation data.](images/4-fold_cross-validation.svg){#fig-vkgSx6qmBy fig-align="left" width="600"}
+
+By employing k-fold cross-validation, you can obtain a more reliable estimate of model accuracy, as it reduces the variability associated with a single random data split and leverages the entire dataset for both training and validation.
+
+### Model training {#sec-611}
+
+For this tutorial, we carry out a 4-fold cross-validation. To perform the cross-validation, we run [r.maxent.train]{.style-function} with the [replicatetype]{.style-parameter} and the [replicates]{.style-parameter} parameter to tell Maxent to run a 4-fold cross-validation. This means that Maxent will train four models in the background, calculate validation statistics for each model, and compute average statistics across the four sub-models.
+
+::: {.callout-note appearance="simple"}
+In cross-validation, multiple models are created, each trained on slightly different subsets of the data. Technically, these are separate models because they are trained on different data splits and may produce slightly different predictions. This variation reflects the inherent variability in the data.
+
+However, conceptually, these models are not entirely independent in the same way models trained with different algorithms are. Instead, they represent iterations of the same underlying model, designed to evaluate its robustness and generalizability. To simplify, we will therefore refer to these as "sub-models".
+:::
+
+If both the option to create a sample prediction ([-y]{.style-parameter} flag) and k-fold cross-validation are selected, the sample prediction point layer's attribute table will include for each point the average predicted probabilities and the range of predicted probabilities across the four sub-models. Note that the [v.db.pyupdate](https://grass.osgeo.org/grass-stable/manuals/v.db.update.html) addon needs to be installed to do this.
+
+We furthermore specify the location of the folder with the input environmental raster layers using the [projectionlayers]{.style-parameter} parameter. This instructs Maxent to generate a raster prediction layer. When the k-fold cross-validation option is enabled, this raster shows the average predicted probability of species presence, calculated across all four model iterations. Additionally, three extra layers will be produced, showing the minimum, maximum, and standard deviation of the predictions across the four models.
+
+::: {#exm-fb4bZ2MIs0 .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Setup
+mkdir model_03
+g.mapset -c mapset=model_03
+g.region raster=bio_1@climate_current
+
+# Train
+r.maxent.train \
+samplesfile=dataset01/species.swd \
+environmentallayersfile=dataset01/background_points.swd \
+projectionlayers=dataset01/envdat \
+outputdirectory=model_03 \
+replicatetype=crossvalidate \
+replicates=4 threads=4 memory=1000 -ygb
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Setup
+os.chdir("replace-for-path-to-working-directory")
+os.makedirs("model_03", exist_ok=True)
+gs.run_command("g.mapset", flags="c", mapset="model_03")
+gs.run_command("g.region", raster="bio_1@climate_current")  
+
+# Train
+gs.run_command(
+    "r.maxent.train",
+    samplesfile="dataset01/species.swd",  
+    environmentallayersfile="dataset01/background_points.swd",
+    projectionlayers="dataset01/envdat",
+    outputdirectory="model_03", 
+    replicatetype="crossvalidate",
+    replicates=4,
+    threads=4,
+    memory=1000,
+    flags="ybg", 
+)  
+```
+
+## {{< fa regular window-restore >}}
+
+Create the folder [model_03]{.style-db} in your working directory using your favorite file manager/explorer. Next, create a new mapset and switch to this mapset using the Data panel. Alternatively, open the [g.mapsets]{.style-function} dialog and run it with the following parameter settings:
+
+| Parameter                             | Value    |
+|---------------------------------------|----------|
+| Name of mapset (mapset)               | model_03 |
+| Create mapset if it doesn't exist (c) | ✅       |
+
+: {tbl-colwidths="\[60,40\]"}
+
+<br>Next, use the [g.region]{.style-function} module to set the computational region style parameter, based on the [bio_1]{.style-data} raster layer in the [climate_current]{.style-db} mapset.
+
+| Parameter | Value                  |
+|-----------|------------------------|
+| raster    | bio_1\@climate_current |
+
+: {tbl-colwidths="\[60,40\]"}
+
+<br>Open the [r.maxent.train]{.style-function} dialog and run the module with the following parameter settings:
+
+| Parameter | Value |
+|----|----|
+| samplesfile | dataset01/species.swd |
+| environmentallayersfile | dataset01/background.swd |
+| projectionlayers | dataset01/envdat |
+| outputdirectory | model_03 |
+| replicatetype | crossvalidate |
+| replicates | 4 |
+| threads | 4 |
+| memory | 1000 |
+| Create a vector point layer from the sample predictions (y) | ✅ |
+| Create response curves (g) | ✅ |
+| Create a vector point layer with predictions at backgr. points (b) | ✅ |
+
+: {tbl-colwidths="\[60,40\]"}
+:::
+
+Note that unlike in @exm-g8jUY2JKvW, we did not specify the names of the various output layers. This means that Maxent assigned default names to these layers. See the [r.maxent.train](https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.train.html) help page for more information.
+
+### Evaluation statistics
+
+To examine how well the model performed, we take a look at the model statistics. We can find these statistics in the HTML file [Erebia_alberganus_obs.html]{.style-file} located in the [model_03]{.style-db} output folder. The page provides a summary of the results from the 4-fold cross-validation and includes links to the results of the individual sub-models in the top right corner. The average test AUC across the replicate runs is 0.889, with a standard deviation of 0.003.
+
+::: {.panel-tabset .exercise}
+## AUC-ROC
+
+Figure [-@fig-rocaucmodel3] shows the receiver operating characteristic (ROC) curve, averaged over the four sub-models (red line). The standard deviation is represented by the blue band around the red line.
+
+![ROC curve and the area under the curve statistics for model_03.](share/model_03/plots/Erebia_alberganus_obs_roc.png){#fig-rocaucmodel3 fig-align="left" group="corcom"}
+
+## Omission graph
+
+Figure [-@fig-omissionmodel3] shows the test omission rate (green line) and predicted area (red line) as a function of the cumulative threshold, averaged over the four sub-models. The standard deviation of the omission rate and predicted area are illustrated by respectively the yellow and blue bands.
+
+![The omission/commission graph for model_03.](share/model_03/plots/Erebia_alberganus_obs_omission.png){#fig-omissionmodel3 fig-align="left" group="corcom"}
+:::
+
+The validation diagnostics from each individual sub-model help indicate how the model will perform when estimating presence in unknown locations. If the model performs well for some groups, but poorly for others, we should be careful when interpreting the model outcomes. In this case, differences are fairly small (resulting in a small standard deviation).
+
+:::: {.panel-tabset .exercise}
+## {{< fa regular circle-question >}}
+
+::: {#exr-SErwbZwytm}
+If you compare the training and test AUC, you'll notice that for some of the sub-models, the test AUC is higher than training AUC. Can you give a possible explanation?
+:::
+
+## {{< fa regular comment >}}
+
+A possible explanation is that the test data represents a smaller set of presence points, which results in a much smaller prevalence (the ratio of presence points to background points) in the test set compared to the training dataset.
+
+Background points, especially those located in environmentally distinct areas far from known occurrences of the species, are typically easier for the model to classify as absences. This results in a higher true negative rate (specificity) in the test set.
+
+Since the AUC (area under the ROC curve) measures both sensitivity (true positive rate) and specificity (true negative rate), an improvement in specificity can lead to an overall increase in AUC.
+::::
+
+### Probability maps {#sec-6probabilitymaps}
+
+The sample prediction layer and the various raster prediction layers generated by Maxent can help us to examine the spatial patterns of agreement and disagreement across the cross-validation iterations.
+
+The default color scheme of the [Erebia_alberganus_obs_samplePredictions]{.style-data} represents the average predicted probabilities, based on the four models (@fig-samlepredmodel03a). To visualizing the variability in predictions across the four models, we use the values in the [Cloglog_range]{.style-data} column of the attribute table. These values represent the range (difference between the maximum and minimum predicted probabilities) across the four models (@fig-samlepredmodel03b).
+
+To create the new color table, we use the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) function.
+
+::: {#exm-varKii8QsL .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+v.colors map=Erebia_alberganus_obs_samplePredictions \
+use=attr \
+column=Cloglog_range \
+color=bcyr
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "v.colors",
+    map="Erebia_alberganus_obs_samplePredictions",
+    use="attr",
+    column="Cloglog_range",
+    color="bcyr",
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [v.colors]() dialog and run it with:
+
+| Parameter | Value                                   |
+|-----------|-----------------------------------------|
+| map       | Erebia_alberganus_obs_samplePredictions |
+| use       | attr                                    |
+| column    | Cloglog_range                           |
+| color     | bcyr                                    |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+Now, go to the [data]{.style-menu} panel, and and open the layer [Erebia_alberganus_obs_samplePredictions]{.style-data} in the [Map display]{.style-menu} panel. The occurrence locations with high values (orange and red points) are locations where the model predictions are less consistent, signaling the need for cautious interpretation of the results in these areas.
+
+::: {.panel-tabset .exercise}
+## Average sample predictions
+
+![The [Erebia_alberganus_obs_samplePredictions]{.style-data} vector layer with the GBIF occurrences. The colors represent the predicted probability that the species occurs at these locations, averaged over the four models.](images/Erebia_alberganus_obs_samplePredictions1.png){#fig-samlepredmodel03a group="ytHc07Sg8P"}
+
+## Range sample predictions
+
+![The [Erebia_alberganus_obs_samplePredictions]{.style-data} vector layer with GBIF occurrence data. The colors represent the range of predicted probabilities (the difference between the maximum and minimum values) across the four models.](images/Erebia_alberganus_obs_samplePredictions2.png){#fig-samlepredmodel03b group="ytHc07Sg8P"}
+
+## Mean vs range
+
+![Density plot, with the redicted mean probabilities plotted against the range of predicted probabilities across the four iterations of model 3. The grey lines show the median mean and range values. See @exm-972VUKNJIx below for the code used to create this plot.](images/scatterplot_mean_range.png){#fig-meanvsrange fig-align="left"}
+:::
+
+Ideally, the four sub-model should result in high average probability scores for occurrence locations, indicating consistency and accuracy, and low range values, reflecting strong agreement between different model iterations. To identify locations with high average scores and low range values, or vice versa, we can create a scatterplot using the [v.scatterplot](https://grass.osgeo.org/grass-stable/manuals/addons/v.scatterplot.html) add-on.
+
+::: {#exm-972VUKNJIx .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Create a scatter/density plot
+v.scatterplot map=Erebia_alberganus_obs_samplePredictions \
+x=Cloglog_mean y=Cloglog_range type=density \
+quadrants=median
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Create a scatter/density plot
+gs.run_command(
+    "v.scatterplot",
+    map="Erebia_alberganus_obs_samplePredictions",
+    x="Cloglog_mean",
+    y="Cloglog_range",
+    type="density",
+    quadrants="median",
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Run the [v.scatterplot]{.style-function} module with the following parameters:
+
+| Parameter | Value                                   |
+|-----------|-----------------------------------------|
+| map       | Erebia_alberganus_obs_samplePredictions |
+| x         | Cloglog_mean                            |
+| y         | Cloglog_range                           |
+| type      | density                                 |
+| quadrants | median                                  |
+
+: {tbl-colwidths="\[40,60\]"}
+:::
+
+The resulting scatterplot (@fig-meanvsrange) shows that there are quite a few occurrence locations where the four sub-model fairly consistently predict a low probability (Cloglog_mean), while there are a few locations where predictions vary more across the different iterations (Cloglog_range). We can extract and plot outliers on the map with the [v.extract](https://grass.osgeo.org/grass-stable/manuals/v.extract.html) module. Alternatively, you can select and highlight them using the [SQL Query Builder]{.style-menu} of the [Attribute Table Manager]{.style-menu}. After extracting the outliers, open the new layer [outliers]{.style-data} and check where those outliers are located.
+
+::: {#exm-NlC6SPkAy7 .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Extract outliers to new map
+v.extract input=Erebia_alberganus_obs_samplePredictions \
+where='"Cloglog_mean" < 0.3 AND "Cloglog_range" >= 0.09\' \
+output=outliers
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Extract outliers to new map
+gs.run_command(
+    "v.extract",
+    input="Erebia_alberganus_obs_samplePredictions",
+    where='"Cloglog_mean" < 0.3 AND "Cloglog_range" >= 0.09',
+    output="outliers",
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Extract outliers to new map using [v.extract](.style-function) with the following parameters:
+
+| Parameter | Value                                               |
+|-----------|-----------------------------------------------------|
+| input     | Erebia_alberganus_obs_samplePredictions             |
+| where     | `'"Cloglog_mean" < 0.3 AND "Cloglog_range" > 0.09'` |
+| output    | outliers                                            |
+
+: {tbl-colwidths="\[40,60\]"}
+
+Alternatively, use the [Attribute Table Manager]{.style-menu}:
+
+{{< video "https://ecodiv.earth/share/sdm_in_grassgis/select_outliers_in_attributetable2.mp4" >}}
+:::
+
+To get a better idea about the spatial patterns of agreement and disagreement among the four sub-models outside the areas where the species was observed, we can examine the prediction raster layers with the average and standard deviation of the values generated by the four models.
+
+::: {.panel-tabset .exercise}
+## Average predictions
+
+![The [Erebia_alberganus_obs_envdat_avg]{.style-data} raster layer. The colors represent the predicted probability, averaged over the four models.](images/Erebia_alberganus_obs_envdat_avg.png){#fig-predlaymodel03a group="ytHc07Sg8P"}
+
+## Standard deviation of predictions
+
+![The [Erebia_alberganus_obs_envdata_stddev]{.style-data} raster layer. The colors represent the standard deviation of predicted probabilities across the four models.](images/Erebia_alberganus_obs_envdat_stddev.png){#fig-predlaymodel03b group="ytHc07Sg8P"}
+:::
+
+Besides the prediction layers with the average and standard deviation of the four model runs, maps with the median, maximum and minimum values are created. It could be useful to examine these as well.
+
+### Response curves {#sec-4responsecurves_model3}
+
+The response curves in the HTML file [Erebia_alberganus_obs.html]{.style-file} show the mean response of the 4 sub-models (red) and and the mean +/- one standard deviation (blue, two shades for categorical variables).
+
+::::: {.panel-tabset .exercise}
+## Marginal response curves
+
+::: {#fig-QB4dnXf8U3 layout-ncol="4"}
+![](share/model_03/plots/Erebia_alberganus_obs_bio_1.png){group="QB4dnXf8U3a"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_2.png){group="QB4dnXf8U3a"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_4.png){group="QB4dnXf8U3a"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_8.png){group="QB4dnXf8U3a"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_9.png){group="QB4dnXf8U3a"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_13.png){group="QB4dnXf8U3a"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_14.png){group="QB4dnXf8U3a"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_15.png){group="QB4dnXf8U3a"}
+
+Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value
+:::
+
+## single-variable response curves
+
+::: {#fig-nCjTprfaAr layout-ncol="4"}
+![](share/model_03/plots/Erebia_alberganus_obs_bio_1_only.png){group="nCjTprfaAra"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_2_only.png){group="nCjTprfaAra"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_4_only.png){group="nCjTprfaAra"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_8_only.png){group="nCjTprfaAra"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_9_only.png){group="nCjTprfaAra"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_13_only.png){group="nCjTprfaAra"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_14_only.png){group="nCjTprfaAra"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_15_only.png){group="nCjTprfaAra"}
+
+Response curves created by running a model based on only the specific variable as explanatory variable.
+:::
+:::::
+
+The marginal response curves for some variables show significant variability across sub-models, as indicated by a large standard deviation. For certain variables, the direction of the marginal response curve even contrasts with that of the single-variable response curve. For example, the marginal response curve of bio 2 is positive (increasing), while the single-variable response curve is negative (decreasing). This difference arises when variables interact in the model (e.g., bio 2 interacts with another predictor). The marginal response curve accounts for these interactions. This can lead to a direction opposite to that observed in the single-variable response curve, which does not consider the influence of other variables.
+
+Another point of attention is that several single-variable marginal response curves display multiple peaks and valleys (oscillating patterns). These fluctuations are unlikely to represent genuine ecological relationships. Instead, they likely indicate that the model has captured spurious patterns through overfitting. Such behavior can stem from excessive model complexity or collinearity among predictor variables
+
+### Using the model
+
+We used cross-validation to evaluate the predictive power of the model (as defined by the selected parameter settings) under new conditions or in untested areas. This process produced four model variants, each trained on slightly different subsets of the data due to the cross-validation procedure. These models are described by the lambdas files in the output folder. For each of these model variants, MaxEnt generated a raster layer representing the predicted probability of occurrence. These layers are then summarized by calculating their average, median, minimum, maximum, and standard deviation. These resulting summary layers are the ones currently available in our mapset.
+
+But what if we want to use the selected parameter settings to predict species distributions under different environmental scenarios and compare the result predicted potential distribution with the current potential distribution (as we have done in @sec-modelprediction)? One option is to select one of the four models or compute the average probability values across all four, as done during training. However, the standard approach is to rebuild the model using all available occurrence data, ensuring that the model benefits from the full dataset. This model can then be used to make predictions under different environmental conditions or in new geographic areas.
+
+## Novel climates {#sec-novelclimates}
+
+Predictions from a species distribution model can be less reliable when applied to novel conditions—situations outside the range of conditions observed during model training. This happens because the model relies on relationships it learned from the training data, which may not hold true in different areas or future scenarios.
+
+### MES statistics
+
+The Multivariate Environmental Similarity (MES), as described by Elith et al. [@elith2010], can be used to evaluate if and where future conditions are outside the range of conditions observed during model training, and thus where model predictions might be less reliable. In GRASS, we can use the [r.mess](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) addon to calculate the MESS.
+
+We use the [r.mess]{.style-function} module to examine how different the climatic conditions in 2081 are to present conditions. For the present climate conditions, we use the same data and bioclimatic variables as we used to create our first model in [paragraph -@sec-4trainthemodel]. We only consider the conditions in the presence and background locations, as this is what we used to train the model. To do so, we combine and convert presence and background points into a new raster layer [referencelayer]{.style-data}, and use this as input for the [ref_rast]{.style-parameter} parameter.
+
+::: {#exm-dCCiaw6IUX .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Go to mapset 'model_01' and set the region 
+g.mapset mapset=model_01 
+g.region raster=bio_1@climate_current # <1>
+
+# Combine the occurrence and background points
+v.patch input=E_alberganus_samplepred,E_alberganus_bgrdpred \
+output=referencepoints
+
+# Convert the point layer to a raster layer # <2>
+v.to.rast input=referencepoints output=referencepoints use=value
+```
+
+1.  The region should already be defined correctly, but just to be sure.
+2.  In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The [r.mess]{.style-function} module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
+
+## {{< fa brands python >}}
+
+``` python
+# Go to mapset 'model_01' and set the region 
+gs.run_command("g.mapset", mapset="model_01") 
+gs.run_command("g.region", raster="bio_1@climate_current") # <1>
+
+# Combine the occurrence and background points
+gs.run_command(
+    "v.patch",
+    input=["E_alberganus_samplepred", "E_alberganus_bgrdpred"],
+    output="referencepoints",
+)
+
+# Convert the point layer to a raster layer # <2>
+gs.run_command(
+    "v.to.rast", input="referencepoints", output="referencepoints", use="value"
+)
+```
+
+1.  The region should already be defined correctly, but just to be sure.
+2.  In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The [r.mess]{.style-function} module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
+
+## {{< fa regular window-restore >}}
+
+Open the [g.mapset]{.style-function} dialog and run it with:
+
+| Parameter | Value    |
+|-----------|----------|
+| mapset    | model_01 |
+
+: {tbl-colwidths="\[40,60\]"}
+
+Open the [g.region]{.style-function} dialog and run it with:
+
+| Parameter | Value                  |
+|-----------|------------------------|
+| raster    | bio_1\@climate_current |
+
+: {tbl-colwidths="\[40,60\]"}
+
+To combine the occurrence and background points, open the [v.patch]{.style-function} dialog, and run it with:
+
+| Parameter | Value                                         |
+|-----------|-----------------------------------------------|
+| input     | E_alberganus_samplepred,E_alberganus_bgrdpred |
+| output    | referencepoints                               |
+
+: {tbl-colwidths="\[40,60\]"}
+
+Convert the point layer to a raster with the [v.to.rast]{.style-function} module[^6_modelvalidation-1]. Open it and run it with the following parameters:
+
+| Parameter | Value           |
+|-----------|-----------------|
+| input     | referencepoints |
+| output    | referencepoints |
+
+: {tbl-colwidths="\[40,60\]"}
+:::
+
+[^6_modelvalidation-1]: In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The [r.mess]{.style-function} module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
+
+To assess if and where future conditions are outside the range of conditions observed during model training, we use the same future climate data that we used as input to our model prediction in [paragraph -@sec-e8039LmOdu]. These are the projected bioclimatic data for the period 2081-2100, based on the SSP585 climate scenario from the EC-Earth3-Veg general circulation model.
+
+::: {#exm-lHWXJikKCV .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Compute mess
+r.mess flags=mnkci \# <1>
+ref_env=bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 \
+proj_env=bio.1,bio.2,bio.4,bio.8,bio.9,bio.13,bio.14,bio.15,bio.19 \
+ref_rast=referencepoints output=mess nprocs=2 memory=1000
+```
+
+1.  Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) about the meaning of these flags.
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("r.mess", flags="mnkci", # <1>
+    ref_env=["bio_1", "bio_2", "bio_4", "bio_8", "bio_9",
+             "bio_13", "bio_14", "bio_15", "bio_19"],
+    proj_env=["bio.1", "bio.2", "bio.4", "bio.8","bio.9",
+              "bio.13", "bio.14", "bio.15", "bio.19"],
+    ref_rast="referencepoints", output="mess",
+    nprocs=2, memory=1000,
+)
+```
+
+1.  Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) about the meaning of these flags.
+
+## {{< fa regular window-restore >}}
+
+Open the [r.mess]{.style-function} dialog and run it with:
+
+| Parameter | Value |
+|----|----|
+| ref_env | bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 |
+| proj_env | bio.1,bio.2,bio.4,bio.8,bio.9,bio.13,bio.14,bio.15,bio.19 |
+| proj_env | attr |
+| ref_rast | referencepoints |
+| nprocs | 2 |
+| memory | 1000 |
+| Most dissimilar variable (MoD) (m) | ✅ |
+| Area with negative MESS (n) | ✅ |
+| sum(IES), where IES \< 0 (k) | ✅ |
+| Number of IES layers with values \< 0 (c) | ✅ |
+| Remove ind. env. similarity layers (IES) (i) | ✅ |
+
+: {tbl-colwidths="\[42,57\]"}
+:::
+
+We have now five new layers that provide more insight in where future conditions are outside the range of conditions observed during model training. We can compare these to the predicted probability distribution of our species
+
+### Results
+
+The main MESS map (@fig-messmap) shows the degree of environmental similarity between current conditions and projected conditions in 2081 at each location. Negative values (indicated in red on the map) means there are one or more environmental variables outside the range present in the training data, so predictions in those areas should be treated with strong caution.
+
+::: {.panel-tabset .exercise}
+## MESS
+
+![The MESS value at a location is determined by identifying the environmental variable that deviates the most in 2081 compared to its current range. <u>Negative MESS</u> values (indicated in red on the map) highlight areas with novel climate conditions, meaning that the projected 2081 climate variables fall outside the range observed under current conditions. This is expressed as a fraction of the variable’s current range (e.g., how far outside the known range the projected value lies). <u>Positive MESS</u> values (shown in blue) indicate areas where future conditions are not novel. A MESS value of 100 represents locations where the projected conditions in 2081 are identical to the median values of the corresponding variables in the current data. Lower positive values (closer to 0) are further from the median of the current conditions, but still within the observed range.](images/mess_MES.png){#fig-messmap fig-align="left" group="mcLze6OQc6"}
+
+## MOB
+
+![The analysis identifies the most novel variable at each point, revealing that bio_8 (mean temperature of the wettest quarter) and bio_9 (mean temperature of the driest quarter) are the most frequently novel variables overall. However, within the regions where the species has been observed, the results are more divers. In these areas, a variety of variables are projected to be the most novel for 2081 in small, localized regions, which probably reflects the highly topographically heterogeneous conditions.](images/mess_MoD.png){#fig-modmap fig-align="left" group="mcLze6OQc6"}
+
+## Count Negative
+
+![The number of variables with a negative MESS values, i.e., for each location, it shows the number of variables that are projected to have a value outside the range of values in the training data.](images/mess_CountNeg.png){#fig-countneg fig-align="left" group="mcLze6OQc6"}
+:::
+
+You can compare the MESS map with the occurrence point map (@fig-samlepredmodel01), the predicted probability map under future climate conditions (@fig-futdistr01) and the presence-absence map (@fig-changemap02) to assess the reliability of the predictions. If you zoom in, you'll notice that for most locations where the species has been observed, conditions in 2081 are projected to remain within the range of observed values under current conditions.
+
+We need to be more cautious about locations where the species is currently absent, but where conditions will become suitable according to model predictions. Some of these locations have a negative MESS. In other words, predictions for these locations are based on environmental conditions that fall outside the range of values observed in our current dataset. Therefore, for these locations, projected increases in habitat suitability should be interpreted with caution, as the model is extrapolating beyond its training data.

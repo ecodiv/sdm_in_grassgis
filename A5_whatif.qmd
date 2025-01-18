@@ -1,0 +1,47 @@
+# What if {#sec-whatif}
+
+Throughout the tutorial, choices were made, such as the extent of the study area, the number of background points, the selection of environmental variables, and parameter settings of the Maxent model. This section will revisit some of the choices made.
+
+## Weighted background points {#sec-weightedbackground}
+
+In @sec-bgpselection the [r.random]{.style-function} module was used to create point layer with randomly selected background points. However, the data we work with has the longitude/latitude coordinate reference system. Because the size of raster cells varies by latitude, the sample density varies by latitude as well. The [r.random.weight](https://grass.osgeo.org/grass-stable/manuals/r.random.cells.html) module offers the option to adjusts the probability of selecting a cells according to cell area. The module requires a weight raster layer which we can create using [r.mapcalc](https://grass.osgeo.org/grass-stable/manuals/r.mapcalc.html). The weight in this case is the cell surface area.
+
+::: panel-tabset
+## {{< fa solid terminal >}}
+
+``` bash
+# Create weight layer
+r.mapcalc expression="weight = area()"
+
+# Created a weighted random point layer
+r.random.weight -s  weights=weight subsample=10000 output=random_weight
+r.to.vect input=random_weight output=random_weight type=point
+
+# Create a random point layer
+r.random -s input=MASK npoints=10000 vector=random_normal
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Create weight layer
+gs.run_command("r.mapcalc", expression="weight = area()")
+
+# Created a weighted random point layer
+gs.run_command(
+    "r.random.weight",
+    flags="s",
+    weights="weight",
+    subsample=10000,
+    output="random_weight",
+)
+gs.run_command("r.to.vect", input="random_weight", output="random_weight", type="point")
+
+# Create a random point layer
+gs.run_command(
+    "r.random", flags="s", input="MASK", npoints=10000, vector="random_normal"
+)
+```
+:::
+
+![](images/background_points_weighted.png) ![](images/background_points.png)

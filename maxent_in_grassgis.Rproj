@@ -1,0 +1,20 @@
+Version: 1.0
+ProjectId: 231e461b-7c76-4f72-b5fd-71eb7bcad0ad
+
+RestoreWorkspace: Default
+SaveWorkspace: Default
+AlwaysSaveHistory: Default
+
+EnableCodeIndexing: Yes
+UseSpacesForTab: Yes
+NumSpacesForTab: 2
+Encoding: UTF-8
+
+RnwWeave: Sweave
+LaTeX: XeLaTeX
+
+AutoAppendNewline: Yes
+StripTrailingWhitespace: Yes
+
+MarkdownReferences: Block
+MarkdownCanonical: Yes

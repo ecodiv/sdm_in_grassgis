@@ -1,0 +1,48 @@
+## GRASS functions {#sec-functions}
+
+The list below includes all core functions and functions provided by addons that are used in this tutorial. The addons can be found and installed using the [g.extension]{.style-function} module.
+
+### Addons {.unnumbered}
+
+-   [r.maxent.predict](https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.predict.html): Use a Maxent model to create a probability distribution layer.
+-   [r.maxent.train](https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.train.html): Create and train a Maxent model.
+-   [r.vif](https://grass.osgeo.org/grass-stable/manuals/addons/r.vif.html): Calculate the stepwise variance inflation factor (VIF).
+-   [v.maxent.swd](https://grass.osgeo.org/grass-stable/manuals/addons/v.maxent.swd.html): Export raster values at given point locations as text file in SWD format for input in Maxent. In addition, the addon can export the environmental raster layers as ascii files.
+-   [v.multi2singlepart](https://grass.osgeo.org/grass-stable/manuals/addons/v.multi2singlepart.html): Split multi-part polygons into single-part polygons.
+
+### Database {.unnumbered}
+
+-   [db.droptable](https://grass.osgeo.org/grass-stable/manuals/db.droptable.html): Drops (deletes) an attribute table.
+-   [db.execute](https://grass.osgeo.org/grass-stable/manuals/db.execute.html): Executes any SQL statement.
+
+### General {.unnumbered}
+
+-   [g.extension](https://grass.osgeo.org/grass-stable/manuals/g.extension.html): Maintains GRASS Addons extensions in local GRASS installation. Downloads and installs extensions from GRASS Addons repository or other source into the local GRASS installation or removes installed extensions.
+-   [g.remove](https://grass.osgeo.org/grass-stable/manuals/g.remove.html): Removes data base element files from the user's current mapset using the search pattern.
+
+### Raster {.unnumbered}
+
+-   [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html): Imports raster data into a GRASS raster map using GDAL library.
+
+### Vector {.unnumbered}
+
+-   [v.clip](https://grass.osgeo.org/grass-stable/manuals/v.clip.html): Extracts features of input map which overlay features of clip map.
+-   [v.db.dropcolumn](https://grass.osgeo.org/grass-stable/manuals/v.db.dropcolumn.html): Drops (deletes) a column from the attribute table connected to a given vector map.
+-   [v.db.renamecolumn](https://grass.osgeo.org/grass-stable/manuals/v.db.renamecolumn.html): Renames a column in the attribute table connected to a given vector map.
+-   [v.extract](https://grass.osgeo.org/grass-stable/manuals/v.extract.html): Selects vector features from an existing vector map and creates a new vector map containing only the selected features.
+-   [v.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html): Imports vector data into a GRASS vector map using OGR library.
+-   [v.patch](https://grass.osgeo.org/grass-stable/manuals/v.patch.html): Creates a new vector map by combining other vector maps.
+-   [v.to.db](https://grass.osgeo.org/grass-stable/manuals/v.in.db.html): Creates new vector (points) map from database table containing coordinates.
+-   [v.unpack](https://grass.osgeo.org/grass-stable/manuals/v.unpack.html): Imports a GRASS GIS specific vector archive file (packed with v.pack) as a vector map.
+
+[v.colors](https://grass.osgeo.org/grass-stable/manuals/v.colors.html) [v.vect.stats](https://grass.osgeo.org/grass-stable/manuals/v.vect.stats.html) [v.mkgrid](https://grass.osgeo.org/grass-stable/manuals/v.mkgrid.html)
+
+### grass.script {.unnumbered}
+
+The grass.script library offers a number of core commands that are used in the Python examples. They are described in the [grass.script package documentation](https://grass.osgeo.org/grass84/manuals/libpython/grass.script.html#module-grass.script.core) and [this Wiki page](https://grasswiki.osgeo.org/wiki/GRASS_Python_Scripting_Library). More specifically, see [this section](https://grasswiki.osgeo.org/wiki/GRASS_Python_Scripting_Library#Uses_for_read,_feed_and_pipe,_start_and_exec_commands) about uses for the run, read, write and parse commands.
+
+-   grass.script.create_project
+-   [run_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.run_command)
+-   [read_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.read_command)
+-   [write_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.write_command)
+-   [parse_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.parse_command)

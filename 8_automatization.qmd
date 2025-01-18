@@ -1,0 +1,347 @@
+# Automatization {#sec-automatization}
+
+In this chapter, we bring together the steps covered in previous chapters to demonstrate how the species distribution modeling (SDM) process can be automated in GRASS GIS using Python. Automation ensures consistency and reproducibility, reduces the risk of errors, and allows for efficient handling of iterative improvements and large datasets.
+
+With GRASS GIS's robust geospatial processing capabilities, we can customize these workflows to address diverse ecological and conservation challenges. This chapter provides key Python scripts that replicate the SDM workflow, serving as a foundation for building scalable, reproducible, and efficient modeling pipelines.
+
+## Acquire the data
+
+The following code blocks consolidate all the Python code from @sec-data. In the first block, the base layers are imported. The second block handles the import of species data, and the third block imports the climate layers. Input and output layer names are now defined as variables at the beginning, allowing users to easily customize them. This setup simplifies automating the workflow.
+
+::: panel-tabset
+## {{< fa brands python >}} Base layers
+
+``` python
+# Define input variables
+working_directory = "replace-with-path-to-working-directory"
+admin_boundary_file = "ne_10m_admin_0_countries.shp"
+urban_areas_file = "ne_10m_urban_areas.shp"
+roads_file = "ne_10m_roads.shp"
+rivers_centerlines_file = "ne_10m_rivers_lake_centerlines.shp"
+rivers_europe_file = "ne_10m_rivers_europe.shp"
+
+# Define output layer names
+admin_layer = "admin0"
+aoi_layer = "aoi"
+clipped_countries_layer = "countries"
+urban_layer = "urban"
+roads_layer = "roads"
+rivers_layer = "rivers"
+
+# Set working directory
+import os
+import grass.script as gs
+
+os.chdir(working_directory)
+
+# Import national boundaries
+gs.run_command(
+    "v.in.ogr",
+    input=admin_boundary_file,
+    output=admin_layer,
+)
+
+# Set the region and create a vector layer 'aoi_layer' for the region boundaries
+gs.run_command("g.region", n=55, s=35, w=-10, e=33)
+gs.run_command("v.in.region", output=aoi_layer)
+
+# Clip the national boundaries layer to the region boundaries
+gs.run_command(
+    "v.clip", input=admin_layer, clip=aoi_layer, output=clipped_countries_layer
+)
+gs.run_command("g.remove", flags="f", type="vector", name=admin_layer)
+
+# Import and clip urban areas to the region
+gs.run_command(
+    "v.in.ogr",
+    flags="r",
+    input=urban_areas_file,
+    output="tmp",
+)
+gs.run_command("v.clip", input="tmp", clip=aoi_layer, output=urban_layer)
+gs.run_command("g.remove", flags="f", type="vector", name="tmp")
+
+# Import and clip roads to the region
+gs.run_command(
+    "v.in.ogr",
+    flags="r",
+    input=roads_file,
+    where="featurecla='Road'",
+    output="tmp",
+)
+gs.run_command("v.db.dropcolumn", map="tmp", columns="add")
+gs.run_command("v.clip", input="tmp", clip=aoi_layer, output=roads_layer)
+gs.run_command("g.remove", flags="f", type="vector", name="tmp")
+
+# Import and clip rivers layers to the region
+gs.run_command(
+    "v.in.ogr",
+    flags="r",
+    input=rivers_centerlines_file,
+    output="tmp1",
+)
+gs.run_command(
+    "v.in.ogr",
+    flags="r",
+    input=rivers_europe_file,
+    output="tmp2",
+)
+gs.run_command("v.clip", input="tmp1", clip=aoi_layer, output="tmp3")
+gs.run_command("v.clip", input="tmp2", clip=aoi_layer, output="tmp4")
+
+# Prepare and merge the rivers layers into one
+gs.run_command(
+    "db.execute",
+    sql="ALTER TABLE tmp3 RENAME TO tmp3old;",
+)
+gs.run_command(
+    "db.execute",
+    sql="ALTER TABLE tmp4 RENAME TO tmp4old;",
+)
+gs.run_command(
+    "db.execute",
+    sql=(
+        "CREATE TABLE tmp3 AS "
+        "SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label "
+        "FROM tmp3old"
+    ),
+)
+gs.run_command(
+    "db.execute",
+    sql=(
+        "CREATE TABLE tmp4 AS "
+        "SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label "
+        "FROM tmp4old"
+    ),
+)
+gs.run_command("v.patch", input=["tmp3", "tmp4"], output=rivers_layer)
+gs.run_command("db.droptable", flags="f", table="tmp3old")
+gs.run_command("db.droptable", flags="f", table="tmp4old")
+gs.run_command("g.remove", flags="f", type="vector", pattern="tmp*")
+```
+
+## {{< fa brands python >}} Species data
+
+``` python
+# Define input variables
+working_directory = "replace-with-path-to-working-directory"
+species_rangemap_file = "data_0.shp"
+species_occurrence_file = "0104058-240626123714530.csv"
+
+# Define output layer names
+species_rangemap_layer = "Erebia_alberganus_rangemap"
+species_obs_layer = "Erebia_alberganus_obs"
+
+# Set working directory
+import os
+import grass.script as gs
+
+os.chdir(working_directory)
+
+# Create new mapset for species data
+gs.run_command("g.mapset", flags="c", mapset="species_data")
+
+# Import species range map and GBIF occurrence data
+gs.run_command(
+    "v.in.ogr",
+    input=species_rangemap_file,
+    output=species_rangemap_layer,
+)
+gs.run_command("g.extension", extension="v.in.gbif")
+gs.run_command(
+    "v.in.gbif",
+    input=species_occurrence_file,
+    output=species_obs_layer,
+)
+```
+
+## {{< fa brands python >}} Climate data
+
+``` python
+# Define input variables
+working_directory = "replace-with-path-to-working-directory"
+future_bioclim_file = "wc2.1_30s_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif"
+bioclim_base = "wc2.1_30s_bio_"
+bioclim_count = 19
+
+# Define output layer names
+aoi_layer = "aoi"
+clipped_countries_layer = "countries"
+rivers_layer = "rivers"
+bioclim_layer_prefix = "bio_"
+future_bioclim_output = "bio"
+
+# Set working directory
+import os
+import grass.script as gs
+
+os.chdir(working_directory)
+
+# Create new mapset for current climate data and set the region
+gs.run_command("g.mapset", flags="c", mapset="climate_current")
+gs.run_command("g.region", n=54, s=36, w=-10, e=32, res=0.0083)
+
+# Import bioclim layers
+for n in range(1, bioclim_count + 1):
+    input_file = f"{bioclim_base}{n}.tif"
+    output_file = f"{bioclim_layer_prefix}{n}"
+    gs.run_command(
+        "r.in.gdal",
+        flags="r",
+        input=input_file,
+        output=output_file,
+        memory=1000,
+    )
+
+# Align region to bioclim layers
+gs.run_command("g.region raster=bio_1", save=aoi_layer)
+
+# Update aoi vector layer in PERMANENT mapset
+gs.run_command("g.mapset", mapset="PERMANENT")
+gs.run_command("g.region", region=f"{aoi_layer}@climate_current")
+gs.run_command("v.in.region", output=aoi_layer, overwrite=True)
+
+# Create new mapset for future climate data and set region
+gs.run_command("g.mapset", flags="c", mapset="climate_EC_Earth3_Veg")
+gs.run_command("g.region", region=f"{aoi_layer}@climate_current")
+
+# Import future bioclim layers
+gs.run_command(
+    "r.in.gdal",
+    flags="r",
+    input=future_bioclim_file,
+    output=future_bioclim_output,
+    memory=1000,
+)
+```
+:::
+
+## Data preparation
+
+The Python code blocks below combines all steps from @sec-dataprep. It mostly is a copy-paste of the code on this page, but note that @exm-udfds5Bwdr and @exm-ddddddwdr are combined, so the whole code can be ran without intermediate user input. And instead of creating a random background point layer in a separate step (@exm-25nmhfEEDF), we let the [v.maxent.swd]{.style-function} do this for us by setting the [nbgp]{.style-parameter} parameter. Input and output layer names are now defined as variables at the beginning, allowing users to easily customize them.
+
+::: panel-tabset
+## {{< fa brands python >}} Examine the data
+
+``` python
+# Define input variables
+working_directory = "replace-with-path-to-working-directory"
+species_mapset = "species_data"
+species_vector = "Erebia_alberganus_obs"
+aoi_mapset = "dataset01"
+resolution = 0.008333
+
+# Define output variables
+density_output = "pointdensities"
+
+# Import necessary libraries
+import grass.script as gs
+import os
+
+# Set the working directory
+os.chdir(working_directory)
+
+# Switch to the mapset containing species data
+gs.run_command("g.mapset", mapset=species_mapset)
+
+# Set the region to match the extent and resolution of the data
+gs.run_command(
+    "g.region",
+    flags="a",
+    res=resolution,
+    vector=species_vector,
+)
+
+# Generate a density map from the species vector data
+gs.run_command(
+    "r.vect.stats",
+    input=species_vector,
+    output=density_output,
+    method="n",  # Count points in each cell
+)
+gs.run_command("r.null", map=density_output, setnull=0)
+
+# Calculate statistics and create a boxplot
+gs.run_command("r.univar", flags="e", map=density_output) 
+gs.run_command("r.boxplot", flags="o", input=density_output) 
+```
+
+## {{< fa brands python >}} Create maxent input data
+
+``` python
+# Define input variables
+working_directory = "replace-with-path-to-working-directory"
+species_mapset = "species_data"
+species_vector = "Erebia_alberganus_obs"
+aoi_mapset = "dataset01"
+climate_mapset = "climate_current"
+country_vector = "countries"
+selected_layers_pattern = "bio*"
+resolution = 0.008333
+vif_seed = 5
+vif_n = 100000
+vif_max = 10
+nbgp = 10000
+
+# Define output variables
+swd_species_output = "dataset01/Erebia_alberganus_obs.swd"
+swd_background_output = "dataset01/background_points.swd"
+swd_export_rasters_dir = "dataset01/envdat"
+
+# Import necessary libraries
+import grass.script as gs
+import os
+
+# Set the working directory
+os.chdir(working_directory)
+
+# Create a directory for exporting environmental data
+os.makedirs(swd_export_rasters_dir, exist_ok=True)
+
+# Create a new mapset for further analysis
+# and add access to necessary mapsets
+gs.run_command("g.mapset", flags="c", mapset=aoi_mapset)
+gs.run_command("g.mapsets", mapset=[climate_mapset, species_mapset], 
+                operation="add")
+
+# Set the region to match the area of interest and apply a mask
+gs.run_command("g.region", region=f"aoi@{climate_mapset}")
+gs.run_command("r.mask", vector=country_vector)
+
+# Identify relevant climate layers using VIF
+# to reduce multicollinearity
+layers = gs.list_strings(
+    pattern=selected_layers_pattern,
+    mapset=climate_mapset,
+    type="raster",
+)
+selected_layers = gs.read_command(
+    "r.vif", flags="v", maps=layers, seed=vif_seed, n=vif_n, maxvif=vif_max  # <1>
+).strip()  # <2>
+
+# Install the addon
+gs.run_command("g.extension", extension="v.maxent.swd")
+
+# Export data for Maxent input
+gs.run_command(
+    "v.maxent.swd",
+    flags="t",
+    species=species_vector,
+    nbgp=nbgp,  # <3>
+    evp_maps=selected_layers,
+    species_output=swd_species_output,
+    bgr_output=swd_background_output,
+    export_rasters=swd_export_rasters_dir,
+)
+```
+
+1.  The [-v]{.style-parameter} results in an list of the finally selected layers.
+2.  The output of the [r.vif]{.style-function} function call is a string that ends with a newline character. The [.strip()]{.style-function} function removes that new line character.
+3.  Instead of creating a random background point layer and using this as input, we use the [nbgp]{.style-parameter}, so the module will create the set of background points within the region's bounds and MASK.
+:::
+
+::: callout-note
+## Work in progress
+
+This section is work in progress, and will be updated with new examples as time allows, so stay tuned!
+:::

@@ -1,0 +1,66 @@
+# Beyond the basics {#sec-advancedsteps}
+
+::::: grid
+::: {.g-col-md-6 .g-col-12}
+In the previous sections, we covered the basic steps for building a species distribution model using Maxent. In this part, we'll explore various options to validating the results (@sec-modelvalidation) and fine-tune model options (@sec-modelfinetuning).
+
+We will examine various validation methods and parameter adjustments, addressing each option individually. It’s important to keep in mind that that species distribution modeling is an iterative process: experimenting with different parameter combinations, validating the results, and refining the model to enhance performance. By understanding these aspects, you'll be better equipped to develop robust and reliable models.
+:::
+
+::: {.g-col-md-6 .g-col-12}
+![The Almond-eyed Ringlet (*Erebia alberganus*) in the Italian alps. Source: Paulo van Breugel](images/Erebia_alberganus2.jpg){fig-align="left"}
+:::
+:::::
+
+::: callout-note
+## Work in progress
+
+This section is work in progress, and will be updated with new examples as time allows, so stay tuned!
+:::
+
+<!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->
+
+```{=html}
+<script src="https://formspree.io/js/formbutton-v1.min.js" defer></script>
+```
+
+```{=html}
+<script>
+  /* paste this line in verbatim */
+  window.formbutton=window.formbutton||function(){(formbutton.q=formbutton.q||[]).push(arguments)};
+  /* customize formbutton below*/     
+  formbutton("create", {
+    action: "https://formspree.io/f/xjvppyvg",
+    title: "Feedback", 
+    fields: [
+      { 
+        type: "email", 
+        label: "Email:", 
+        name: "email",
+        required: true,
+        placeholder: "your@email.com"
+      },
+      {
+        type: "hidden",
+        label: "",
+        value: "sdmingrass - 1 Introduction",
+      },
+      {
+        type: "textarea",
+        label: "Message:",
+        name: "message",
+        placeholder: "Question or feedback? Let us know here.",
+      },
+      { type: "submit" }      
+    ],
+    styles: {
+      title: {
+        backgroundColor: "#57B444"
+      },
+      button: {
+        backgroundColor: "#57B444"
+      }
+    }
+  });
+</script>
+```

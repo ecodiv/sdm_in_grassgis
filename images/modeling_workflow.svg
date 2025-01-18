@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="663.29999"
+   height="70"
+   viewBox="0 0 175.49809 18.520833"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (1:1.3.2+202404261509+091e20ef0f)"
+   sodipodi:docname="modeling_workflow.svg"
+   inkscape:export-filename="modeling_workflow.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.1743711"
+     inkscape:cx="347.41999"
+     inkscape:cy="58.754852"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="1920"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect20"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,4.2333333,0,1 @ F,0,0,1,0,4.2333333,0,1 @ F,0,0,1,0,4.2333333,0,1 @ F,0,0,1,0,4.2333333,0,1"
+       radius="16"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect19"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,5.2916667,0,1 @ F,0,0,1,0,5.2916667,0,1 @ F,0,0,1,0,5.2916667,0,1 @ F,0,0,1,0,5.2916667,0,1"
+       radius="20"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect18"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,5.2916667,0,1 @ F,0,0,1,0,5.2916667,0,1 @ F,0,0,1,0,5.2916667,0,1 @ F,0,0,1,0,5.2916667,0,1"
+       radius="20"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(15.26332,-124.84286)">
+    <text
+       xml:space="preserve"
+       style="font-size:7.05556px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;white-space:pre;shape-inside:url(#rect15);display:inline;fill:#f2f2f2;stroke:#000000;stroke-width:1;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="47.019371"
+       y="157.80373"
+       id="text14"
+       transform="translate(-0.29896264,0.98399161)"><tspan
+         x="0"
+         y="0"
+         id="tspan15"><tspan
+           style="fill:#000000;stroke:none"
+           id="tspan13">Data preparation </tspan><tspan
+           style="font-style:italic;font-size:4.93889px;-inkscape-font-specification:'Arial Italic'"
+           id="tspan14">v.maxent.out.swd</tspan></tspan></text>
+    <path
+       d="m 27.271501,128.22261 2.368903,1.68102 5.918529,4.19971 -5.918529,4.19969 -2.368903,1.68104 a 4.0709142,3.3935604 0 0 0 3.965565,2.95073 h 31.216643 a 4.0709142,3.3935604 0 0 0 1.98923,-0.47681 4.0709142,3.3935604 0 0 0 0.15603,-0.0663 l 0.81399,-0.57705 4.94851,-3.51163 5.91853,-4.19969 -5.91853,-4.19968 -4.74427,-3.36665 -1.16333,-0.8252 a 4.0709142,3.3935604 0 0 0 -0.011,-0.005 v 4.1e-4 a 4.0709142,3.3935604 0 0 0 -1.9892,-0.43538 H 31.237066 a 4.0709142,3.3935604 0 0 0 -3.965565,2.95073 z"
+       style="fill:#437820;fill-opacity:0.47451;stroke-width:0.798621;stroke-linejoin:bevel"
+       id="path1" />
+    <path
+       id="path21"
+       style="fill:#447821;fill-opacity:0.546367;stroke-width:0.798621;stroke-linejoin:bevel"
+       d="m -10.28824,125.27192 a 4.0709142,3.3935604 0 0 0 -4.070914,3.39355 v 10.8758 a 4.0709142,3.3935604 0 0 0 4.070914,3.39357 h 31.216637 a 4.0709142,3.3935604 0 0 0 1.989242,-0.47682 4.0709142,3.3935604 0 0 0 0.156038,-0.0663 l 0.813984,-0.57707 4.948507,-3.51162 5.918528,-4.19969 -5.918528,-4.1997 -4.744265,-3.36663 -1.163331,-0.82519 a 4.0709142,3.3935604 0 0 0 -0.01093,-0.005 v 4.2e-4 A 4.0709142,3.3935604 0 0 0 20.9284,125.27185 Z" />
+    <path
+       d="m 68.796803,128.2225 2.368903,1.68104 5.918529,4.1997 -5.918529,4.19969 -2.368903,1.68104 a 4.0709142,3.3935604 0 0 0 3.965565,2.95073 h 31.216652 a 4.0709142,3.3935604 0 0 0 1.98923,-0.47681 4.0709142,3.3935604 0 0 0 0.15603,-0.0663 l 0.81399,-0.57704 4.94851,-3.51164 5.91853,-4.19969 -5.91853,-4.19968 -4.74427,-3.36665 -1.16333,-0.82519 a 4.0709142,3.3935604 0 0 0 -0.011,-0.005 v 4.1e-4 a 4.0709142,3.3935604 0 0 0 -1.9892,-0.43539 H 72.762368 a 4.0709142,3.3935604 0 0 0 -3.965565,2.95073 z"
+       style="fill:#5aa02c;fill-opacity:0.486527;stroke-width:0.798621;stroke-linejoin:bevel"
+       id="path23" />
+    <path
+       d="m 110.32214,128.2225 2.3689,1.68104 5.91854,4.1997 -5.91854,4.19969 -2.3689,1.68104 a 4.0709142,3.3935604 0 0 0 3.96557,2.95073 h 31.21663 a 4.0709142,3.3935604 0 0 0 1.98924,-0.47681 4.0709142,3.3935604 0 0 0 0.15603,-0.0663 l 0.81399,-0.57704 4.9485,-3.51164 5.91854,-4.19969 -5.91854,-4.19968 -4.74426,-3.36665 -1.16333,-0.82519 a 4.0709142,3.3935604 0 0 0 -0.011,-0.005 v 4.1e-4 a 4.0709142,3.3935604 0 0 0 -1.98921,-0.43539 h -31.21662 a 4.0709142,3.3935604 0 0 0 -3.96557,2.95073 z"
+       style="fill:#8dd35f;fill-opacity:0.605648;stroke-width:0.798621;stroke-linejoin:bevel"
+       id="path23-0" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.77164px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#f2f2f2;stroke:#000000;stroke-width:0.676296;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="133.35886"
+       y="130.78748"
+       id="text15-2"><tspan
+         sodipodi:role="line"
+         id="tspan10"
+         x="133.35886"
+         y="130.78748"
+         style="stroke-width:0.676296"><tspan
+           id="tspan23"
+           style="fill:#ffffff;stroke:none;stroke-width:0.676296">Model</tspan></tspan><tspan
+         sodipodi:role="line"
+         id="tspan11"
+         x="134.02171"
+         y="135.55911"
+         style="stroke-width:0.676296"><tspan
+           style="fill:#ffffff;stroke:none;stroke-width:0.676296"
+           id="tspan12">predicting </tspan><tspan
+           id="tspan24"
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.34015px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#000000;stroke:none;stroke-width:0.676296" /></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.77164px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#f2f2f2;stroke:#000000;stroke-width:0.676296;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="133.4149"
+       y="140.25681"
+       id="text15-2-7"><tspan
+         id="tspan24-91"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.34015px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#000000;stroke:none;stroke-width:0.676296">r.maxent.predict</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.77164px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.676296;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="92.50576"
+       y="130.78856"
+       id="text15-2-2"><tspan
+         sodipodi:role="line"
+         id="tspan7"
+         x="92.50576"
+         y="130.78856"
+         style="stroke-width:0.676296"><tspan
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.676296"
+           id="tspan26">Model </tspan></tspan><tspan
+         sodipodi:role="line"
+         id="tspan8"
+         x="92.50576"
+         y="135.5602"
+         style="stroke-width:0.676296"><tspan
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.676296"
+           id="tspan9">training</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.77164px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#f2f2f2;stroke:#000000;stroke-width:0.676296;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="92.274055"
+       y="140.25792"
+       id="text15-2-7-4"><tspan
+         id="tspan24-91-9"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.34015px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#000000;stroke:none;stroke-width:0.676296">r.maxent.train</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.59698px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.651541;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="52.377228"
+       y="126.0281"
+       id="text15-2-2-9"
+       transform="scale(0.96339605,1.0379947)"><tspan
+         sodipodi:role="line"
+         id="tspan4"
+         x="52.377228"
+         y="126.0281"><tspan
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.651541"
+           id="tspan26-3">Data </tspan></tspan><tspan
+         sodipodi:role="line"
+         id="tspan5"
+         x="52.377228"
+         y="130.62508"><tspan
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.651541"
+           id="tspan6">preparation</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.77164px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#f2f2f2;stroke:#000000;stroke-width:0.676296;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="50.925179"
+       y="140.56914"
+       id="text15-2-7-4-5"><tspan
+         id="tspan24-91-9-7"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.34015px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#000000;stroke:none;stroke-width:0.676296">v.maxent.swd</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.77164px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#f2f2f2;stroke:#000000;stroke-width:0.676296;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="4.899725"
+       y="140.56914"
+       id="text15-2-7-4-5-5"><tspan
+         id="tspan24-91-9-7-3"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.34015px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#000000;stroke:none;stroke-width:0.676296">i.e., v.in.gbif</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.52819px;line-height:1;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;white-space:pre;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.641791;stroke-linejoin:bevel;-inkscape-stroke:none"
+       x="5.3444209"
+       y="126.04429"
+       id="text16"
+       transform="scale(0.96339605,1.0379947)"><tspan
+         sodipodi:role="line"
+         id="tspan16"
+         x="5.3444209"
+         y="126.04429"
+         style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.641791">Acquisition &amp;</tspan><tspan
+         sodipodi:role="line"
+         x="5.3444214"
+         y="130.57248"
+         style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.641791"
+         id="tspan20">import of data</tspan></text>
+  </g>
+</svg>

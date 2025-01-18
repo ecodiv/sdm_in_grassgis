@@ -1,0 +1,10 @@
+_book
+_draft
+_archive
+_extensions
+_book
+share
+.Rproj.user
+.quarto
+.Rhistory
+.RData

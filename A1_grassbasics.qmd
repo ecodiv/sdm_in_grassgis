@@ -1,0 +1,316 @@
+# GRASS basics {#seq-AppendixA}
+
+GRASS (Geographic Resources Analysis Support System) offers a wide range of tools for terrain and ecosystem modeling, hydrology, management and analysis of geospatial data, and the processing of satellite and aerial imagery. It comes with a temporal framework for advanced time series processing and a Python API for rapid geospatial programming. [Read more here…](https://grass.osgeo.org/learn/overview/)
+
+The functionality of GRASS can be used from its Graphical User Interface (GUI, @fig-startupfirsttimeusers), from command line (CLI), from a Python IDE or Jupyter Notebook via the [grass.script](https://grass.osgeo.org/grass-stable/manuals/libpython/script_intro.html), [pygrass](https://grass.osgeo.org/grass-stable/manuals/libpython/pygrass_index.html) or [grass.jupyter packages](https://grass.osgeo.org/grass84/manuals/libpython/grass.jupyter.html), from R IDEs like RStudio via the [rgrass](https://github.com/rsbivand/rgrass/) package, from REST APIs like [Actinia](https://actinia.mundialis.de/) and also via web processes like WPS. GRASS GIS is a versatile and robust software package.
+
+For users not familiar with GRASS, start with this page, and next, check out the [First time users](https://grass.osgeo.org/learn/newcomers/) page. For those who are well versed in GIS, but new to GRASS, have a look at these [tips](https://grasswiki.osgeo.org/wiki/GRASS_migration_hints). And if you are more familiar with ArcGIS, check out the page [GRASS for ArcGIS users](https://grasswiki.osgeo.org/wiki/GRASS_GIS_for_ArcGIS_users) to get a grasp of the main GRASS concepts you should know about. QGIS users should note that most grass functions used in this tutorial are also [available in QGIS](https://docs.qgis.org/3.34/en/docs/user_manual/grass_integration/grass_integration.html).
+
+## First time use
+
+To run GRASS, click on the GRASS link on the desktop or from the system menu. Alternatively, open the command line window and type [grass]{.style-apps}. When [launching](https://grass.osgeo.org/grass-stable/manuals/grass.html) GRASS for the first time, you will open a default project called [world_latlog_wgs84]{.style-db} where you can find a map layer called [country_boundaries]{.style-data} showing a world map in the [WGS84 coordinate system](https://epsg.io/4326).
+
+![Start-up screen for first time users. On the left, you can find the data browser which allows you to navigate through your projects and data, and the layers panel showing displayed layers. The panel in the middle is the map display. You can add additional ones if you need using ![](images/newwindow.png). On the right there are multiple tabs where you can find a searchable tools' tree similar to the Processing toolbox in QGIS, a console where you can type GRASS commands, the history of executed commands in case you want to re-run a task and a simple Python console where you can use the GRASS Python API.](images/startup_firsttime_users.png){#fig-startupfirsttimeusers}
+
+To practice, you can download various sample datasets. For example, the [North Carolina]{.style-db} dataset is often used in tutorials. You can simply reach them through [Download sample project to current database]{.style-menu} icon ![](images/location-download.png) in the [Data]{.style-menu} panel. The sample data will be downloaded and imported as a new project in the current GRASS database.
+
+The start up message offers you the option to create a new [project]{.style-db} (it still uses the older term Location for [project]{.style-db} here). Selecting this will start a [project wizard]{.style-menu} which will guide you through a series of steps to browse and select the [coordinate reference system (CRS)](https://en.wikipedia.org/wiki/Spatial_reference_system) suitable for your study area or one that matches your data's CRS. By default, it will do this in the current GRASS database, but you have the option to create a new one in the process. But before you start creating your own database, let's see how GRASS handles and stores data.
+
+## The database {#sec-thedatabase}
+
+### DB structure {#sec-dbstructure}
+
+Raster (incl. aerial imagery and satellite data) and vector data are stored in a GRASS database. Hence, all external data files (GeoTIFF, SHAPE, GeoPackage, ...) need to be imported into the GRASS GIS database. The database consist of a set of folders and files with certain structure (@fig-grassgisdb). Directories within a GRASS database are called [projects]{.style-db}[^a1_grassbasics-1]. All data in a [project]{.style-db} are in the same projection/coordinate reference system (CRS)[^a1_grassbasics-2]. Typically, a [project]{.style-db} contains all data related to one project or a geographic area. Alternatively, a [project]{.style-db} can simply contain all data in a given CRS.<br><br>
+
+[^a1_grassbasics-1]: In GRASS versions prior to 8.4 these were called locations.
+
+[^a1_grassbasics-2]: For quality reasons, GRASS GIS handles one CRS per location. Read more about the reasons in [this Wiki page](https://grasswiki.osgeo.org/wiki/Map_Reprojection). To learn more about coordinate references systems, go [here](https://docs.qgis.org/3.34/en/docs/gentle_gis_introduction/coordinate_reference_systems.html). For information about different ways to store and share CRS information, see [here](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-vector-data-python/spatial-data-vector-shapefiles/epsg-proj4-coordinate-reference-system-formats-python/).
+
+![A sample GRASS dataset names [grassdata]{.style-db} with three projects, [nc_spm]{.style-db}, [usa_albers]{.style-db} and [world_latlon]{.style-db}. All data in one project have the same coordinate reference system (projection, datum). The structure of the [nc_spm]{.style-db} project includes the obligatory [PERMANENT]{.style-db} mapset, a mapset with data for the Wake county and another mapset with data set for user 1.](images/grassgis_db_structure.png){#fig-grassgisdb fig-align="left" width="500"}
+
+At the project level, data is further organized into subprojects called mapsets. Every project includes a obligatory [PERMANENT]{.style-db} [mapset]{.style-db}, which typically contain commonly used data within one GRASS project such as base maps. It can furthermore contain other [mapsets]{.style-db} (subprojects) that can be used to group data sets together according to e.g., area, task, theme or user.
+
+When you're working within the PERMANENT mapset, you automatically have read access to all the other mapsets within that project This allows you to use data from any other mapset in the current location without needing to change settings or append the mapset name.
+
+If you are working within any other mapset (besides [PERMANENT]{.style-db}), you do not have automatic access to the data in other mapsets. To use data from a different mapset, you have two options:
+
+-   Append the name of the mapset to the layer name using the format `layername@mapsetname`. This lets GRASS know to look for the layer in a different mapset.
+-   Use the [g.mapsets](https://grass.osgeo.org/grass-stable/manuals/g.mapsets.html) command to add access to multiple mapsets. Alternatively, use the [Data catalog](https://grass.osgeo.org/grass-stable/manuals/wxGUI.datacatalog.html) to grant access.
+
+Regardless of which mapset you are working in, you can only write (create or modify) layers in the current mapset. Even if you access data from other mapsets, you cannot modify or add data to those mapsets. This ensures that mapsets maintain some level of separation and data integrity, preventing accidental changes to data outside your working environment.
+
+### Mapset access
+
+In GRASS GIS, the concept of access rights is closely tied to the structure of the mapsets within a Project Each location can have multiple mapsets, with a designated "PERMANENT" mapset that typically contains core data like region settings, projection information, and often serves as a repository for foundational layers (e.g., basemaps, DEMs). Here's how access rights work across mapsets:
+
+For GIS users not used to this setup, it may take a bit to get used to. But it has some clear advantages. Read [this overview](https://grass.osgeo.org/grass-stable/manuals/grass_database.html) for more information about the GRASS database.
+
+### Attribute management {#sec-attributemanagement}
+
+In GRASS, the geometry (spatial data) of vector layers is stored and managed separately from their associated attribute data. The geometry (spatial data) of vector features, such as points, lines, and polygons, is stored in a special format within the GRASS GIS database. This geometry data includes the coordinates that define the shape and location of each feature on the map. The attribute data (non-spatial data)[^a1_grassbasics-3] stored it in a separate attribute database. GRASS supports various database management systems (DBMS), such as SQLite (default), PostgreSQL, MySQL etc.). All these database backends provide full SQL support[^a1_grassbasics-4].
+
+[^a1_grassbasics-3]: The attribute data (non-spatial data) refers to descriptive information associated with each vector feature. For example, if you have a vector layer representing lakes, the attribute data might include information like the lake's name, area, and depth.
+
+[^a1_grassbasics-4]: See [this manual page](https://grass.osgeo.org/grass83/manuals/sql.html) for more information.
+
+Each vector feature in the geometry data has a unique ID. This ID is used to link the feature to its corresponding row in the attribute table based on the matching ID (usually stored in the "cat" integer column). When performing analysis or creating maps, GRASS automatically combines the geometry with the relevant attribute information, allowing you to to work seamlessly with both the geometry and attribute data, even though they are stored separately.
+
+The way the data is stored is not something the casual user should be concerned with, but good to know for more advanced uses. It gives more flexibility as users can update or modify attribute data without affecting the geometry, and vice versa. For an example of how this can be used, see @sec-rivers.
+
+### Create a database
+
+Creating a new database is rather straightforwards using the database [database wizard]{.style-menu} ![](images/grassdb-add.png). It guides the user through a number of simple dialogs. In the example below a new GRASS database called [GRASSdb]{.style-db} is created with a project called [SDM]{.style-db} with the coordinate reference system (CRS) WGS84 lat/lon ([EPSG 4326](https://epsg.io/4326)). Note that if you want to create a new project in an existing GRASS database, use the [project Wizard]{.style-menu} ![](images/location-add.png) instead, and go straight to step 3.
+
+::: panel-tabset
+## {{< fa regular window-restore >}} 1
+
+In the [Data catalog]{.style-menu}, click the [ ](images/grassdb-add.png) icon to create a new database. Next, select the folder in which you want to create the database. Create a new sub-folder (the GRASS data directory) with the name of your GRASS GIS database and select it. After you have created the database, it will appear in the list of databases in the [Data panel]{.style-menu}.
+
+![](images/createnewdatabase.png){group="createdb"}
+
+## {{< fa regular window-restore >}} 2
+
+After selecting the folder for your database, you are asked if you want to create a new [project]{.style-db}. Select [Yes]{.style-parameter}
+
+![](images/createnewdatabase2.png){group="createdb"}
+
+## {{< fa regular window-restore >}} 3
+
+Provide the name of the new [project]{.style-db}, for example [SDM]{.style-parameter}, optionally add a description, and hit [Next]{.style-parameter}.
+
+![](images/createnewdatabase3.png){group="createdb"}
+
+## {{< fa regular window-restore >}} 4
+
+If you know the CRS of your data or study area, you can fill EPSG code or description. In this example, use keep the default choice to select the CRS from a list by EPSG in the next step.
+
+![](images/createnewdatabase4.png){group="createdb"}
+
+If you do not know CRS of you data, you can read it from your georeferenced data file (e.g. GeoPackage or GeoTiff file with the related metadata properly included). If you use this option, you are asked whether the data itself should be imported into the new project. The default region is then set to match imported map.
+
+## {{< fa regular window-restore >}} 5/6
+
+Type in [4326]{.style-parameter} in the search box of the 'Select coordinate reference system (CRS) window', hit [Next]{.style-parameter} and in the subsequent 'Data transformation' window keep the default and hit [Next]{.style-parameter} again.
+
+![](images/createnewdatabase5.png){group="createdb"}
+
+## {{< fa regular window-restore >}} 7
+
+Review the information in the 'Summary' window, and if everything is OK, hiet [Enter]{.style-parameter}.
+
+![](images/createnewdatabase6.png){group="createdb"}
+:::
+
+The GRASS database and [project]{.style-db} should now be visible in the [Data]{.style-menu} panel, and include a [PERMANENT]{.style-db} mapset. Note that you can also create a new database, project or mapset using Python code, as explained in @sec-workinginpython.
+
+## Data import
+
+When processing spatial data in GRASS GIS, the first step is to import the datasets of interest into GRASS (they can also just be registered to avoid data duplication at the expense of sometimes lower data quality). To import your own data, use the raster data import ![](images/raster-import.png) or vector data import ![](images/vector-import.png) tools. If the coordinate reference system (CRS) of your data does not match your project's CRS, data will be automatically reprojected. Alternatively, you can import data using the command line. For the import of raster data, use [r.import](https://grass.osgeo.org/grass-stable/manuals/r.import.html) or [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html). The first offers on-the-fly reprojection[^a1_grassbasics-5], while the latter offers more control about how your data is imported. Similarly, you can import vector data using [v.import](https://grass.osgeo.org/grass-stable/manuals/v.import.html) and [v.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html).
+
+[^a1_grassbasics-5]: Read [this page](https://grasswiki.osgeo.org/wiki/Map_Reprojection) about map reprojection in GRASS.
+
+::: panel-tabset
+## {{< fa regular window-restore >}} Import raster data
+
+![Import raster data using the GUI or command line/console. Make sure to check the options under [import settings]{.style-menu} tab.](images/import_rasterdata.png){#fig-importrasterdata fig-align="left" group="importdata"}
+
+## {{< fa regular window-restore >}} Import vector data
+
+![Import vector data using the GUI or command line/console. Make sure to check the options under [import settings]{.style-menu} tab.](images/import_vectordata.png){#fig-importvectordata fig-align="left" group="importdata"}
+
+## {{< fa regular window-restore >}} Import other data
+
+![GRASS can handle many different data types. Most types of raster can be imported using [r.in.gdal]{.style-function}, but you'll find more options in the [Raster import]{.style-menu} menu. Similarly, you'll find more options for the import of vector, 3D and tabular data under the [File]{.style-menu} menu.](images/import_otherdata.png){#fig-importotherdata fig-align="left" group="importdata"}
+:::
+
+GRASS can handle many different data types, and offers various tools to import e.g., temporal data sets and satellite images as well. [This page](https://grass.osgeo.org/grass-stable/manuals/topic_import.html) provides a list of core import modules. And for more specialized data import tools, check out the list of addons (@sec-usingaddons).
+
+## Data management
+
+The GUI interface allows you to find, explore, manage and display raster and vector data. More advanced exploration and visualization is also possible using, e.g., queries and adding legend. The screenshots below depicts some of the ways to display and explore data. You are encouraged to familiarize yourself with the different ways to interact with the data using the menu, context menu[^a1_grassbasics-6] and command line. For a more detailed overview of the GRASS GUI, see [here](https://grass.osgeo.org/grass84/manuals/wxGUI.html).
+
+[^a1_grassbasics-6]: A context menu (also know as a contextual menu, shortcut menu or pop-up menu) is the menu that appears when you right-click on an item in the menu. It offers a set of choices that are available for, or in context of, whatever it was you clicked.
+
+::: panel-tabset
+## {{< fa regular window-restore >}} Data catalog
+
+![To have a better overview of our raster and vector data, we can use the [Data catalog](https://grass.osgeo.org/grass-stable/manuals/wxGUI.datacatalog.html). You can search for data by name and when you right click at the item. In the context menu, you'll find options to e.g., easily copy or remove data, add them to display, or switch between mapsets. Note that by for safety reasons you can modify data only in current location and mapset. However, you can unlock the other mapsets for editing by clicking on the pencil.](images/datapanel.png){#fig-datapanel fig-align="left" group="guiinterface"}
+
+## {{< fa regular window-restore >}} Adding layers
+
+![Different ways to add raster data to the map display. The same goes for vector and 3D data.](images/addrasterdata.png){#fig-addrasterdata fig-align="left" group="guiinterface"}
+
+![Add overlay elements to the map and zoom, pan and query maps.](images/mapdisplay.png){#fig-mapdisplay fig-align="left" group="guiinterface"}
+
+## {{< fa regular window-restore >}} Layer properties
+
+![To change layer properties, right click on the layer name in the [Layers]{.style-menu} panel. This will give you a context menu with various options, like the 'Set color interactively' option.](images/datalayercontextmenu.png){#fig-datalayercontextmenu fig-align="left" group="guiinterface"}
+
+## {{< fa regular window-restore >}} Attribute data
+
+![View the attribute table of a vector layer and highlight selected records on the map.](images/attributetable.png){#fig-attributetable fig-align="left" group="guiinterface"}
+
+![Query attributes using the simple or advanced query builder](images/attributetable2.png){#fig-attributetable2 fig-align="left" group="guiinterface"} ![To get the raster value at a location, use the Query raster/vector map button and click on the map at the location for which you want to location. Selecting multiple layers will give you the values of all selected layers. This can be raster or vector layers.](images/queryraster.png){#fig-queryraster fig-align="left" group="guiinterface"}
+
+## {{< fa regular window-restore >}} Metadata
+
+![Get the metadata using the context menu by right clicking on the layer in the [Layer manager](https://grass.osgeo.org/grass-stable/manuals/wxGUI.html#layer-manager) or [Data catalog](https://grass.osgeo.org/grass84/manuals/wxGUI.datacatalog.html). Alternatively, use the [r.info]{.style-function} or [v.info]{.style-function} to get the metadata of raster and vector layer respectively.](images/metadata.png){#fig-metadata fig-align="left" group="guiinterface"}
+:::
+
+## GRASS modules {#sec-runningfunctions}
+
+GRASS GIS functionality is organized into modules, which are standalone programs with defined interface. They can be executed either through a graphical user interface (GUI) [{{< fa regular window-restore >}}]{.paneltabcolor}, command line interface (CLI) [{{< fa solid terminal >}}]{.paneltabcolor} or using Python [{{< fa brands python >}}]{.paneltabcolor}. The GUI offers a user-friendly approach to executing modules where the user can navigate to data layers that they would like to analyze and modify processing options with simple check boxes.
+
+The CLI allows users to execute a module using command prompts specific to that module. This is handy when you are running similar analyses with minor modification or are familiar with the module commands for quick efficient processing. And you can easily combined both; [this manual page](https://grass.osgeo.org/grass-stable/manuals/wxGUI.modules.html) describes in more detail how GUI and command line interface represent the same tool.
+
+From the three options, Python arguably offers the most flexibility and power, as one can easily combine GRASS-specific functions and generic Python functions. In fact, many of the GRASS modules are written in Python. See @sec-workinginpython for a short introduction of using Python in GRASS.
+
+::: panel-tabset
+## {{< fa solid terminal >}}
+
+![If you already know the name of the module, you can just use it in the command line or terminal. The GUI offers a Console tab with command line specifically build for running GRASS modules. If you type module name there, you will get suggestions for automatic completion of the name.](images/interface_console.png){#fig-console group="interface"}
+
+## {{< fa brands python >}}
+
+![The python console offers a convenient interface to quickly run Python commands. The python editor allows you to write and run Python scripts. See also @sec-workinginpython.](images/interface_pythonconsole.png){#fig-pythonconsole group="interface"}
+
+## {{< fa regular window-restore >}}
+
+![Find functions through the menu or use the search box of the toolbox. Note that that after installation, addons are available in the toolbox under 'addons'.](images/interface_toolbox.png){#fig-toolbox group="interface"}
+
+Their graphical user interface (GUI) is a dialog with several tabs which organize module parameters into groups. They all follow the same structure. The figure below shows the GUI dialog for the [r.neighbors]{.style-function} module. Each parameter can have different type of input fields, for example text entry or drop-down list. Flags are represented as checkboxes. The parameter (or flag) name is visible on the right side of each input field so that it is simple to understand how the module dialog relates to the command representation which is used in the manuals and tutorials. The commands can be used to call the module in the command line, Shell scripts or, with a slight modification, in a Python script. For a more detailed description, see \[here\]{https://grass.osgeo.org/grass84/manuals/wxGUI.modules.html}
+
+![The GUI dialog of the module r.neighbors.](images/moduleguidialog.png){#fig-moduleguidialog fig-align="left" width="500" group="interface"}
+:::
+
+GRASS contains over 500 programs and tools to import, manipulate, analyse and visualize data. To find the modules or function you need, it is good to know that all raster functions start with [r.\*](https://grass.osgeo.org/grass-stable/manuals/raster.html) Likewise, vector functions start with a [v.\*](https://grass.osgeo.org/grass-stable/manuals/vector.html), temporal functions with a [t.\*](https://grass.osgeo.org/grass-stable/manuals/temporal.html), 3D raster functions with [r3.\*](https://grass.osgeo.org/grass-stable/manuals/raster3d.html), image functions with a [i.\*](https://grass.osgeo.org/grass-stable/manuals/imagery.html), [d.\*](https://grass.osgeo.org/grassstable/manuals/display.html) and database functions with a [db.\*](https://grass.osgeo.org/grass-stable/manuals/database.html). For an overview of all core modules in GRASS, see [this page](https://grass.osgeo.org/grass-stable/manuals/index.html).
+
+To run a function from the command line or console, simply type in the name of the function, followed by the required arguments. For a quick overview of the function's argument, type the function's name followed by `--help`. Alteratively, you can type in the name of the function in the Console tab or in the terminal and hit enter (@fig-functionwindow).
+
+![Type in the name of the function in the console (or terminal) and hit Enter. This will open the function's window. Now you can explore and set the different parameters and flags. The corresponding code is shown at the bottom of the window and can be copied. Or you can check out the Manual page for more information about the function and its parameters. Note that the same help pages are available online as well, just search for "GRASS + function name".](images/functionwindow.png){#fig-functionwindow}
+
+Keeping record of the functions you use in your analysis is good practice. GRASS offers some convenient ways to track and repeat commands you have executed before. In the terminal, you can use the up or down arrow to go through the commands you have run on the command line during the session. For commands carried out using the menu or console, you can check the history browser pane. The history is stored in your database, so they are available across sessions, and can be easily shared along with your data.
+
+![In the history browser panel, you can track the history of executed commands, and execute them again.](images/historypannel.png){#fig-historypanel}
+
+## GRASS addons {#sec-usingaddons}
+
+There is a [large list of GRASS addons](https://grass.osgeo.org/grass8/manuals/addons/) available. These offer functions that are not (yet) part of the core software package. They can be easily installed using the [wxGUI Extension Manager]{.style-function} to install Addons or using the command line.
+
+::: panel-tabset
+## {{< fa regular window-restore >}}
+
+![Install and manage addons](images/installaddons.png){#fig-installaddons}
+
+## {{< fa brands python >}}
+
+You can also install addons from the command line using the [g.extension](https://grass.osgeo.org/grass-stable/manuals/g.extension.html) function. For example, the code below installs the [r.maxent.train]{.style-app} addon.
+
+``` bash
+g.extension extension=r.maxent.train
+```
+:::
+
+Installed addons can be found in the [Tools]{.style-function} panel under [Addons]{.style-function} (see @fig-toolbox) and can be used in the same way as core functions.
+
+## Computational region {#sec-computationalregion}
+
+The region is one of the fundamental concepts of GRASS. Any computation and raster analysis adhere to the so-called computational region[^a1_grassbasics-7]. This is the currently active bounding box and a defined spatial resolution. This means that if a raster map has an original resolution that is different from the resolution of the current computational region, or when the current computational region's cells are shifted in space compared to the original raster map, the values are resampled on-the-fly by GRASS GIS, using the nearest neighbor method[^a1_grassbasics-8], to meet the cell resolution and extent of the current computational region setting.
+
+[^a1_grassbasics-7]: Note that this concept does not apply to vector maps. Vector maps are always processed entirely.
+
+[^a1_grassbasics-8]: GRASS will use the nearest neighbor method to resample the raster layer. This might not always be the best method. If not, you need to resample the data yourself, using the most suitable method. See [menu: Raster → Develop raster map]{.style-menu} for options. See [this wiki page](https://grasswiki.osgeo.org/wiki/Computational_region) for more insights.
+
+Importantly, the geographic region is defined per mapset. It is therefore the current region in the mapset you are working in that defines the geographic area and resolution in which raster analyses will be done. See [this GRASS wiki page](https://grasswiki.osgeo.org/wiki/Computational_region) for a more detailed explanation of this concept.
+
+::: panel-tabset
+## {{< fa regular window-restore >}} Set the region
+
+![Different ways to set the computational region, and to view the current settings. The red outline in the Map display shows the extent of the current computation region.](images/computationalregion.png){#fig-computationalregion1 fig-align="left" group="comutationalregion"}
+
+## {{< fa regular window-restore >}} Using the region
+
+By changing the computational region, the user can run raster analyses on a subset of a larger extent data for quicker testing or analysis of specific regions, without having to create a new dataset first (avoid clipping). The video below demonstrates this by repeating the same raster calculation using two different region settings.
+
+{{< video https://ecodiv.earth/share/sdm_in_grassgis/computationalregion.mp4 >}}
+:::
+
+Note that by default, the region settings do not affect how raster layers are imported. GRASS GIS import tools by default always import the entire map data, maintaining the map's original resolution and alignment.
+
+The region's settings are important if the [r.in.gdal]() module is used with the [-r]{.style-parameter} flag. This flag tells GRASS to limit the import of the raster data to the area defined by the computational region. If the region and the raster layer are not perfectly aligned, the area that is imported will be slightly larger than the computational region. How much larger depends on the resolution of the computational region, as illustrated in @fig-importalign.
+
+![The green grid represents the import raster. The red solid line shows the bounds and resolution of the computational region of the current mapset. The red dashed outline is a buffer around the region of 1 x the region's resolution (so imagine the region is extended to all sides with one cell). When using [r.in.gdal]{.style-function} with the [-r]{.style-parameter} flag, all raster cells of the input raster that are within or touching the red dashed outline will be imported. These are the blue cells in the illustration.](images/import_align.png){#fig-importalign fig-align="left"}
+
+Importantly, the region's settings only affect the precise area that will be imported when using the [-r]{.style-parameter} flag. The resolution and alignment of the imported raster layer will be the same as that of the original input raster file.
+
+## Using a MASK {#sec-mask}
+
+In GRASS GIS, a MASK is a raster map that defines areas of interest for raster operations by masking out unwanted areas. It allows users to focus their analysis on specific regions while ignoring others. If a raster map named "MASK" exists, most GRASS raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. This feature is especially useful when working with large datasets or when analyzing a particular region of interest.
+
+A MASK is typically created from an existing raster map by setting certain cell values as null (masked) and others as valid (unmasked). Commands such as [r.mask](https://grass.osgeo.org/grass-stable/manuals/r.mask.html) or [r.mapcalc](https://grass.osgeo.org/grass-stable/manuals/r.mapcalc.html) can be used to create a MASK based on specific criteria or thresholds. Read the [manual page](https://grass.osgeo.org/grass-stable/manuals/r.mask.htm) for more details concerning creating MASK layers using different methods.
+
+Once a MASK is set, it is automatically applied to all raster operations, so only the unmasked (valid) areas are considered. I.e., operations like raster algebra, statistics, or interpolation only occur where the MASK allows it. MASKs are not permanent. Once a MASK is created, it remains active until explicitly removed using the [r.mask]{.style-function} [-r]{.style-parameter} command. This temporary behavior allows users to switch between different MASKs for various operations without permanently altering their data.
+
+## Working in Python {#sec-workinginpython}
+
+All GRASS modules can be used in Python scripts, using the GRASS Python scripting library or the Python API, as [described here](https://grass.osgeo.org/grass84/manuals/libpython/index.html). Examples in this tutorial will use the Python interface provided by the [grass.script]{.style-apps} package. To use the this package, you first need to import the grass.script library. In the code below, it is imported as [gs]{.style-function} (this only needs to be done once at the beginning of a session or script). Next, you can run GRASS functions, using for example the [run_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.run_command), [read_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.read_command), [write_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.write_command) or [parse_command](https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.parse_command). Read more about when to use what functions in [the manual](https://grasswiki.osgeo.org/wiki/GRASS_Python_Scripting_Library#Uses_for_read,_feed_and_pipe,_start_and_exec_commands).
+
+For simply executing a function, you use [run_command]{.style-function}. The first parameter for functions from this group is the name of the GRASS module as string. Other parameters are options of the module. Flags can be passed in a parameter flags where value of the parameter is a string containing all the flags we want to set. The general syntax is the following:
+
+::: panel-tabset
+## {{< fa brands python >}}
+
+``` python
+import grass.script as gs
+gs.run_command(
+    "module.name",
+    option1="...",
+    option2="...",
+    flags="flagletters",
+)
+```
+:::
+
+The function parameters are the same as module options, so you can just use the manual page of the module to learn about the interface. Compare, for example, the command line code ({{< fa solid terminal >}}) and Python code ({{< fa brands python >}}) to import the raster [landuse.tif]{.style-db} as [landuse]{.style-data} raster layer in GRASS using the [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) module. As you can see, the Python [run_command]{.style-menu} function let's you 'wrap' the command line code in a Python command.
+
+::: panel-tabset
+## {{< fa solid terminal >}}
+
+``` bash
+r.in.gdal input=landuse.tif output=landuse
+```
+
+## {{< fa brands python >}}
+
+``` python
+import grass.script as gs
+gs.run_command('r.in.gdal', input="landuse.tif", output="landuse")
+```
+:::
+
+One of the advantages of using Python is that you can combine GRASS specific functions and generic Python code. The following example illustrates this. In @sec-thedatabase you saw how to create a new database. The code below does the same. First, a new folder [GRASSdb]{.style-db} is created using regular Python code[^a1_grassbasics-9]. Next, we create a new [project]{.style-db} in that folder. This will automatically promote that folder to a GRASS database (After all, a GRASS database is nothing else than a folder with one or more GRASS [projects]{.style-db}). The last step is to change to that new [project]{.style-db}/[mapset]{.style-db}. This will ensure that all subsequent analysis are carried out in that new [mapset]{.style-db}.
+
+[^a1_grassbasics-9]: Note, on Windows, paths are written using backslashes (\\) as the separator between folder names. On Unix based operating system such as macOS, Linux, and BSDs, the forward slash (/) is used as the path separator.
+
+::: panel-tabset
+## {{< fa brands python >}}
+
+``` python
+# Import the grass.script and os libraries
+import os
+import grass.script as gs
+
+# Create a new folder (this will be the location of the GRASS GIS database)
+os.mkdir("/media/paulo/HD2/")
+
+# Create a new project
+gs.create_project(path="/media/paulo/HD2/GRASSdb", name="SDM", epsg="4326")
+
+# Change to the newly created project / mapset
+gs.run_command("g.mapset", mapset="PERMANENT", project="SDM")
+```
+:::
+
+<br><br>
+
+## Footnotes {.unlisted .unnumbered .hidefootnotes}

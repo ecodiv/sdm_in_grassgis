@@ -1,0 +1,1419 @@
+# Scripting a map {#sec-scriptingamap}
+
+Visualizing the results is a key challenge in species distribution modeling. GRASS GIS provides excellent tools for the interactive exploration of spatial data. While it may not offer the advanced cartographic features of software like QGIS, it excels at automating the creation of simple maps. Each section below includes the code used to generate a specific figure in this tutorial. Hover over the paragraph titles to preview the corresponding images.
+
+## @fig-baselayers {#sec-baselayers}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "E_albergana_futprob"
+name = "reference_layers"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 5200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Set mask, define color and add to map
+gs.run_command("r.mask", vector="countries")
+COLORS = "1 250:250:250"
+gs.write_command(
+    "r.colors",
+    map="MASK",
+    rules="-",
+    stdin=COLORS,
+)
+gs.run_command(
+    "d.rast",
+    map="MASK",
+)
+
+# Reclass the LUC in urban and non-urban categories
+RULES = "1 2 3 4 10 = 1\n11 thru 43 = 2\n44 = NULL"
+gs.write_command(
+    "r.reclass",
+    input="CLC2018@PERMANENT",
+    output="GLC2018_urban",
+    rules="-",
+    stdin=RULES,
+)
+
+# Assign value 2 to areas not covered by LUC
+gs.run_command(
+    "r.mapcalc",
+    expression="GLC2018_urban = if(isnull(CLC2018 ),2,GLC2018_urban)",
+    overwrite=True,
+)
+
+# Assign color table to urban layer
+COLORS = "1 red\n2 250:250:250"
+gs.write_command(
+    "r.colors",
+    map="GLC2018_urban",
+    rules="-",
+    stdin=COLORS,
+)
+
+# Combine urban and shade layers
+gs.run_command(
+    "r.shade",
+    shade="shaded_relief_NE",
+    color="GLC2018_urban",
+    output="urban_shade",
+    brighten=30,
+)
+
+# Add urban shade layer to map
+gs.run_command(
+    "d.rast",
+    map="urban_shade",
+)
+
+# Add latlon grid
+gs.run_command(
+    "d.grid",
+    size=5,
+    color="190:190:190",
+    text_color="100:100:100",
+    border_color="160:160:160",
+    fontsize=24,
+    width=0.5,
+)
+
+# Add country boundaries to map
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="black",
+    fill_color="none",
+    width=2,
+)
+
+# Add road vector layer to map
+gs.run_command(
+    "d.vect",
+    map="roads",
+    type="line",
+    color="198:0:0",
+    width=0.1,
+)
+
+# Clean up
+gs.run_command("g.remove", flags="f", type="raster", name="GLC2018_urban")
+gs.run_command("g.remove", type="raster", name="urban_shade", flags="f")
+gs.run_command("r.mask", flags="r")
+```
+
+## @fig-rangemapoccurrences {#sec-rangemapoccurrences}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+# Set region
+gs.run_command("g.region", vector="aoi", res=100)
+
+# Output settings
+outputfile = "rangemap.png"
+width_image = 3600
+title = "Erebia albergana range map"
+os.remove(outputfile)
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_FILE"] = outputfile
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+# Add AOI (provides the blue background)
+
+gs.run_command(
+    "d.vect",
+    map="aoi",
+    type="area",
+    color="199:226:234",
+    fill_color="199:226:234",
+    width=1,
+)
+
+# Add country boundaries to map
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="195:195:195",
+    fill_color="236:236:236",
+    width=1,
+)
+
+# Add occurrence layer to map
+gs.run_command(
+    "d.vect",
+    map="occurrences",
+    type="point",
+    color="211:24:24:255",
+    fill_color="211:24:24:100",
+    width=10,
+)
+
+# Add range map using white + groen boundary
+gs.run_command(
+    "d.vect",
+    map="rangemap",
+    type="area",
+    color="255:255:255",
+    fill_color="none",
+    width=6,
+)
+gs.run_command(
+    "d.vect",
+    map="rangemap",
+    type="area",
+    color="43:151:37",
+    fill_color="none",
+    width=3,
+)
+
+# Add latlon grid to map
+gs.run_command(
+    "d.grid",
+    size=5,
+    color="190:190:190",
+    text_color="100:100:100",
+    border_color="160:160:160",
+    fontsize=24,
+    width=0.5,
+)
+```
+
+## @fig-bioclimvars {#sec-bioclimvars}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+# Set region
+gs.run_command("g.region", region="aoi", res=0.00833)
+
+# Variable
+variables = [f"bio_{num}" for num in list(range(1, 20))]
+names = [
+    "BIO1 - Annual Mean Temperature",
+    "BIO2 - Mean Diurnal Range",
+    "BIO3 - Isothermality",
+    "BIO4 - Temperature Seasonality",
+    "BIO5 - Max Temperature of Warmest Month",
+    "BIO6 - Min Temperature of Coldest Month",
+    "BIO7 - Temperature Annual Range",
+    "BIO8 - Mean Temperature of Wettest Quarter",
+    "BIO9 - Mean Temperature of Driest Quarter",
+    "BIO10 - Mean Temperature of Warmest Quarter",
+    "BIO11 - Mean Temperature of Coldest Quarter",
+    "BIO12 - Annual Precipitation",
+    "BIO13 - Precipitation of Wettest Month",
+    "BIO14 - Precipitation of Driest Month",
+    "BIO15 - Precipitation Seasonality",
+    "BIO16 - Precipitation of Wettest Quarter",
+    "BIO17 - Precipitation of Driest Quarter",
+    "BIO18 - Precipitation of Warmest Quarter",
+    "BIO19 - Precipitation of Coldest Quarter",
+]
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+for i, variable in enumerate(variables):
+
+    outputfile = f"{variable}.png"
+    os.environ["GRASS_RENDER_FILE"] = outputfile
+
+    # Render image
+    gs.run_command(
+        "d.rast",
+        map=variable,
+    )
+    gs.run_command(
+        "d.vect",
+        map="countries",
+        type="area",
+        color="white",
+        fill_color="none",
+        width=0.75,
+    )
+    gs.run_command(
+        "d.legend",
+        flags="bd",
+        raster=variable,
+        font="Arial:Regular",
+        fontsize=12,
+        at=[7, 9, 75, 97],
+        title=names[i],
+    )
+    gs.run_command(
+        "d.vect",
+        map="rangemap@Erebia_albergana",
+        type="area",
+        color="255:0:0",
+        fill_color="none",
+        width=2,
+    )
+```
+
+## @fig-futbioclimvars {#sec-futbioclimvars}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+# Set region
+gs.run_command("g.region", region="aoi", res=0.00833)
+
+# Variable
+variables = [f"bio.{num}" for num in list(range(1, 20))]
+
+names = [
+    "BIO1 - Annual Mean Temperature",
+    "BIO2 - Mean Diurnal Range",
+    "BIO3 - Isothermality",
+    "BIO4 - Temperature Seasonality",
+    "BIO5 - Max Temperature of Warmest Month",
+    "BIO6 - Min Temperature of Coldest Month",
+    "BIO7 - Temperature Annual Range",
+    "BIO8 - Mean Temperature of Wettest Quarter",
+    "BIO9 - Mean Temperature of Driest Quarter",
+    "BIO10 - Mean Temperature of Warmest Quarter",
+    "BIO11 - Mean Temperature of Coldest Quarter",
+    "BIO12 - Annual Precipitation",
+    "BIO13 - Precipitation of Wettest Month",
+    "BIO14 - Precipitation of Driest Month",
+    "BIO15 - Precipitation Seasonality",
+    "BIO16 - Precipitation of Wettest Quarter",
+    "BIO17 - Precipitation of Driest Quarter",
+    "BIO18 - Precipitation of Warmest Quarter",
+    "BIO19 - Precipitation of Coldest Quarter",
+]
+
+# Output settings
+
+width_image = 1200
+title = "-"
+# os.remove(outputfile)
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+for i, variable in enumerate(variables):
+
+    j = i + 1
+
+    outputfile = f"futbio_{j}.png"
+    os.environ["GRASS_RENDER_FILE"] = outputfile
+
+    # Render image
+    gs.run_command(
+        "d.rast",
+        map=f"{variable}@climate_EC_Earth3_Veg",
+    )
+    gs.run_command(
+        "d.vect",
+        map="countries",
+        type="area",
+        color="white",
+        fill_color="none",
+        width=0.75,
+    )
+    gs.run_command(
+        "d.vect",
+        map="rangemap@Erebia_albergana",
+        type="area",
+        color="255:0:0",
+        fill_color="none",
+        width=2,
+    )
+    gs.run_command(
+        "d.legend",
+        flags="bd",
+        raster=variable,
+        font="Arial:Regular",
+        fontsize=12,
+        at=[7, 9, 75, 97],
+        title=names[i],
+    )
+```
+
+## @fig-probdistmodel01 {#sec-probmapmodel1}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "Erebia_albergana_obs_envdat@model_01"
+name = "Erebia_albergana_probability_distribution_model_01"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Render image
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="none",
+    width=0.5,
+)
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    at=[6,94,92,94],
+    digits=1,
+    label_step=0.1
+)
+```
+
+## @fig-samlepredmodel01 {#sec-samlepredmodel01}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "E_albergana_samplepred"
+names = "Erebia albergana probability distribution"
+legend = "E_albergana_probability"
+
+# Set region
+gs.run_command("g.region", region="aoi")
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{variable}.png"
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Render image
+gs.run_command(
+    "d.rast",
+    map=legend,
+)
+
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="206:206:206",
+    width=0.5,
+)
+
+# Render image
+gs.run_command(
+    "d.vect",
+    map=variable,
+    icon="basic/point",
+    color="none",
+    width=0,
+    size=7,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=legend,
+    font="Arial:Regular",
+    fontsize=18,
+    at=[90, 94, 72, 96],
+    digits=1,
+    label_values="0.1,0.3,0.5,0.7,0.9",
+)
+```
+
+## @fig-bgrpredmodel01 {#sec-bgrpredmodel011}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "E_albergana_bgrdpred@model_01"
+names = "Erebia albergana probability distribution"
+legend = "E_albergana_probability"
+
+# Set region
+gs.run_command("g.region", region="aoi")
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{variable}.png"
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Render image
+gs.run_command(
+    "d.rast",
+    map=legend,
+)
+
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="206:206:206",
+    width=0.5,
+)
+
+# Render image
+gs.run_command(
+    "d.vect",
+    map=variable,
+    icon="basic/point",
+    color="none",
+    width=0,
+    size=7,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=legend,
+    font="Arial:Regular",
+    fontsize=18,
+    at=[90, 94, 72, 96],
+    digits=1,
+    label_values="0.1,0.3,0.5,0.7,0.9",
+)
+```
+
+## @fig-futdistr01 {#sec-futdistr01}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "E_albergana_futprob"
+name = "Erebia_albergana_probability_futdist_model_01"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Render image
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="none",
+    width=0.5,
+)
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    at=[6,94,92,94],
+    digits=1,
+    label_step=0.1
+)
+```
+
+## @fig-changemap01 {#sec-changemap01}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "E_alb_diff"
+name = "E_alb_diff"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Render image
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="none",
+    width=0.5,
+)
+gs.run_command(
+    "d.vect",
+    map="insetmap",
+    type="area",
+    color="red",
+    fill_color="none",
+    width=0.5,
+)
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    at=[6, 94, 92, 94],
+    digits=1,
+    label_step=0.1,
+)
+```
+
+## @fig-changemap02 {#sec-changemap02}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "E_alberganus_presabschange"
+name = "E_alberganus_presabschange"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    at=[75, 94, 80, 84],
+)
+```
+
+## @fig-samlepredmodel03a {#sec-samlepredmodel03a}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "Erebia_alberganus_obs_samplePredictions"
+names = "Erebia_alberganus_obs_samplePredictions"
+legend = "Erebia_alberganus_obs_samplePredictions"
+
+# Set region
+gs.run_command("g.region", region="aoi")
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Change color table
+gs.run_command(
+    "v.colors",
+    map=variable,
+    use="attr",
+    column="Cloglog_mean",
+    color="bcyr",
+)
+
+gs.run_command(
+    "v.to.rast",
+    input="Erebia_alberganus_obs_samplePredictions",
+    output="tmp01",
+    use="attr",
+    attribute_column="Cloglog_mean",
+)
+
+gs.run_command("r.colors", map="tmp01", color="bcyr")
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{variable}.png"
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="206:206:206",
+    width=0.5,
+)
+
+gs.run_command(
+    "d.vect",
+    map=variable,
+    icon="basic/point",
+    color="none",
+    width=0,
+    size=7,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster="tmp01",
+    font="Arial:Regular",
+    fontsize=18,
+    at=[90, 94, 72, 96],
+    digits=2,
+)
+
+gs.run_command("g.remove", flags="f", type="raster", name="tmp01")
+```
+
+## @fig-samlepredmodel03b {#sec-samlepredmodel03b}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "Erebia_alberganus_obs_samplePredictions"
+names = "Erebia_alberganus_obs_samplePredictions"
+legend = "Erebia_alberganus_obs_samplePredictions"
+
+# Set region
+gs.run_command("g.region", region="aoi")
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Change color table
+gs.run_command(
+    "v.colors",
+    map=variable,
+    use="attr",
+    column="Cloglog_range",
+    color="bcyr",
+)
+
+gs.run_command(
+    "v.to.rast",
+    input="Erebia_alberganus_obs_samplePredictions",
+    output="tmp01",
+    use="attr",
+    attribute_column="Cloglog_range",
+)
+
+gs.run_command("r.colors", map="tmp01", color="bcyr")
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{variable}.png"
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="206:206:206",
+    width=0.5,
+)
+
+gs.run_command(
+    "d.vect",
+    map=variable,
+    icon="basic/point",
+    color="none",
+    width=0,
+    size=7,
+)
+
+gs.run_command(
+    "d.vect",
+    map=variable,
+    where='"Cloglog_range" >= 0.08',
+    icon="basic/point",
+    color="none",
+    width=0,
+    size=7,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster="tmp01",
+    font="Arial:Regular",
+    fontsize=18,
+    at=[90, 94, 72, 96],
+    digits=2,
+)
+
+gs.run_command("g.remove", flags="f", type="raster", name="tmp01")
+```
+
+## @fig-messmap {#sec-mess01}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "mess_MES"
+name = "mess_MES"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="195:195:195",
+    fill_color="none",
+    width=1,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    title="MESS",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    label_values="-40,-20,0,20,40,60",
+    at=[50, 88, 93, 95],
+)
+```
+
+## @fig-modmap {#sec-mess02}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+# Set working directory
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "mess_MoD"
+name = "mess_MoD"
+
+# Change color table
+COLORS_MOB = """\
+0 166:206:227
+1 31:120:180
+2 178:223:138
+3 51:160:44
+4 251:154:153
+5 227:26:28
+6 253:191:111
+7 255:127:0
+8 202:178:214
+"""
+
+gs.write_command(
+    "r.colors",
+    map="mess_MoD@model_01",
+    rules="-",
+    stdin=COLORS_MOB,
+)
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="btc",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    title_fontsize=18,
+    title="MOD",
+    at=[50, 85, 90, 95],
+)
+```
+
+## @fig-countneg {#sec-mess03}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "mess_CountNeg"
+name = "mess_CountNeg"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+os.remove(outputfile)
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="none",
+    fill_color="white",
+    width=1,
+)
+
+gs.run_command(
+    "d.rast",
+    map=variable,
+    value=0,
+    flags="i",
+)
+
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="195:195:195",
+    fill_color="none",
+    width=1,
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    at=[50, 88, 93, 95],
+    range="1,4",
+)
+```
+
+## @fig-Erealbavm4a - [-@fig-Erealbavm4a] {#sec-adferdf}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+# Set working directory
+os.chdir("path-to-working-directory")
+
+# Variable
+variables = [
+    "Erealb_avg_m4a@model_04",
+    "Erealb_avg_m4b@model_04",
+    "Erebia_alberganus_obs_envdat_avg@model_03",
+]
+
+# Set region
+gs.run_command("g.region", region="aoi")
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+for i, variable in enumerate(variables):
+    maplayer, mapset = variable.split("@")
+    outputfile = f"{maplayer}.png"
+    os.environ["GRASS_RENDER_FILE"] = outputfile
+
+    # Render raster layer
+    gs.run_command(
+        "d.rast",
+        map=variable,
+    )
+    gs.run_command(
+        "d.vect",
+        map="countries",
+        type="area",
+        color="white",
+        fill_color="none",
+        width=0.5,
+    )
+    gs.run_command(
+        "d.legend",
+        flags="bt",
+        raster=variable,
+        font="Arial:Regular",
+        fontsize=16,
+        at=[6, 94, 92, 94],
+        digits=1,
+        label_step=0.2,
+        range = [0,1]
+    )
+```
+
+## @fig-stddevmodel4a - [-@fig-stddevmodel4b] {#sec-ws4FDpBcUr}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+# Set working directory
+os.chdir("path-to-working-directory")
+
+# Variable
+variables = [
+    "Erealb_stddev_m4a@model_04",
+    "Erealb_stddev_m4b@model_04",
+    "Erebia_alberganus_obs_envdat_stddev@model_03",
+]
+
+# Set color table for stdev maps
+COLORS = """\
+0 0:0:255
+0.02 0:255:255
+0.04 255:255:0
+0.06 255:0:0
+0.1 100:0:0
+0.490618 100:0:0
+nv 255:255:255
+default 255:255:255
+"""
+gs.write_command("r.colors", map=variables, rules="-", stdin=COLORS)
+
+# Set region
+gs.run_command("g.region", region="aoi")
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+for i, variable in enumerate(variables):
+    maplayer, mapset = variable.split("@")
+    outputfile = f"{maplayer}.png"
+    os.environ["GRASS_RENDER_FILE"] = outputfile
+
+    # Render raster layer
+    gs.run_command(
+        "d.rast",
+        map=variable,
+    )
+    gs.run_command(
+        "d.vect",
+        map="countries",
+        type="area",
+        color="white",
+        fill_color="none",
+        width=0.5,
+    )
+    gs.run_command(
+        "d.legend",
+        flags="bt",
+        raster=variable,
+        font="Arial:Regular",
+        fontsize=16,
+        at=[6, 94, 92, 94],
+        digits=2,
+        label_step=0.02,
+        range=[0, 0.1],
+    )
+```
+
+## @fig-q72ESFIpd2 - [-@fig-nZ6IUl9J5Z] {#sec-gbpRIXfZKJ}
+
+``` python
+# Import library
+import os
+import grass.script as gs
+
+# Combine the background and occurrence point layers
+gs.run_command(
+    "v.patch",
+    flags="e",
+    input=["Erealb_bg_m4a@model_04", "Erealb_sp_m4a@model_04"],
+    output="Erealb_m4a",
+)
+gs.run_command(
+    "v.patch",
+    flags="e",
+    input=["Erealb_bg_m4b@model_04", "Erealb_sp_m4b@model_04"],
+    output="Erealb_m4b",
+)
+gs.run_command(
+    "v.patch",
+    flags="e",
+    input=[
+        "Erebia_alberganus_obs@model_03",
+        "Erebia_alberganus_obs_samplePredictions@model_03",
+    ],
+    output="Erealb_m3",
+)
+
+# Set working directory
+os.chdir("path_to_working_directory")
+
+# Create list of combinations of inputs
+columns = ["Cloglog_mean", "CLoglog_range"]
+maps = ["Erealb_m3@model_03", "Erealb_m4a@model_04", "Erealb_m4b@model_04"]
+inputs = [(x, y) for x in maps for y in columns]
+
+# Print boxplot figures
+for vectorlayer, column in inputs:
+    if column == "Cloglog_mean":
+        axlim = "0,1"
+    else:
+        axlim = "0,0.15"
+    vectlay = vectorlayer.split("@")[0]
+    gs.run_command(
+        "v.boxplot",
+        flags="hog",
+        map=vectorlayer,
+        column=column,
+        group_by="pointlocations",
+        output=f"{vectlay}_{column}.png",
+        plot_dimensions="6,1.5",
+        order="ascending",
+        axis_limits=axlim,
+        bx_color="231:238:231",
+        bx_blcolor="127:127:127",
+        bx_width=0.9,
+        median_lw=2,
+        median_color="92:142:92",
+        flier_color="211:225:211",
+        overwrite=True,
+    )
+```

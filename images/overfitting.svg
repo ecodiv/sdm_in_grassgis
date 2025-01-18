@@ -1,0 +1,3068 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="186.62801mm"
+   height="133.8mm"
+   viewBox="0 0 186.628 133.79999"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (1:1.4+202410161351+e7c3feb100)"
+   sodipodi:docname="overfitting.svg"
+   inkscape:export-filename="overfitting.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.84268803"
+     inkscape:cx="399.91075"
+     inkscape:cy="208.26213"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="1920"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="false">
+    <sodipodi:guide
+       position="126.28281,53.330769"
+       orientation="0,-1"
+       id="guide821"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="179.88909,26.128422"
+       orientation="1,0"
+       id="guide822"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="130.63318,40.68974"
+       orientation="1,0"
+       id="guide823"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="62.448672,4.2565822"
+       orientation="0,-1"
+       id="guide824"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="10.155186,24.194232"
+       orientation="1,0"
+       id="guide825"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="13.574879,4.2565822"
+       orientation="0,-1"
+       id="guide826"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-9.7694138,-8.2640392)">
+    <path
+       style="fill:none;stroke:#3771c8;stroke-width:0.52;stroke-linecap:square;stroke-dasharray:0.52, 1.04;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 21.675565,59.656888 c 1.793876,-1.153208 39.074093,-32.2836 39.074093,-32.2836"
+       id="path146"
+       sodipodi:nodetypes="cc" />
+    <g
+       id="g995"
+       transform="translate(2.5292711,0.2494979)">
+      <path
+         style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         d="M 17.830509,21.7465 V 71.614239"
+         id="path275" />
+      <path
+         style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         d="M 68.189248,71.614239 H 18.321509"
+         id="path276" />
+    </g>
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse276"
+       cx="27.05142"
+       cy="64.626961"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse277"
+       cx="29.741667"
+       cy="58.894573"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse278"
+       cx="33.072647"
+       cy="47.013004"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse279"
+       cx="29.180876"
+       cy="48.225277"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse280"
+       cx="36.821869"
+       cy="36.841702"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse281"
+       cx="32.426739"
+       cy="54.445454"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse282"
+       cx="56.483704"
+       cy="45.794338"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse283"
+       cx="61.216728"
+       cy="39.512516"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse284"
+       cx="60.984589"
+       cy="44.16814"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse285"
+       cx="56.881119"
+       cy="41.201504"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse286"
+       cx="44.736298"
+       cy="34.293598"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse287"
+       cx="35.0793"
+       cy="39.871197"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse288"
+       cx="41.744095"
+       cy="28.28229"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse289"
+       cx="33.396652"
+       cy="34.290348"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse290"
+       cx="55.059479"
+       cy="36.498081"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse291"
+       cx="55.538895"
+       cy="33.406925"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse292"
+       cx="61.758621"
+       cy="49.854038"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse293"
+       cx="49.948822"
+       cy="35.995441"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse294"
+       cx="47.869308"
+       cy="31.471134"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse295"
+       cx="25.186369"
+       cy="49.158138"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse296"
+       cx="27.344786"
+       cy="44.316593"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse297"
+       cx="24.66818"
+       cy="55.49316"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse298"
+       cx="37.900711"
+       cy="32.810627"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse299"
+       cx="29.439085"
+       cy="40.182117"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="29.202396"
+       y="76.474525"
+       id="text302"><tspan
+         sodipodi:role="line"
+         id="tspan302"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="29.202396"
+         y="76.474525">Predictor variable</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="-61.559765"
+       y="18.481304"
+       id="text302-6"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan302-2"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="-61.559765"
+         y="18.481304">Predicted value</tspan></text>
+    <path
+       style="fill:none;stroke:#ff6600;stroke-width:0.52;stroke-linecap:square;stroke-dasharray:0.52, 1.04;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 85.454393,65.652329 c 0,0 7.496413,-34.853138 19.647017,-34.622562 12.1506,0.230575 16.72759,21.551421 16.72759,21.551421"
+       id="path199"
+       sodipodi:nodetypes="czc" />
+    <path
+       style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       d="M 81.213964,21.995998 V 71.863737"
+       id="path250" />
+    <path
+       style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       d="M 131.5727,71.863737 H 81.704964"
+       id="path251" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse251"
+       cx="87.905609"
+       cy="64.626961"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse252"
+       cx="90.595856"
+       cy="58.894573"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse253"
+       cx="93.926834"
+       cy="47.013004"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse254"
+       cx="90.035065"
+       cy="48.225277"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse255"
+       cx="97.676056"
+       cy="36.841702"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse256"
+       cx="93.28093"
+       cy="54.445454"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse257"
+       cx="117.33789"
+       cy="45.794338"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse258"
+       cx="122.07092"
+       cy="39.512516"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse259"
+       cx="121.83878"
+       cy="44.16814"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse260"
+       cx="117.73531"
+       cy="41.201504"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse261"
+       cx="105.59047"
+       cy="34.293598"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse262"
+       cx="95.933487"
+       cy="39.871197"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse263"
+       cx="102.59827"
+       cy="28.28229"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse264"
+       cx="94.250839"
+       cy="34.290348"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse265"
+       cx="115.91367"
+       cy="36.498081"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse266"
+       cx="116.39307"
+       cy="33.406925"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse267"
+       cx="122.6128"
+       cy="49.854038"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse268"
+       cx="110.80299"
+       cy="35.995441"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse269"
+       cx="108.7235"
+       cy="31.471134"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse270"
+       cx="86.040558"
+       cy="49.158138"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse271"
+       cx="88.198975"
+       cy="44.316593"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse272"
+       cx="85.522369"
+       cy="55.49316"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse273"
+       cx="98.754898"
+       cy="32.810627"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse274"
+       cx="90.293274"
+       cy="40.182117"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="-61.559765"
+       y="79.335487"
+       id="text303"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan303"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="-61.559765"
+         y="79.335487">Predicted value</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="89.811081"
+       y="76.474525"
+       id="text307"><tspan
+         sodipodi:role="line"
+         id="tspan307"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="89.811081"
+         y="76.474525">Predictor variable</tspan></text>
+    <path
+       style="fill:none;stroke:#44aa00;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:0.5, 1;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 147.06415,66.827588 c 0.40779,-0.611693 1.01948,-1.291353 1.63118,-2.038977 0.6117,-0.747624 3.28118,-3.926239 2.71863,-5.913027 -0.56255,-1.986788 -5.3693,-3.194397 -4.89354,-3.26236 0.47576,-0.06796 6.87587,0.789072 7.40828,-1.699144 0.53241,-2.488216 -6.41085,-2.83055 -6.11693,-4.621678 0.29392,-1.791128 2.05467,-0.628322 3.05846,-1.019487 1.00379,-0.391165 2.95917,0.03874 2.95652,-1.325334 -0.003,-1.364077 -3.86216,-0.610894 -4.51973,-2.004992 -0.65757,-1.394098 0.26429,-2.312856 1.15542,-4.145915 0.89113,-1.833059 3.42803,-6.657419 4.68964,-6.388787 1.26161,0.268632 0.0216,5.159598 1.49525,5.3693 1.47363,0.209702 1.29304,-1.725657 1.76711,-2.854565 0.47407,-1.128908 0.25338,-2.325484 0.95152,-3.874053 0.69814,-1.548569 1.48271,-5.249055 3.53423,-5.097437 2.05152,0.151618 1.03634,5.050074 2.71863,5.505232 1.68229,0.455158 2.08987,-2.803314 3.60219,-2.378804 1.51232,0.42451 0.82735,3.578059 2.17491,4.621677 1.34756,1.043618 3.85456,1.64709 5.02947,0.951521 1.17491,-0.695569 -0.79203,-2.533367 0.95152,-2.92253 1.74355,-0.389163 5.62352,3.684418 5.23337,5.573198 -0.39015,1.88878 -3.36966,0.256262 -3.60219,1.563214 -0.23253,1.306952 3.14587,1.432491 2.92253,2.786599 -0.22334,1.354108 -3.66431,-0.04519 -3.80609,1.767112 -0.14178,1.812305 4.43581,2.479818 5.5732,3.73812 1.13739,1.258302 1.63118,3.058463 1.63118,3.058463"
+       id="path249"
+       sodipodi:nodetypes="czzzzzzzzzzzzzzzzzzzzzzzzc" />
+    <path
+       style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       d="M 142.06813,21.995998 V 71.863736"
+       id="path200" />
+    <path
+       style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       d="M 192.42687,71.863736 H 142.55913"
+       id="path201" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse201"
+       cx="148.75977"
+       cy="64.626961"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse202"
+       cx="151.45001"
+       cy="58.894581"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse203"
+       cx="154.78099"
+       cy="47.013"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse204"
+       cx="150.88922"
+       cy="48.225277"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse205"
+       cx="158.53021"
+       cy="36.841698"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse206"
+       cx="154.13509"
+       cy="54.44545"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse207"
+       cx="178.19205"
+       cy="45.794338"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse208"
+       cx="182.92508"
+       cy="39.512512"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse209"
+       cx="182.69293"
+       cy="44.168133"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse210"
+       cx="178.58946"
+       cy="41.201504"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse211"
+       cx="166.44464"
+       cy="34.293594"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse212"
+       cx="156.78764"
+       cy="39.871197"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse214"
+       cx="163.45244"
+       cy="28.282288"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse215"
+       cx="155.105"
+       cy="34.290348"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse216"
+       cx="176.76782"
+       cy="36.498077"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse217"
+       cx="177.24724"
+       cy="33.406921"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse218"
+       cx="183.46696"
+       cy="49.854034"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse220"
+       cx="171.65717"
+       cy="35.995441"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse221"
+       cx="169.57765"
+       cy="31.471134"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse222"
+       cx="146.89471"
+       cy="49.158134"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse223"
+       cx="149.05313"
+       cy="44.316597"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse224"
+       cx="146.37653"
+       cy="55.49316"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse225"
+       cx="159.60905"
+       cy="32.810627"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <ellipse
+       style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="ellipse226"
+       cx="151.14743"
+       cy="40.182114"
+       inkscape:spray-origin="#path3"
+       rx="0.75906128"
+       ry="0.78157586" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="-61.559765"
+       y="140.18967"
+       id="text304"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan304"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="-61.559765"
+         y="140.18967">Predicted value</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="150.66524"
+       y="76.474525"
+       id="text308"><tspan
+         sodipodi:role="line"
+         id="tspan308"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="150.66524"
+         y="76.474525">Predictor variable</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.2;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="38.318111"
+       y="18.107714"
+       id="text309"><tspan
+         sodipodi:role="line"
+         id="tspan309"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.291"
+         x="38.318111"
+         y="18.107714">Underfit</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.2;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;vector-effect:none;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.291;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+       x="96.699722"
+       y="17.713938"
+       id="text310"><tspan
+         sodipodi:role="line"
+         id="tspan310"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.2;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;white-space:normal;vector-effect:none;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.291;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000;stop-opacity:1"
+         x="96.699722"
+         y="17.713938">Optimal fit</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.2;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;vector-effect:none;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.291;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+       x="160.99608"
+       y="18.108744"
+       id="text311"><tspan
+         sodipodi:role="line"
+         id="tspan311"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;line-height:1.2;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;white-space:normal;vector-effect:none;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.291;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000;stop-opacity:1"
+         x="160.99608"
+         y="18.108744">Overfit</tspan></text>
+    <g
+       id="g1009"
+       transform="translate(2.5292711,0.2494979)">
+      <g
+         id="g991"
+         transform="translate(-1.1505971,0.20036483)">
+        <path
+           style="font-variation-settings:normal;opacity:0.179681;vector-effect:none;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.499999, 1;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke"
+           d="m 19.868018,108.32981 50.701582,10.13962 -0.14873,15.5962 -50.49627,0.0376 z"
+           id="path656"
+           sodipodi:nodetypes="ccccc" />
+        <path
+           style="font-variation-settings:normal;opacity:0.113569;vector-effect:none;fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.499999, 1;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke"
+           d="m 20.016748,108.3896 c 0,0 50.184845,10.86623 50.327824,10.15135 0.142975,-0.71489 0,-33.742498 0,-33.742498 H 20.159724 Z"
+           id="path655" />
+        <path
+           style="font-variation-settings:normal;fill:none;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.62;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.62, 1.24;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke;stop-color:#000000"
+           d="m 20.28876,108.54558 50.28084,9.92385"
+           id="path652"
+           sodipodi:nodetypes="cc" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse395"
+           cx="48.003777"
+           cy="92.67421"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse398"
+           cx="24.97435"
+           cy="104.00909"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse399"
+           cx="26.11199"
+           cy="95.803734"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse399-9"
+           cx="24.011141"
+           cy="110.81941"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse400"
+           cx="28.710051"
+           cy="92.730293"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse401"
+           cx="34.551968"
+           cy="89.634407"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse402"
+           cx="39.6394"
+           cy="93.62812"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse403"
+           cx="36.250225"
+           cy="96.06813"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse403-6"
+           cx="31.75848"
+           cy="98.647972"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse403-6-3"
+           cx="42.598152"
+           cy="94.735229"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse403-6-1"
+           cx="40.711143"
+           cy="102.94193"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse405"
+           cx="63.798344"
+           cy="107.46518"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse405-4"
+           cx="67.036522"
+           cy="112.14629"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse412"
+           cx="62.14185"
+           cy="100.62753"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse413"
+           cx="50.134968"
+           cy="96.91124"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse414"
+           cx="60.30994"
+           cy="94.542404"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse417"
+           cx="25.032572"
+           cy="86.731949"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse421"
+           cx="31.634966"
+           cy="104.74788"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse423"
+           cx="45.533485"
+           cy="87.95488"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse424"
+           cx="58.21838"
+           cy="111.79066"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse436"
+           cx="52.221123"
+           cy="104.26086"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse437"
+           cx="52.779346"
+           cy="107.658"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse439"
+           cx="54.363735"
+           cy="91.78978"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse440"
+           cx="66.232323"
+           cy="91.12854"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse442"
+           cx="55.948067"
+           cy="99.930542"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse403-6-7"
+           cx="61.479118"
+           cy="102.92448"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse403-6-9"
+           cx="64.868622"
+           cy="98.439415"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse403-6-5"
+           cx="59.884705"
+           cy="89.640602"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse443"
+           cx="57.531223"
+           cy="105.12531"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse444"
+           cx="54.137283"
+           cy="114.09504"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect444"
+           width="1.3619992"
+           height="1.3619992"
+           x="33.700462"
+           y="121.12337"
+           ry="0" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect445"
+           width="1.3619992"
+           height="1.3619992"
+           x="28.488026"
+           y="118.73643"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect446"
+           width="1.3619992"
+           height="1.3619992"
+           x="47.681713"
+           y="121.01244"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect447"
+           width="1.3619992"
+           height="1.3619992"
+           x="48.146351"
+           y="115.39594"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect448"
+           width="1.3619992"
+           height="1.3619992"
+           x="44.746086"
+           y="116.23042"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect449"
+           width="1.3619992"
+           height="1.3619992"
+           x="41.283913"
+           y="115.28121"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect450"
+           width="1.3619992"
+           height="1.3619992"
+           x="43.675732"
+           y="113.88733"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect451"
+           width="1.3619992"
+           height="1.3619992"
+           x="42.233376"
+           y="108.27489"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect452"
+           width="1.3619992"
+           height="1.3619992"
+           x="46.095078"
+           y="103.02322"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect453"
+           width="1.3619992"
+           height="1.3619992"
+           x="45.386303"
+           y="107.44769"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect454"
+           width="1.3619992"
+           height="1.3619992"
+           x="45.731762"
+           y="109.93826"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect455"
+           width="1.3619992"
+           height="1.3619992"
+           x="45.883694"
+           y="105.09255"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect456"
+           width="1.3619992"
+           height="1.3619992"
+           x="37.763138"
+           y="114.89178"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect457"
+           width="1.3619992"
+           height="1.3619992"
+           x="39.625278"
+           y="110.4894"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect458"
+           width="1.3619992"
+           height="1.3619992"
+           x="35.119389"
+           y="107.1955"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect459"
+           width="1.3619992"
+           height="1.3619992"
+           x="28.128531"
+           y="109.47527"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect460"
+           width="1.3619992"
+           height="1.3619992"
+           x="30.771711"
+           y="110.95477"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect461"
+           width="1.3619992"
+           height="1.3619992"
+           x="35.18269"
+           y="112.9549"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect462"
+           width="1.3619992"
+           height="1.3619992"
+           x="31.239347"
+           y="115.25"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect463"
+           width="1.3619992"
+           height="1.3619992"
+           x="23.668947"
+           y="127.18301"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect464"
+           width="1.3619992"
+           height="1.3619992"
+           x="26.143503"
+           y="127.70974"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect465"
+           width="1.3619992"
+           height="1.3619992"
+           x="65.921814"
+           y="127.05473"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect466"
+           width="1.3619992"
+           height="1.3619992"
+           x="63.52166"
+           y="118.47031"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect467"
+           width="1.3619992"
+           height="1.3619992"
+           x="60.733051"
+           y="113.67218"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect468"
+           width="1.3619992"
+           height="1.3619992"
+           x="59.259876"
+           y="120.30451"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect469"
+           width="1.3619992"
+           height="1.3619992"
+           x="54.771732"
+           y="118.20351"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect470"
+           width="1.3619992"
+           height="1.3619992"
+           x="40.862194"
+           y="127.4977"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect471"
+           width="1.3619992"
+           height="1.3619992"
+           x="40.709949"
+           y="132.30363"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect472"
+           width="1.3619992"
+           height="1.3619992"
+           x="34.050858"
+           y="129.27283"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect473"
+           width="1.3619992"
+           height="1.3619992"
+           x="45.269581"
+           y="128.49722"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect474"
+           width="1.3619992"
+           height="1.3619992"
+           x="53.956036"
+           y="128.55971"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect475"
+           width="1.3619992"
+           height="1.3619992"
+           x="60.959637"
+           y="130.13234"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect476"
+           width="1.3619992"
+           height="1.3619992"
+           x="56.014751"
+           y="131.2556"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect477"
+           width="1.3619992"
+           height="1.3619992"
+           x="57.252575"
+           y="123.67597"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect478"
+           width="1.3619992"
+           height="1.3619992"
+           x="55.624825"
+           y="124.08051"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect479"
+           width="1.3619992"
+           height="1.3619992"
+           x="35.588924"
+           y="123.23464"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect480"
+           width="1.3619992"
+           height="1.3619992"
+           x="37.88813"
+           y="125.43659"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect481"
+           width="1.3619992"
+           height="1.3619992"
+           x="30.152775"
+           y="128.57521"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect482"
+           width="1.3619992"
+           height="1.3619992"
+           x="27.423849"
+           y="123.70741"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect483"
+           width="1.3619992"
+           height="1.3619992"
+           x="21.314417"
+           y="115.96523"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect484"
+           width="1.3619992"
+           height="1.3619992"
+           x="23.360502"
+           y="121.59196"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect485"
+           width="1.3619992"
+           height="1.3619992"
+           x="37.342087"
+           y="118.86385"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect486"
+           width="1.3619992"
+           height="1.3619992"
+           x="43.309834"
+           y="122.95604"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect487"
+           width="1.3619992"
+           height="1.3619992"
+           x="51.83519"
+           y="120.90997"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect488"
+           width="1.3619992"
+           height="1.3619992"
+           x="51.323669"
+           y="112.21407"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect489"
+           width="1.3619992"
+           height="1.3619992"
+           x="53.54026"
+           y="109.99749"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect490"
+           width="1.3619992"
+           height="1.3619992"
+           x="58.143951"
+           y="116.9883"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect491"
+           width="1.3619992"
+           height="1.3619992"
+           x="50.130119"
+           y="131.31093"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect492"
+           width="1.3619992"
+           height="1.3619992"
+           x="38.876648"
+           y="105.56429"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect493"
+           width="1.3619992"
+           height="1.3619992"
+           x="42.457298"
+           y="101.30161"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+      </g>
+      <g
+         id="g996"
+         transform="translate(0,63.500003)">
+        <path
+           style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           d="M 17.830509,20.303953 V 71.614239"
+           id="path995"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           d="M 69.952361,71.614239 H 18.321509"
+           id="path996"
+           sodipodi:nodetypes="cc" />
+      </g>
+    </g>
+    <g
+       id="g1010"
+       transform="translate(-0.26515493,0.2494979)">
+      <g
+         id="g992"
+         transform="translate(1.5980337,-0.114225)">
+        <path
+           style="font-variation-settings:normal;vector-effect:none;fill:none;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.52;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.52, 1.04;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+           d="m 81.911089,115.10714 c 0,0 16.78487,-15.316797 27.168081,-11.90525 10.38321,3.41155 21.47459,18.25558 21.47459,18.25558"
+           id="path828"
+           sodipodi:nodetypes="czc" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse830"
+           cx="109.39189"
+           cy="92.674217"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse831"
+           cx="86.362465"
+           cy="104.00909"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse832"
+           cx="87.500107"
+           cy="95.803734"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse833"
+           cx="85.399261"
+           cy="110.81939"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse834"
+           cx="90.098167"
+           cy="92.730293"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse835"
+           cx="95.940086"
+           cy="89.634407"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse836"
+           cx="101.02752"
+           cy="93.62812"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse837"
+           cx="97.638344"
+           cy="96.068138"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse838"
+           cx="93.146599"
+           cy="98.647957"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse839"
+           cx="103.98627"
+           cy="94.735237"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse840"
+           cx="102.09926"
+           cy="102.94192"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse841"
+           cx="125.18646"
+           cy="107.46517"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse842"
+           cx="128.42464"
+           cy="112.14628"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse843"
+           cx="123.52997"
+           cy="100.62756"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse844"
+           cx="111.52309"
+           cy="96.911247"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse845"
+           cx="121.69806"
+           cy="94.542412"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse846"
+           cx="86.420685"
+           cy="86.731956"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse847"
+           cx="93.023079"
+           cy="104.74789"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse848"
+           cx="106.9216"
+           cy="87.954887"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse849"
+           cx="119.6065"
+           cy="111.79066"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse850"
+           cx="113.60924"
+           cy="104.26084"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse851"
+           cx="114.16747"
+           cy="107.658"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse852"
+           cx="115.75185"
+           cy="91.789787"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse853"
+           cx="127.62044"
+           cy="91.128548"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse854"
+           cx="117.33618"
+           cy="99.930534"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse855"
+           cx="122.86723"
+           cy="102.92448"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse856"
+           cx="126.25674"
+           cy="98.4394"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse857"
+           cx="121.27282"
+           cy="89.640602"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse858"
+           cx="118.91934"
+           cy="105.12533"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <ellipse
+           style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="ellipse859"
+           cx="115.5254"
+           cy="114.09504"
+           inkscape:spray-origin="#path3"
+           rx="0.75906128"
+           ry="0.78157586" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect859"
+           width="1.3619992"
+           height="1.3619992"
+           x="95.088577"
+           y="121.12336"
+           ry="0" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect860"
+           width="1.3619992"
+           height="1.3619992"
+           x="89.876144"
+           y="118.73643"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect861"
+           width="1.3619992"
+           height="1.3619992"
+           x="109.06983"
+           y="121.01243"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect862"
+           width="1.3619992"
+           height="1.3619992"
+           x="109.53447"
+           y="115.39596"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect863"
+           width="1.3619992"
+           height="1.3619992"
+           x="106.1342"
+           y="116.23043"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect864"
+           width="1.3619992"
+           height="1.3619992"
+           x="102.67203"
+           y="115.28121"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect865"
+           width="1.3619992"
+           height="1.3619992"
+           x="105.06385"
+           y="113.88732"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect866"
+           width="1.3619992"
+           height="1.3619992"
+           x="103.62149"
+           y="108.27489"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect867"
+           width="1.3619992"
+           height="1.3619992"
+           x="107.48319"
+           y="103.02322"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect868"
+           width="1.3619992"
+           height="1.3619992"
+           x="106.77442"
+           y="107.4477"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect869"
+           width="1.3619992"
+           height="1.3619992"
+           x="107.11988"
+           y="109.93827"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect870"
+           width="1.3619992"
+           height="1.3619992"
+           x="107.27181"
+           y="105.09254"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect871"
+           width="1.3619992"
+           height="1.3619992"
+           x="99.151253"
+           y="114.89178"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect872"
+           width="1.3619992"
+           height="1.3619992"
+           x="101.0134"
+           y="110.48942"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect873"
+           width="1.3619992"
+           height="1.3619992"
+           x="96.507507"
+           y="107.1955"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect874"
+           width="1.3619992"
+           height="1.3619992"
+           x="89.516647"
+           y="109.47524"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect875"
+           width="1.3619992"
+           height="1.3619992"
+           x="92.159828"
+           y="110.95478"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect876"
+           width="1.3619992"
+           height="1.3619992"
+           x="96.570808"
+           y="112.95489"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect877"
+           width="1.3619992"
+           height="1.3619992"
+           x="92.627464"
+           y="115.25001"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect878"
+           width="1.3619992"
+           height="1.3619992"
+           x="85.057068"
+           y="127.18296"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect879"
+           width="1.3619992"
+           height="1.3619992"
+           x="87.531616"
+           y="127.70969"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect880"
+           width="1.3619992"
+           height="1.3619992"
+           x="127.30992"
+           y="127.05468"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect881"
+           width="1.3619992"
+           height="1.3619992"
+           x="124.90977"
+           y="118.4703"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect882"
+           width="1.3619992"
+           height="1.3619992"
+           x="122.12118"
+           y="113.67217"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect883"
+           width="1.3619992"
+           height="1.3619992"
+           x="120.64799"
+           y="120.3045"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect884"
+           width="1.3619992"
+           height="1.3619992"
+           x="116.15985"
+           y="118.20348"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect885"
+           width="1.3619992"
+           height="1.3619992"
+           x="102.25031"
+           y="127.49766"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect886"
+           width="1.3619992"
+           height="1.3619992"
+           x="102.09807"
+           y="132.30357"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect887"
+           width="1.3619992"
+           height="1.3619992"
+           x="95.438972"
+           y="129.27277"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect888"
+           width="1.3619992"
+           height="1.3619992"
+           x="106.6577"
+           y="128.49716"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect889"
+           width="1.3619992"
+           height="1.3619992"
+           x="115.34415"
+           y="128.55965"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect890"
+           width="1.3619992"
+           height="1.3619992"
+           x="122.34776"
+           y="130.13228"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect891"
+           width="1.3619992"
+           height="1.3619992"
+           x="117.40287"
+           y="131.25554"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect892"
+           width="1.3619992"
+           height="1.3619992"
+           x="118.64069"
+           y="123.67596"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect893"
+           width="1.3619992"
+           height="1.3619992"
+           x="117.01294"
+           y="124.08053"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect894"
+           width="1.3619992"
+           height="1.3619992"
+           x="96.977043"
+           y="123.23463"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect895"
+           width="1.3619992"
+           height="1.3619992"
+           x="99.276245"
+           y="125.43656"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect896"
+           width="1.3619992"
+           height="1.3619992"
+           x="91.540894"
+           y="128.57515"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect897"
+           width="1.3619992"
+           height="1.3619992"
+           x="88.811966"
+           y="123.70741"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect898"
+           width="1.3619992"
+           height="1.3619992"
+           x="82.702538"
+           y="115.96525"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect899"
+           width="1.3619992"
+           height="1.3619992"
+           x="84.748619"
+           y="121.59196"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect900"
+           width="1.3619992"
+           height="1.3619992"
+           x="98.730202"
+           y="118.86387"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect901"
+           width="1.3619992"
+           height="1.3619992"
+           x="104.69795"
+           y="122.95603"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect902"
+           width="1.3619992"
+           height="1.3619992"
+           x="113.2233"
+           y="120.90995"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect903"
+           width="1.3619992"
+           height="1.3619992"
+           x="112.71178"
+           y="112.21409"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect904"
+           width="1.3619992"
+           height="1.3619992"
+           x="114.92838"
+           y="109.99749"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect905"
+           width="1.3619992"
+           height="1.3619992"
+           x="119.53207"
+           y="116.98829"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect906"
+           width="1.3619992"
+           height="1.3619992"
+           x="111.51823"
+           y="131.31087"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect907"
+           width="1.3619992"
+           height="1.3619992"
+           x="100.26476"
+           y="105.56431"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <rect
+           style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect908"
+           width="1.3619992"
+           height="1.3619992"
+           x="103.84541"
+           y="101.30163"
+           ry="0"
+           inkscape:spray-origin="#rect444" />
+        <path
+           style="font-variation-settings:normal;vector-effect:none;fill:#008484;fill-opacity:0.113725;stroke:none;stroke-width:0.52;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+           d="m 130.55376,121.45747 c 0,0 -12.66109,-15.70738 -21.47459,-18.25558 -8.8135,-2.54821 -27.089595,11.82677 -27.089595,11.82677 V 85.043378 h 48.841485 z"
+           id="path908"
+           sodipodi:nodetypes="czcccc" />
+        <path
+           style="font-variation-settings:normal;vector-effect:none;fill:#c67139;fill-opacity:0.176471;stroke:none;stroke-width:0.52;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+           d="m 130.55376,121.45747 c 0,0 -11.09138,-14.84403 -21.47459,-18.25558 -10.383211,-3.411547 -27.168081,11.90525 -27.168081,11.90525 v 18.99613 h 48.642671 z"
+           id="path909"
+           sodipodi:nodetypes="czcccc" />
+      </g>
+      <g
+         id="g1003"
+         transform="translate(63.894101,63.500003)">
+        <path
+           style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           d="M 17.830509,20.303953 V 71.614239"
+           id="path1002"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           d="M 69.952361,71.614239 H 18.321509"
+           id="path1003"
+           sodipodi:nodetypes="cc" />
+      </g>
+    </g>
+    <g
+       id="g1011"
+       transform="translate(2.5292711,0.2494979)">
+      <g
+         id="g994"
+         transform="translate(-1.2928074,-66.059475)">
+        <g
+           id="g993"
+           transform="translate(2.4102201,65.952388)">
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse740"
+             cx="167.69714"
+             cy="92.674217"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse741"
+             cx="144.66772"
+             cy="104.00909"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse742"
+             cx="145.80536"
+             cy="95.803734"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse743"
+             cx="143.70451"
+             cy="110.81939"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse744"
+             cx="148.40343"
+             cy="92.730293"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse745"
+             cx="154.24535"
+             cy="89.634407"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse746"
+             cx="159.33278"
+             cy="93.62812"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse747"
+             cx="155.9436"
+             cy="96.068138"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse748"
+             cx="151.45186"
+             cy="98.647957"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse749"
+             cx="162.29152"
+             cy="94.735237"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse750"
+             cx="160.40451"
+             cy="102.94192"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse751"
+             cx="183.49171"
+             cy="107.46517"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse752"
+             cx="186.72989"
+             cy="112.14628"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse753"
+             cx="181.83522"
+             cy="100.62756"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse754"
+             cx="169.82834"
+             cy="96.911247"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse755"
+             cx="180.00331"
+             cy="94.542412"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse756"
+             cx="144.72594"
+             cy="86.731956"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse757"
+             cx="151.32834"
+             cy="104.74789"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse758"
+             cx="165.22685"
+             cy="87.954887"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse759"
+             cx="177.91176"
+             cy="111.79066"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse760"
+             cx="171.91449"
+             cy="104.26084"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse761"
+             cx="172.47272"
+             cy="107.658"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse762"
+             cx="174.05711"
+             cy="91.789787"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse763"
+             cx="185.92569"
+             cy="91.128548"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse764"
+             cx="175.64143"
+             cy="99.930534"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse765"
+             cx="181.17249"
+             cy="102.92448"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse766"
+             cx="184.562"
+             cy="98.4394"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse767"
+             cx="179.57808"
+             cy="89.640602"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse768"
+             cx="177.22459"
+             cy="105.12533"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <ellipse
+             style="fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.483966;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+             id="ellipse769"
+             cx="173.83066"
+             cy="114.09504"
+             inkscape:spray-origin="#path3"
+             rx="0.75906128"
+             ry="0.78157586" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect769"
+             width="1.3619992"
+             height="1.3619992"
+             x="153.39383"
+             y="121.12336"
+             ry="0" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect770"
+             width="1.3619992"
+             height="1.3619992"
+             x="148.1814"
+             y="118.73643"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect771"
+             width="1.3619992"
+             height="1.3619992"
+             x="167.37509"
+             y="121.01243"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect772"
+             width="1.3619992"
+             height="1.3619992"
+             x="167.83972"
+             y="115.39596"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect773"
+             width="1.3619992"
+             height="1.3619992"
+             x="164.43945"
+             y="116.23043"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect774"
+             width="1.3619992"
+             height="1.3619992"
+             x="160.97728"
+             y="115.28121"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect775"
+             width="1.3619992"
+             height="1.3619992"
+             x="163.36911"
+             y="113.88732"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect776"
+             width="1.3619992"
+             height="1.3619992"
+             x="161.92674"
+             y="108.27489"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect777"
+             width="1.3619992"
+             height="1.3619992"
+             x="165.78845"
+             y="103.02322"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect778"
+             width="1.3619992"
+             height="1.3619992"
+             x="165.07968"
+             y="107.4477"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect779"
+             width="1.3619992"
+             height="1.3619992"
+             x="165.42514"
+             y="109.93827"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect780"
+             width="1.3619992"
+             height="1.3619992"
+             x="165.57707"
+             y="105.09254"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect781"
+             width="1.3619992"
+             height="1.3619992"
+             x="157.45651"
+             y="114.89178"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect782"
+             width="1.3619992"
+             height="1.3619992"
+             x="159.31865"
+             y="110.48942"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect783"
+             width="1.3619992"
+             height="1.3619992"
+             x="154.81276"
+             y="107.1955"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect784"
+             width="1.3619992"
+             height="1.3619992"
+             x="147.8219"
+             y="109.47524"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect785"
+             width="1.3619992"
+             height="1.3619992"
+             x="150.46509"
+             y="110.95478"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect786"
+             width="1.3619992"
+             height="1.3619992"
+             x="154.87607"
+             y="112.95489"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect787"
+             width="1.3619992"
+             height="1.3619992"
+             x="150.93272"
+             y="115.25001"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect788"
+             width="1.3619992"
+             height="1.3619992"
+             x="143.36232"
+             y="127.18296"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect789"
+             width="1.3619992"
+             height="1.3619992"
+             x="145.83687"
+             y="127.70969"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect790"
+             width="1.3619992"
+             height="1.3619992"
+             x="185.61517"
+             y="127.05468"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect791"
+             width="1.3619992"
+             height="1.3619992"
+             x="183.21503"
+             y="118.4703"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#008080;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect792"
+             width="1.3619992"
+             height="1.3619992"
+             x="180.42644"
+             y="113.67217"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect793"
+             width="1.3619992"
+             height="1.3619992"
+             x="178.95325"
+             y="120.3045"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect794"
+             width="1.3619992"
+             height="1.3619992"
+             x="174.4651"
+             y="118.20348"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect795"
+             width="1.3619992"
+             height="1.3619992"
+             x="160.55557"
+             y="127.49766"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect796"
+             width="1.3619992"
+             height="1.3619992"
+             x="160.40332"
+             y="132.30357"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect797"
+             width="1.3619992"
+             height="1.3619992"
+             x="153.74423"
+             y="129.27277"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect798"
+             width="1.3619992"
+             height="1.3619992"
+             x="164.96295"
+             y="128.49716"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect799"
+             width="1.3619992"
+             height="1.3619992"
+             x="173.64941"
+             y="128.55965"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect800"
+             width="1.3619992"
+             height="1.3619992"
+             x="180.65302"
+             y="130.13228"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect801"
+             width="1.3619992"
+             height="1.3619992"
+             x="175.70813"
+             y="131.25554"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect802"
+             width="1.3619992"
+             height="1.3619992"
+             x="176.94595"
+             y="123.67596"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect803"
+             width="1.3619992"
+             height="1.3619992"
+             x="175.31819"
+             y="124.08053"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect804"
+             width="1.3619992"
+             height="1.3619992"
+             x="155.2823"
+             y="123.23463"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect805"
+             width="1.3619992"
+             height="1.3619992"
+             x="157.5815"
+             y="125.43656"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect806"
+             width="1.3619992"
+             height="1.3619992"
+             x="149.84615"
+             y="128.57515"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect807"
+             width="1.3619992"
+             height="1.3619992"
+             x="147.11722"
+             y="123.70741"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect808"
+             width="1.3619992"
+             height="1.3619992"
+             x="141.00778"
+             y="115.96525"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect809"
+             width="1.3619992"
+             height="1.3619992"
+             x="143.05388"
+             y="121.59196"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect810"
+             width="1.3619992"
+             height="1.3619992"
+             x="157.03546"
+             y="118.86387"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect811"
+             width="1.3619992"
+             height="1.3619992"
+             x="163.0032"
+             y="122.95603"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect812"
+             width="1.3619992"
+             height="1.3619992"
+             x="171.52856"
+             y="120.90995"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect813"
+             width="1.3619992"
+             height="1.3619992"
+             x="171.01704"
+             y="112.21409"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect814"
+             width="1.3619992"
+             height="1.3619992"
+             x="173.23363"
+             y="109.99749"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect815"
+             width="1.3619992"
+             height="1.3619992"
+             x="177.83733"
+             y="116.98829"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect816"
+             width="1.3619992"
+             height="1.3619992"
+             x="169.82349"
+             y="131.31087"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect817"
+             width="1.3619992"
+             height="1.3619992"
+             x="158.57002"
+             y="105.56431"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <rect
+             style="font-variation-settings:normal;fill:#c87137;fill-opacity:1;stroke:none;stroke-width:0.489795;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+             id="rect818"
+             width="1.3619992"
+             height="1.3619992"
+             x="162.15067"
+             y="101.30163"
+             ry="0"
+             inkscape:spray-origin="#rect444" />
+          <path
+             style="font-variation-settings:normal;vector-effect:none;fill:#c67139;fill-opacity:0.176471;stroke:none;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+             d="m 189.69074,118.02738 c 0,0 -3.01042,-2.28791 -3.87995,-3.27562 -0.86953,-0.98771 -0.74828,-1.80292 -1.60173,-2.28819 -0.85345,-0.48527 -2.35234,-0.50254 -3.08905,-0.22882 -0.73671,0.27372 -0.52197,0.40257 -1.1441,1.1441 -0.62213,0.74153 -2.57162,1.72133 -3.02926,2.17897 -0.45764,0.45764 -1.74125,1.4921 -2.54212,0.92005 -0.80087,-0.57205 -1.19871,-1.29837 -1.42753,-1.75601 -0.22882,-0.45764 0.0489,-0.9113 0.39545,-1.29078 0.34655,-0.37948 0.81133,-0.65602 1.36056,-1.21865 0.54923,-0.56263 1.75477,-0.80974 1.61436,-1.58777 -0.14041,-0.77803 -0.73195,-1.70655 -1.59204,-1.68545 -0.86009,0.0211 -1.00944,0.64172 -1.67653,0.68832 -0.66709,0.0467 -2.14123,-0.36742 -2.48446,-0.82506 -0.34323,-0.45764 -0.3194,-2.90589 -0.80086,-4.00432 -0.48146,-1.09843 -1.48732,-2.05937 -1.83055,-2.51701 -0.34323,-0.45764 -0.64725,-1.11054 -1.60173,-1.60173 -0.95448,-0.49119 -3.28823,-1.314534 -4.11874,-0.686457 -0.83051,0.628077 -0.13292,1.391707 -0.22882,2.059367 -0.0959,0.66766 0.005,1.43198 -0.34323,1.94496 -0.34862,0.51298 -0.90833,0.77075 -1.48732,0.91528 -0.57899,0.14453 -2.52425,-1.28585 -3.42762,-1.24175 -0.90337,0.0441 -1.37757,1.69938 -1.94962,1.69938 -0.57205,0 -1.3729,2.53517 -2.39211,3.13238 -1.01921,0.59721 -3.08014,-1.17787 -3.902,-0.60832 -0.82186,0.56955 -1.51521,1.93548 -2.03053,2.71698 -0.51532,0.7815 -0.96136,1.58229 -2.09192,2.53748 -1.13056,0.95519 -3.98669,2.47608 -3.98669,2.47608 v 18.47848 h 49.25591 z"
+             id="path654"
+             sodipodi:nodetypes="czzzzzzzzzzzzzzzzzzzzzzzzzzc" />
+          <path
+             style="font-variation-settings:normal;vector-effect:none;fill:#008484;fill-opacity:0.113725;stroke:none;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+             d="m 189.69074,118.02738 c 0,0 -3.01042,-2.28791 -3.87995,-3.27562 -0.86953,-0.98771 -0.74828,-1.80292 -1.60173,-2.28819 -0.85345,-0.48527 -2.35234,-0.50254 -3.08905,-0.22882 -0.73671,0.27372 -0.52197,0.40257 -1.1441,1.1441 -0.62213,0.74153 -2.57162,1.72133 -3.02926,2.17897 -0.45764,0.45764 -1.74125,1.4921 -2.54212,0.92005 -0.80087,-0.57205 -1.19871,-1.29837 -1.42753,-1.75601 -0.22882,-0.45764 0.0489,-0.9113 0.39545,-1.29078 0.34655,-0.37948 0.81133,-0.65602 1.36056,-1.21865 0.54923,-0.56263 1.75477,-0.80974 1.61436,-1.58777 -0.14041,-0.77803 -0.73195,-1.70655 -1.59204,-1.68545 -0.86009,0.0211 -1.00944,0.64172 -1.67653,0.68832 -0.66709,0.0467 -2.14123,-0.36742 -2.48446,-0.82506 -0.34323,-0.45764 -0.3194,-2.90589 -0.80086,-4.00432 -0.48146,-1.09843 -1.48732,-2.05937 -1.83055,-2.51701 -0.34323,-0.45764 -0.64725,-1.11054 -1.60173,-1.60173 -0.95448,-0.49119 -3.28823,-1.314534 -4.11874,-0.686457 -0.83051,0.628077 -0.13292,1.391707 -0.22882,2.059367 -0.0959,0.66766 0.005,1.43198 -0.34323,1.94496 -0.34862,0.51298 -0.90833,0.77075 -1.48732,0.91528 -0.57899,0.14453 -2.52425,-1.28585 -3.42762,-1.24175 -0.90337,0.0441 -1.37757,1.69938 -1.94962,1.69938 -0.57205,0 -1.3729,2.53517 -2.39211,3.13238 -1.01921,0.59721 -3.08014,-1.17787 -3.902,-0.60832 -0.82186,0.56955 -1.51521,1.93548 -2.03053,2.71698 -0.51532,0.7815 -0.96136,1.58229 -2.09192,2.53748 -1.13056,0.95519 -3.66576,2.47608 -3.66576,2.47608 V 85.029102 h 48.93498 z"
+             id="path821"
+             sodipodi:nodetypes="czzzzzzzzzzzzzzzzzzzzzzzzzzc" />
+        </g>
+        <path
+           style="font-variation-settings:normal;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.5, 1;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:markers fill stroke;stop-color:#000000"
+           d="m 142.7549,181.59452 c 0,0 2.85613,-1.52089 3.98669,-2.47608 1.13056,-0.95519 1.5766,-1.75598 2.09192,-2.53748 0.51532,-0.7815 1.20867,-2.14743 2.03053,-2.71698 0.82186,-0.56955 2.88279,1.20553 3.902,0.60832 1.01921,-0.59721 1.82006,-3.13238 2.39211,-3.13238 0.57205,0 1.04625,-1.65531 1.94962,-1.69938 0.90337,-0.0441 2.84863,1.38628 3.42762,1.24175 0.57899,-0.14453 1.1387,-0.4023 1.48732,-0.91528 0.34862,-0.51298 0.24733,-1.2773 0.34323,-1.94496 0.0959,-0.66766 -0.60169,-1.43129 0.22882,-2.05937 0.83051,-0.62808 3.16426,0.19527 4.11874,0.68646 0.95448,0.49119 1.2585,1.14409 1.60173,1.60173 0.34323,0.45764 1.34909,1.41858 1.83055,2.51701 0.48146,1.09843 0.45763,3.54668 0.80086,4.00432 0.34323,0.45764 1.81737,0.87176 2.48446,0.82506 0.66709,-0.0466 0.81644,-0.66719 1.67653,-0.68832 0.86009,-0.0211 1.45163,0.90742 1.59204,1.68545 0.14041,0.77803 -1.06513,1.02514 -1.61436,1.58777 -0.54923,0.56263 -1.01401,0.83917 -1.36056,1.21865 -0.34655,0.37948 -0.62427,0.83314 -0.39545,1.29078 0.22882,0.45764 0.62666,1.18396 1.42753,1.75601 0.80087,0.57205 2.08448,-0.46241 2.54212,-0.92005 0.45764,-0.45764 2.40713,-1.43744 3.02926,-2.17897 0.62213,-0.74153 0.40739,-0.87038 1.1441,-1.1441 0.73671,-0.27372 2.2356,-0.25645 3.08905,0.22882 0.85345,0.48527 0.7322,1.30048 1.60173,2.28819 0.86953,0.98771 3.87995,3.27562 3.87995,3.27562"
+           id="path823"
+           sodipodi:nodetypes="czzzzzzzzzzzzzzzzzzzzzzzzzzc" />
+      </g>
+      <g
+         id="g1005"
+         transform="translate(122.19935,63.500003)">
+        <path
+           style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           d="M 17.830509,20.303953 V 71.614239"
+           id="path1004"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:#ff0000;stroke:#151515;stroke-width:0.491;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           d="M 69.952361,71.614239 H 18.321509"
+           id="path1005"
+           sodipodi:nodetypes="cc" />
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333333px;line-height:1.2;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.499999, 1;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="10.71842"
+       y="14.165568"
+       id="text1011"><tspan
+         sodipodi:role="line"
+         id="tspan1011"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333333px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="10.71842"
+         y="14.165568">A</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333333px;line-height:1.2;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.499999, 1;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="10.71842"
+       y="82.95723"
+       id="text1012"><tspan
+         sodipodi:role="line"
+         id="tspan1012"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333333px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="10.71842"
+         y="82.95723">B</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="44.494286"
+       y="139.9745"
+       id="text1013"><tspan
+         sodipodi:role="line"
+         id="tspan1013"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="44.494286"
+         y="139.9745">X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="106.23001"
+       y="139.9745"
+       id="text1014"><tspan
+         sodipodi:role="line"
+         id="tspan1014"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="106.23001"
+         y="139.9745">X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="167.3297"
+       y="139.9745"
+       id="text1015"><tspan
+         sodipodi:role="line"
+         id="tspan1015"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="167.3297"
+         y="139.9745">X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="-110.99326"
+       y="18.481304"
+       id="text1016"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan1016"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="-110.99326"
+         y="18.481304">Y</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="-110.99326"
+       y="79.358223"
+       id="text1017"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan1017"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="-110.99326"
+         y="79.358223">Y</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;line-height:1.2;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';text-align:start;text-decoration-color:#000000;letter-spacing:0.152687px;word-spacing:0.234902px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#246abe;fill-opacity:1;stroke:none;stroke-width:0.290999;stroke-linecap:square;stroke-dasharray:0.290999, 0.582001;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       x="-110.99326"
+       y="140.2124"
+       id="text1018"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan1018"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke-width:0.291"
+         x="-110.99326"
+         y="140.2124">Y</tspan></text>
+  </g>
+</svg>

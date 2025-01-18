@@ -1,0 +1,408 @@
+# Model fine-tuning {#sec-modelfinetuning}
+
+## Introduction
+
+The first part of this tutorial introduced the basic steps of species distribution modeling. And in @sec-modelvalidation, we learned how to use cross-validation to evaluate a model. In this section, we'll build on that foundation by examining how changes in parameters can influence model outcomes, using cross-validation to evaluate the results. Questions we’ll touch on here are e.g., what parameters can we adjust, and how do these changes impact the results? Which model should we ultimately select? Or could we even combine multiple models?
+
+By now, you should be familiar with the basic steps of modeling. Since testing different parameter combinations, validating outcomes, and selecting the best-performing model can involve many steps that are easy to lose track of, it is recommended to use Bash or Python scripts during this phase. For this reason, the examples in this section will focus on these tools.
+
+That said, if you prefer to use the graphical user interface (GUI), you can still follow along and manually adjust parameters. However, keep in mind that scripting offers greater efficiency and reproducibility for complex workflows.
+
+## Get started
+
+Maxent offers several options to fine-tune the model (@fig-UOU9jFNrtR). These can be found under the [Parameters]{.style-menu} and [Advanced]{.style-menu} tabs. We'll explore two of these options. For other parameters and a more detailed explanation of the options, see the tutorial and other materials on the [Maxent website](https://biodiversityinformatics.amnh.org/open_source/maxent/).
+
+:::::: grid
+::: {.g-col-md-7 .g-col-12}
+![](images/r_maxent_train_parameteroptions.png)
+:::
+
+:::: {.g-col-md-5 .g-col-12}
+::: removespace
+![Under the tabs [Parameters]{.style-menu} and [Advanced]{.style-menu}, you'll find the various options to fine-tune the model. As a reminder, in each function dialog, the parameter (or flag) name is visible on the right side of each input field. This makes it simple to understand how the module dialog corresponds to the command representation. The other way around, each parameter setting you change is reflected in the corresponding bash code at the bottom of the dialog. As mentioned above, we'll show the Python and bash code, but it still can be useful to explore the different parameter options in the dialog.](images/r_maxent_train_parameteroptions_blank.png){#fig-UOU9jFNrtR}
+:::
+::::
+::::::
+
+To test these options, we follow an iterative process — each time we change some options, we rerun the model. For each model, we evaluate the outcomes using a similar approach as in @sec-4examinetheresults.
+
+As we did previously, we'll first create a separate sub-folder in our working directory for the new models we are going to create. Similarly, we will create a new mapset in our GRASS database for these models.
+
+::: {#exm-DXBuP8nUXR .hiddendiv}
+:::
+
+::: {.panel-tabset group="bashpython"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Folders to store data
+mkdir model_04
+
+# Create a new mapset and switch to it
+g.mapset -c mapset=model_04
+
+# Define the region and set the MASK
+g.region raster=bio_1@climate_current 
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Set working directory
+os.chdir("replace-for-path-to-working-directory")
+
+# Create a new mapset and switch to it
+gs.run_command("g.mapset", flags="c", mapset="model_04")
+
+# Set the region and create a MASK
+gs.run_command("g.region", raster="bio_1@climate_current") 
+```
+:::
+
+In the next section, we'll experiment with some parameter settings. We'll do this in the same mapset we just created. To keep track of the different model outcomes, we make sure to give the output layers and files a different (base) name each time we train a new model.
+
+## Regularization {#sec-regularizationexample}
+
+### Background
+
+In MaxEnt, the regularization multiplier ([betamultiplier]{.style-parameter}) parameter controls the degree of regularization applied to the model. Regularization is a technique used to prevent overfitting by penalizing overly complex models.
+
+-   A *lower regularization multiplier* (e.g., less than 1) allows the model to fit more complex relationships in the data, which can improve predictive performance on training data but increases the risk of overfitting and poor generalization to new data.
+
+-   A *higher regularization multiplier* (e.g., 2 or higher) enforces stronger regularization, resulting in simpler models with fewer features. This reduces the risk of overfitting, especially when working with small datasets or datasets with noisy predictors. However, it may also reduce model accuracy.
+
+@fig-overfitting illustrates the problem with under- and overfitting with a classification model. The underfitted model uses a linear boundary that fails to separate the two classes effectively. The overfitted model creates a highly complex decision boundary that closely matches every detail of the training data, but potentially performs poorly on unseen data. Ideally, a model captures the essential patterns in the data without overfitting, achieving a balance that is likely to result in low errors on both training and test data.
+
+```{=html}
+<!--
+The svg file also includes an example for a model for relationships. The accompanying caption would be: @fig-overfitting illustrates the problem with under- and overfitting when modeling a relationship. Underfitting occurs when the model is too simple to capture the underlying relationship between the predictor variable and the predicted value. This leads to high errors during training and is also likely to lead to poor performance on test data as the model fails to capture the underlying trends in the data. Overfitting, on the other hand, occurs when the model is overly complex and fits the training data too closely. This typically results in very low training error, but is likely to lead to poor generalisation.
+-->
+```
+
+![Under- and overfitting illustrated for a classification model.](images/overfitting.png){#fig-overfitting fig-align="left"}
+
+To evaluate the impact of regularization on model outcomes, we need to create multiple models using different regularization values. The outputs from [r.maxent.train]{.style-function} can then be compared to assess the differences. In the example below, the model is run twice with two different regularization values.
+
+### Model training
+
+By default, a regularization multiplier value of 1 is used. In this example, we'll create two models using different regularization multiplier values: one with a value of 0.01 and another with a value of 3. Most settings will remain the same as described in @exm-fb4bZ2MIs0, including the use of 4-fold cross-validation. One difference is that we will customize the output layer names instead of using the default names. Can you see how these output layer names are explicitly specified?
+
+::: {#exm-xp61oQN3Ho .hiddendiv}
+:::
+
+::: {.panel-tabset group="bashpython"}
+## {{< fa solid terminal >}}
+
+First run using [betamultiplier]{.style-parameter} of 0.01:
+
+``` bash
+# Create output folder
+mkdir model_04a
+
+# Train model
+r.maxent.train \
+samplesfile=dataset01/species.swd \
+environmentallayersfile=dataset01/background_points.swd \
+outputdirectory=model_04a \
+samplepredictions=Erealb_sp \
+backgroundpredictions=Erealb_bg \
+projectionlayers=dataset01/envdat \
+predictionlayer=Erealb \
+suffix=_m4a \
+replicatetype=crossvalidate \
+betamultiplier=0.01 \
+replicates=4 threads=4 memory=1000 -ygb
+```
+
+Second run using [betamultiplier]{.style-parameter} of 3:
+
+``` bash
+# Create output folder
+mkdir model_04b
+
+# Train model
+r.maxent.train \
+samplesfile=dataset01/species.swd \
+environmentallayersfile=dataset01/background_points.swd \
+outputdirectory=model_04b \
+samplepredictions=Erealb_sp \
+backgroundpredictions=Erealb_bg \
+projectionlayers=dataset01/envdat \
+predictionlayer=Erealb \
+suffix=_m4b \
+replicatetype=crossvalidate \
+betamultiplier=3 \
+replicates=4 threads=4 memory=1000 -ygb
+```
+
+## {{< fa brands python >}}
+
+First run using [betamultiplier]{.style-parameter} of 0.01:
+
+``` python
+# Create output folder
+os.makedirs("model_04a", exist_ok=True)
+
+# Train model
+gs.run_command(
+    "r.maxent.train",
+    samplesfile="dataset01/species.swd",  
+    environmentallayersfile="dataset01/background_points.swd",
+    outputdirectory="model_04a", 
+    samplepredictions="Erealb_sp",
+    backgroundpredictions="Erealb_bg",
+    projectionlayers="dataset01/envdat",
+    predictionlayer="Erealb",
+    suffix="_m4a", 
+    replicatetype="crossvalidate",
+    betamultiplier=0.01,
+    replicates=4,
+    threads=4,
+    memory=1000,
+    flags="ygb", 
+)  
+```
+
+Second run using [betamultiplier]{.style-parameter} of 3:
+
+``` python
+# Create output folder
+os.makedirs("model_04b", exist_ok=True)
+
+# Train model
+gs.run_command(
+    "r.maxent.train",
+    samplesfile="dataset01/species.swd",  
+    environmentallayersfile="dataset01/background_points.swd",
+    outputdirectory="model_04b",
+    samplepredictions="Erealb_sp",
+    backgroundpredictions="Erealb_bg",
+    projectionlayers="dataset01/envdat",
+    predictionlayer="Erealb",
+    suffix="_m4b", 
+    replicatetype="crossvalidate",
+    betamultiplier=3,
+    replicates=4,
+    threads=4,
+    memory=1000,
+    flags="ygb", 
+)  
+```
+:::
+
+### Model evaluation
+
+We can now compare the test AUC's to determine which model performs better. These AUC values are printed to the console and can also be found in the [Erebia_alberganus_obs.html]{.style-file} files in the output folders of the models, together with other model statistics. If you followed the instructions, these are the folders [model_04a]{.style-folder} and [model_04b]{.style-folder}.
+
+The results show that with a test AUC (area under the ROC) of 0.890 ± 0.003, [model 4a]{.style-output} appears to slightly outperform [model 4b]{.style-output}, which has a test AUC of 0.887 ± 0.003. See also the corresponding receiver operating characteristic (ROC) curves in @fig-rocmodel4a and [-@fig-rocmodel4b].
+
+::: {.panel-tabset .exercise}
+## ROC for model 4a
+
+![The receiver operating characteristic (ROC) curve, again averaged over the 4 sub-models (replicate runs) of model 4a, using a regularization multiplier of 0.01. The average test AUC (area under the curve) for the replicate runs is 890, and the standard deviation is 0.003.](share/model_04a/plots/Erebia_alberganus_obs_roc.png){#fig-rocmodel4a fig-align="left"}
+
+## ROC for model 4b
+
+![The receiver operating characteristic (ROC) curve, again averaged over the 4 sub-models (replicate runs) of model 4b, using a regularization multiplier of 3. The average test AUC (area under the curve) for the replicate runs is 0.887, and the standard deviation is 0.003.](share/model_04b/plots/Erebia_alberganus_obs_roc.png){#fig-rocmodel4b fig-align="left"}
+:::
+
+Comparing the response curves of both models in the aforementioned [Erebia_alberganus_obs.html]{.style-file} files show that there are some noticeable differences. The response curves of [model 4a]{.style-output} have a larger standard deviation, indicating that the estimated relationships between environmental variables and species presence are more sensitive to the specific training data. This sensitivity reduces the model's generalizability. In contrast, the smoother response curves of [model 4b]{.style-output} suggest that it captures more general patterns, although it may miss some of the finer, true patterns in how species react to these gradients. The response curves of model 3 (which we created in @sec-611) show an intermediate between the two.
+
+:::::: {.panel-tabset .exercise}
+## Model 4a
+
+::: {#fig-rcmodel4a layout-ncol="3"}
+![](share/model_04a/plots/Erebia_alberganus_obs_bio_1.png){group="ADmw0wYYhy"}
+
+![](share/model_04a/plots/Erebia_alberganus_obs_bio_8.png){group="ADmw0wYYhy"}
+
+![](share/model_04a/plots/Erebia_alberganus_obs_bio_9.png){group="ADmw0wYYhy"}
+
+Response curves for model 4a created by varying the specific variable, while keeping all other variables fixed at their average sample value.
+:::
+
+## Model 3
+
+::: {#fig-rcmodel4a layout-ncol="3"}
+![](share/model_03/plots/Erebia_alberganus_obs_bio_1.png){group="Cl8jg8d8vi"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_8.png){group="Cl8jg8d8vi"}
+
+![](share/model_03/plots/Erebia_alberganus_obs_bio_9.png){group="Cl8jg8d8vi"}
+
+Response curves for model 3 created by varying the specific variable, while keeping all other variables fixed at their average sample value.
+:::
+
+## Model 4b
+
+::: {#fig-rcmodel4b layout-ncol="3"}
+![](share/model_04b/plots/Erebia_alberganus_obs_bio_1.png){group="tisHr12i1g"}
+
+![](share/model_04b/plots/Erebia_alberganus_obs_bio_8.png){group="tisHr12i1g"}
+
+![](share/model_04b/plots/Erebia_alberganus_obs_bio_9.png){group="tisHr12i1g"}
+
+Response curves for model 4b created by varying the specific variable, while keeping all other variables fixed at their average sample value.
+:::
+::::::
+
+The maps in @fig-Erealbavm3, @fig-Erealbavm4a, and @fig-Erealbavm4b show the predicted probabilities distribution based on model 3, model 4a, and model 4b, respectively. The different distribution patterns underscore the impact of regularization on prediction outcomes. Model 4a, with a low regularization multiplier (0.01), captures more specific, localized patterns. Model 4b, with a higher regularization multiplier (3), emphasizes broader, general patterns. Model 3 represents a middle ground. So, which one captures the true distribution of our species best? Is it model 4a, which has the highest average test AUC?
+
+::: {.panel-tabset .exercise}
+## Model 4a
+
+![Predicted probability distribution based on model 4a, using a regularization multiplier of 0.01. The average test AUC was 890 ± 0.003](images/Erealb_avg_m4a.png){#fig-Erealbavm4a group="jerZqYsEkn"}
+
+## Model 3
+
+![Predicted probability distribution based on model 3 (created in @sec-611), using a regularization multiplier of 1. The test AUC was 0.889 ± 0.003.](images/Erebia_alberganus_obs_envdat_avg.png){#fig-Erealbavm3 group="jerZqYsEkn"}
+
+## Model 4b
+
+![Predicted probability distribution based on model 4b, using a regularization multiplier of 3. The average test AUC was 887 ± 0.003](images/Erealb_avg_m4b.png){#fig-Erealbavm4b group="jerZqYsEkn"}
+:::
+
+When the goal of species distribution modeling is to predict future potential distribution patterns under changing climate conditions, assessing model robustness becomes essential. A robust model produces consistent and reliable predictions, even when input data vary. This is reflected in minimal variation in predictions across iterations of a cross-validation. In contrast, a large range or high standard deviation in predicted values suggests that the model's predictions are sensitive to the input data. We can visualize this using the maps with the standard deviation of the predicted values across the four iterations of the 4-fold cross-validation. These are the raster maps with the suffix [\_stddev]{.style-data}.
+
+:::: {.panel-tabset .exercise}
+## {{< fa regular circle-question >}}
+
+::: {#exr-ajqvCHNxsK}
+What parameter setting did we use to create those standard deviation maps?
+:::
+
+## {{< fa regular comment >}}
+
+The standard deviation map, along a number of other summary maps, are created when using the [projectionlayers]{.style-parameter} parameter in [r.maxent.train]{.style-function}. The process involves the following steps:
+
+The [r.maxent.train]{.style-function} module requires two [SWD]{.style-file} files as input: one containing environmental variable values for species observation points, and the other for a random set of background locations. These files were generated using the [v.maxent.swd]{.style-function} module.
+
+The [projectionlayers]{.style-parameter} parameter specifies a folder with environmental raster layers in ASCII format. These layers must match the variables used in the [SWD]{.style-file} files, with corresponding names. The easiest way to create them is with [v.maxent.swd]{.style-function}, as described in @sec-maxentswd (@exm-ddddddwdr).
+
+Setting [projectionlayers]{.style-parameter} instructs [r.maxent.train]{.style-function} to not only train the model but also generate a species probability distribution map using the provided raster layers as input in the model.
+
+![The figure illustrates how summary layers are calculated for each cell based on input raster values. For details, see [r.univar](https://grass.osgeo.org/grass-stable/manuals/r.univar.html).](images/layeroverlay.png){#fig-layeroverlay3 fig-align="left" width="400"}
+
+Because we used the [replicatetype]{.style-parameter} and [replicates]{.style-parameter} parameters for 4-fold cross-validation, [r.maxent.train]{.style-function} produced four species probability distribution map (one per iteration). These raster layers were combined into new raster layers showing the mean, median, maximum, minimum and standard deviation across the four iterations (@fig-layeroverlay3). Their names end with \*\_avg*,* median*,* max*,* min*, and* stddev\*, followed by the suffix provided in the [suffix]{.style-parameter} parameter. Note that the original four layers are removed.
+::::
+
+The standard deviation maps for models 3, 4a, and 4b are shown in @fig-stddevmodel4b — [-@fig-stddevmodel3]. Since their original color tables differ, comparing them requires applying the same color table to all three maps. This can be done using the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) module. Note that I adjusted the color table to enhance the visibility of patterns across all maps (see lines 8–26 in the code block of [Appendix -@sec-ws4FDpBcUr]).
+
+::: {.panel-tabset .exercise}
+## Model 4a
+
+![Map showing the standard deviation of predicted values across the four iterations of the 4-fold cross-validation for Model 4a. The legend is truncated for readability, showing only the lower part of the standard deviation range.](images/stddev_model_4a.png){#fig-stddevmodel4a group="rf8GNKvMdo"}
+
+## Model 3
+
+![Map showing the standard deviation of predicted values across the four iterations of the 4-fold cross-validation for Model 3 (moderate regularization multiplier, 1).](images/stddev_model_3.png){#fig-stddevmodel3 group="rf8GNKvMdo"}
+
+## Model 4b
+
+![Map showing the standard deviation of predicted values across the four iterations of the 4-fold cross-validation for Model 4b (high regularization multiplier, 3).](images/stddev_model_4b.png){#fig-stddevmodel4b group="rf8GNKvMdo"}
+:::
+
+Comparing the maps highlights how regularization affects model stability and sensitivity to input data. Model 4a, with low regularization, shows significant variation across iterations, especially in areas where the species has been observed. Predicted probabilities for these locations vary by up to 0.78, as shown in the [Cloglog_range]{.style-data} column of the [Erealb_bg_m4a]{.style-data} attribute table.
+
+:::: {.panel-tabset .exercise}
+## {{< fa regular circle-question >}}
+
+::: {#exr-ajqvCHNxsK}
+What do the values in the column [Cloglog_range]{.style-data} of the attribute table of [Erealb_sp_m4a]{.style-data} represent?
+:::
+
+## {{< fa regular comment >}}
+
+Because we used the [replicatetype]{.style-parameter} and [replicates]{.style-parameter} parameters for 4-fold cross-validation, [r.maxent.train]{.style-function} created four point layers with the predicted probabilities for species observation locations (one per iteration). These layers were then combined into a new point layer ([Erealb_sp_m4a]{.style-data} in this case), with an attribute table containing columns for the average probability scores ([Cloglog_mean]{.style-data}) and the range ([Cloglog_range]{.style-data}: maximum - minimum probabilities) across the four iterations. The original four layers were removed.
+
+Similarly, the [Erealb_bg_m4a]{.style-data} point layer was created using predictions for the background point locations.
+::::
+
+The differences in probability predictions among the three models can be summarized using boxplots. This can be done using the [v.boxplot](https://grass.osgeo.org/grass-stable/manuals/addons/v.boxplot.html), as illustrated in @sec-gbpRIXfZKJ. @fig-q72ESFIpd2 illustrates the median and spread of probability predictions for both species occurrence locations and background points. The results show that increased regularization slightly raises prediction values and increases the spread across locations, reflecting the greater smoothing effect of higher regularization.
+
+::: {.panel-tabset .exercise}
+## Comparing averages
+
+![Boxplots comparing the average predicted suitability values for occurrences and background points across the 4-fold cross-validation iterations for Models 4a, 3, and 4b.](images/boxplots_bgpredictions.png){#fig-q72ESFIpd2 fig-align="left" width="550" group="iJN0ej7krt"}
+
+## Comparing ranges
+
+![Boxplots comparing difference between maximum and minimum predicted values (range) for occurrences and background points across the 4-fold cross-validation iterations for Models 4a, 3, and 4b. Note that for readability, the figure leaves out the more extreme outliers.](images/boxplots_rangepredictions.png){#fig-nZ6IUl9J5Z fig-align="left" width="550" group="CSLTHopuQ2"}
+:::
+
+@fig-nZ6IUl9J5Z confirms earlier observations: Model 4a exhibits much greater variation in predictions across iterations for both occurrence locations and background points, though the differences are less pronounced for the latter. This increased variability indicates that Model 4a is highly sensitive to input data differences, reflecting a tendency to overfit. In contrast, Model 4b, with the highest regularization (betamultiplier = 3), shows a narrower range of variability, indicating reduced sensitivity to input data differences. However, this comes at the cost of lower specificity in species distribution.
+
+The results emphasize the need to balance regularization for predictions that are both accurate and generalizable. Model 3 may be a good starting point, but further testing is likely needed. And of course, we should not forget to evaluate the results through a biological lens to identify which model is most plausible for the species' ecology.
+
+### Predicting
+
+Once the best parameter settings are selected, the final model can be trained using all available occurrence data. This approach ensures the model utilizes the full dataset, potentially improving its predictive power. The trained model can then serve as input for the [r.maxent.predict]{.style-function} module. Following the steps outlined in @sec-modelprediction, predictions can be generated under various environmental conditions or for new geographic areas.
+
+## Feature selection
+
+### Background
+
+Previously, we selected several environmental variables to predict the suitability of locations for our species. However, the relationship between these variables and species occurrence is often more complex. For instance, a species may avoid both low and high temperatures, preferring a specific intermediate range. MaxEnt enables you to capture these complex relationships by transforming explanatory variables using various functions, referred to as features. Below, you’ll find a brief explanation of these features. For a more detailed discussion, see @merowPracticalGuideMaxEnt2013 and @phillipsModelingSpeciesDistributions2008.
+
+::::: panel-tabset
+## Linear
+
+::: floatright30
+![Linear feature.](images/lineartransform.png){#fig-linearfeature}
+:::
+
+A linear feature transforms the input variables using a linear function, which scales the data to a range of 0-1. This is done to bring all features onto the same scale, preventing one feature from dominating the others simply because of its larger magnitude. This ensures that the model treats all features equally in terms of their influence on the outcome.
+
+If the auto-selection of features is disabled, this feature will be used by default. You can deselect it with the [-l]{.style-parameter} flag.
+
+When interpretability of the model outcome is important, only use the linear feature. Since no transformation occurs, interpreting coefficients in the context of their effect on presence probability is easiest with the Linear method. When only the linear feature is selected, Maxent will create a tool to interactively explore the effect of the different features. See the [official Maxent tutorial](https://biodiversityinformatics.amnh.org/open_source/maxent/) for more details.
+
+## Quadratic
+
+::: floatright30
+![Quadratic feature.](images/quadratictransform.png){#fig-quadraticrfeature}
+:::
+
+A quadratic feature transforms the explanatory variable value by squaring it, resulting in a quadratic relationship between the explanatory variable and the presence response. Species’ responses to environmental conditions are often nonlinear and unimodal, and a quadratic form may best represent this kind of relationship.
+
+If the auto-selection of features is disabled, this feature will be used by default. You can deselect it with the [-q]{.style-parameter} flag.
+
+## Product
+
+Product features represent pairwise combinations of environmental predictors. When used with linear and quadratic features, product features constrain the output distributions to have the same covariance for each pair of environmental variables as the samples.
+
+Using this feature may be useful to capture the influence of one predictor on another predictor. For example, a plant will need more water (rainfall) in hotter months. Note that using this feature may improve your model, but it may also be more difficult to disentangle the effects of one explanatory variable as opposed to the other.
+
+If the auto-selection of features is disabled, this feature will be used by default. You can deselect it with the [-p]{.style-parameter} flag.
+
+## Threshold
+
+Threshold features make a continuous predictor binary by generating a feature whose value is 0 below a certain threshold and 1 above. Several threshold features can be created and combined to create complex features. The number of threshold features will depend on the regularization parameter, with low regularization allowing for more complex features.
+
+![Example of different threshold features, defined by the threshold value (not). Several threshold features can be combined in a more complex feature.](images/stepfeature.png){#fig-thresholdfeatures fig-align="left"}
+
+If the auto-selection of features is disabled, this feature is disabled by default. You can select it with the [-t]{.style-parameter} flag.
+
+## Hinge
+
+The hinge feature converts the continuous explanatory variable into two parts, divided by a threshold value (called a knot). Left (or right) of the knot, the explanatory variable is transformed to 0 (or 1). On the other side of the knot, a linear transformation function is applied. This can be an increasing function (forward hinge) or decreasing (reverse hinge).
+
+![Example of different hinge features, defined by the threshold value (not). The left shows forward hinge features and the right shows reverse hinge features.](images/hinge_features.png){#fig-hingefeatures fig-align="left"}
+
+Like with the threshold feature, several hinge features together can capture potentially very complex patterns. The number of threshold features will depend on the regularization parameter, with low regularization allowing for more complex features.
+
+Note that the hinge feature should not be used with linear features, as linear features are a special case of hinge features. If the auto-selection of features is disabled, this feature will be used by default. You can deselect it with the [-h]{.style-parameter} flag.
+:::::
+
+Maxent can use multiple transformed versions of each explanatory variable when attempting to model complex relationships between the environmental variables and the species occurrences. By default, Maxent automatically selects which feature classes to use, based on the number of training samples. With 80 training samples or more, all feature types are used. With 15 to 79 samples, the linear, quadratic and hinge features are used. With 10 to 14 samples, linear and quadratic features are used. Below 10 samples, only linear features are used. Use the [-a]{.style-parameter} flag to disable auto-selection of features. This will, by default, enable all but the threshold features, but you can select/deselect each feature using the corresponding flags (see above).
+
+### Model training
+
+We can train various models using different combinations of features. To practice, select each feature in turn, deselecting all other features, and create a model, following the steps in @sec-regularizationexample. After you have created these models:
+
+-   Determine which model performs best based on the AUC. Does any of the models perform better than model 3?
+-   Compare and evaluate the different maps, and see if these give reason to prefer one of the models over the others.
+-   Pay special attention to the response curves, they should reflect your choice.
+-   Select the two best performing models, and use both to predict the future distribution, following the steps of @sec-e8039LmOdu. Compare the results. Do they differ a lot?
+
+We would ideally want to test all the different combinations of features and regularization settings. As you have seen by now, these take plenty of steps and time. You therefore should consider automating the whole process. This is relatively easy, as for all steps you already have the Python code. So it is "only" a matter of putting all this together. This is the subject of @sec-automatization (which is a work in progress, the training, and prediction parts are still in preparation).
