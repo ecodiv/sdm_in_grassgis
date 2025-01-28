@@ -1003,9 +1003,9 @@ Open the [r.info]{.style-function} dialog, and run it with the following paramet
 : {tbl-colwidths="\[50,50\]"}
 :::
 
-To ensure that the region's settings (extent, resolution, orientation) match those of the imported bioclim layers, we use the [ ](https://grass.osgeo.org/grass-stable/manuals/.html) module again, but this time with the [raster]{.style-parameter} parameter[^2_obtaining_data-11]. Next, we run it again with the [save]{.style-parameter} parameter to save the region settings in the named region file [aoi]{.style-data}.
+To ensure that the region's settings (extent, resolution, orientation) match those of the imported bioclim layers, we use the [g.region](https://grass.osgeo.org/grass-stable/manuals/.html) module again, but this time with the [raster]{.style-parameter} parameter[^2_obtaining_data-11]. Next, we run it again with the [save]{.style-parameter} parameter to save the region settings in the named region file [aoi]{.style-data}.
 
-[^2_obtaining_data-11]: The different options of the \*\* function provide a lot of flexibility in to how to define the region. You are encouraged to carefully consider the different options each time you use this module.
+[^2_obtaining_data-11]: The different options of the [g.region]{.style-function} function provide a lot of flexibility in to how to define the region. You are encouraged to carefully consider the different options each time you use this module.
 
 ::: {#exm-V0FK3TyzcN .hiddendiv}
 :::
