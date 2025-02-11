@@ -15,7 +15,7 @@ project:
 book:
   title: "Species distribution modeling"
   subtitle: "Using Maxent in GRASS GIS"
-  date: "December 24, 2024"
+  date: today
   author:
     - name: Paulo van Breugel
       url: https://ecodiv.earth/about.html
@@ -32,7 +32,7 @@ book:
   favicon: images/favicon.ico
   page-footer: "&copy; <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>CC BY-NC-SA 4.0</a> by Paulo van Breugel, Ecodiv.earth,  2024."
   language: en
-  repo-url: https://github.com/ecodiv/grassgis_maxent_sdm
+  repo-url: https://github.com/ecodiv/sdm_in_grassgis
   repo-branch: main
   repo-actions: [edit, issue]
 
@@ -55,6 +55,7 @@ book:
     - A1_grassbasics.qmd
     - A3_sampledata.qmd
     - A4_scriptmap.qmd
+    - A6_troubleshooting.qmd
 
   bread-crumbs: false
   page-navigation: true

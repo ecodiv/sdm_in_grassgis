@@ -1,0 +1,239 @@
+# Trouble shooting {#sec-troubleshooting}
+
+Even when following all the steps in this reader, issues may still arise due to variations in software versions, system configurations, or differences in input data. Environmental layers may have different resolutions or extents, leading to unexpected errors. Additionally, computational limitations, such as memory constraints or processing power, can impact model performance.
+
+This appendix includes common issues encountered by others, along with proposed solutions. If you come across a problem, please consider reporting it, with a solution if you find one, so we can share it here for the benefit of others. To send a message, see the chat icon below. You can also report the issue on [Github](https://github.com/ecodiv/sdm_in_grassgis/issues).
+
+## Model training slow {#sec-toomanypresencepoints}
+
+If model training takes an unusually long time, use the [-v]{.style-parameter} flag to display the Maxent user interface for more detailed process information. And try if the solutions outlined below help.
+
+### Reduce number of presence points.
+
+A large number of presence points may result in slow performance. When this becomes problematic depends on factors such as hardware specifications and model complexity. On reasonably modern hardware, up to 5,000 presence points should not cause significant issues. However, with 20,000 or more, training is likely to slow down considerably.
+
+You can reduce the number of presence points using the [v.extract]{.style-function} module. If you also use the spatial thinning option ([paragraph -@sec-spatialthinning]), it is advisable to first carry out spatial thinning mannually (instead of doing this when running [v.maxent.swd]{.style-function}), as this will already reduce the number of points. If the number of points are still too many, use the [v.extract]{.style-function} module.
+
+The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using [g.region]{.style-function}. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
+
+::: {#exm-FhtMdyrrbX .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Thin the points
+v.to.rast input=Erebia_alberganus_obs output=Erebia_alberganus_obs use=value
+r.to.vect input=Erebia_alberganus_obs output=Erebia_alberganus_tmp type=point
+```
+
+## {{< fa brands python >}}
+
+The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using [g.region]{.style-function}. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
+
+``` python
+# Thin the points
+gs.run_command(
+    "v.to.rast",
+    input="Erebia_alberganus_obs",
+    output="Erebia_alberganus_obs",
+    use="value",
+)
+gs.run_command(
+    "r.to.vect",
+    input="Erebia_alberganus_obs",
+    output="Erebia_alberganus_tmp",
+    type="point",
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Open [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and run it with the following parameters:
+
+| Parameter | Value                 |
+|-----------|-----------------------|
+| input     | Erebia_alberganus_obs |
+| output    | Erebia_alberganus_obs |
+| use       | value                 |
+
+Open [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) and run it with the following parameters:
+
+| Parameter | Value                 |
+|-----------|-----------------------|
+| input     | Erebia_alberganus_obs |
+| output    | Erebia_alberganus_tmp |
+| type      | point                 |
+:::
+
+Now, if we still have too many points, we can use the [v.extract](https://grass.osgeo.org/grass-stable/manuals/v.extract.html) module to randomly extract for example 5000 points.
+
+::: {#exm-FhaaaX .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Extract 5000 points
+v.extract input=Erebia_alberganus_tmp output=Erebia_alberganus_obs2 random=5000
+
+# Remove the intermediate layer
+g.remove -f type=vector name=Erebia_alberganus_tmp
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Extract 5000 points
+gs.run_command(
+    "v.extract",
+    input="Erebia_alberganus_tmp",
+    output="Erebia_alberganus_obs2",
+    random=5000,
+)
+
+# Remove the intermediate layer
+gs.run_command("g.remove", flags="f", type="vector", name="Erebia_alberganus_tmp")
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [v.extract]{.style-function} and run it with the following settings:
+
+| Parameter | Value                  |
+|-----------|------------------------|
+| input     | Erebia_alberganus_tmp  |
+| output    | Erebia_alberganus_obs2 |
+| random    | 5000                   |
+
+Use the [g.remove]{.style-function} module to remove the intermediate layer.
+
+| Parameter | Value                 |
+|-----------|-----------------------|
+| name      | Erebia_alberganus_tmp |
+| type      | vector                |
+| f         | ✅                    |
+:::
+
+### Feature selection
+
+Model complexity, influenced by the number and type of selected features, will also impacts speed. By default, Maxent includes all features except the [Threshold]{.style-parameter} feature with more than 80 training presence points (@sec-featureselection).
+
+A solution is to select fewer features. Read [paragraph -@sec-featureselection] for more details. For example, limiting the model to linear and quadratic features can improve efficiency. The code below is the same as used in [paragraph -@sec-4trainthemodel], but this time we select these features only.
+
+::: {#exm-kBVYiBIRO8 .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.maxent.train \
+samplesfile=dataset01/species.swd
+environmentallayersfile=dataset01/background_points.swd 
+projectionlayers=dataset01/envdat
+outputdirectory=model_01
+samplepredictions=E_alberganus_samplepred
+backgroundpredictions=E_alberganus_bgrdpred
+predictionlayer=E_alberganus_probability
+threads=4 memory=1000
+-ybgaph # <1>
+```
+
+1.  We add the [-a]{.style-parameter}, [-p]{.style-parameter}, and [-h]{.style-parameter} parameters. Check the manual page to see what these flags are for.
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "r.maxent.train",
+    samplesfile="dataset01/species.swd",
+    environmentallayersfile="dataset01/background_points.swd",
+    projectionlayers="dataset01/envdat",
+    outputdirectory="model_01",
+    samplepredictions="E_alberganus_samplepred",
+    backgroundpredictions="E_alberganus_bgrdpred",
+    predictionlayer="E_alberganus_probability",
+    threads=4,
+    memory=1000,
+    flags="ybgaph", # <1>
+)  
+```
+
+1.  We add the [-a]{.style-parameter}, [-p]{.style-parameter}, and [-h]{.style-parameter} parameters. Check the manual page to see what these flags are for.
+
+## {{< fa regular window-restore >}}
+
+Open the [r.maxent.train]{.style-function} dialog and run the module with the following parameter settings:
+
+| Parameter | Value |
+|----|----|
+| samplesfile | dataset01/species.swd |
+| environmentallayersfile | dataset01/background.swd |
+| projectionlayers | dataset01/envdat |
+| outputdirectory | model_01 |
+| samplepredictions | E_alberganus_samplepred |
+| backgroundpredictions | E_alberganus_bgrdpred |
+| predictionlayer | E_alberganus_probability |
+| threads | 4 |
+| memory | 1000 |
+| Create a vector point layer from the sample predictions (y) | ✅ |
+| Create a vector point layer with predictions at backgr. points (b) | ✅ |
+| Create response curves (g) | ✅ |
+| Do not use automatic selection of feature classes (a) | ✅ |
+| Disable product feature (p) | ✅ |
+| Disable hinge feature (h) | ✅ |
+
+: {tbl-colwidths="\[63,37\]"}
+
+<br>Check the manual page to see what the last three flags are for.
+:::
+
+<!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->
+
+```{=html}
+<script src="https://formspree.io/js/formbutton-v1.min.js" defer></script>
+```
+
+```{=html}
+<script>
+  /* paste this line in verbatim */
+  window.formbutton=window.formbutton||function(){(formbutton.q=formbutton.q||[]).push(arguments)};
+  /* customize formbutton below*/     
+  formbutton("create", {
+    action: "https://formspree.io/f/xjvppyvg",
+    title: "Feedback", 
+    fields: [
+      { 
+        type: "email", 
+        label: "Email:", 
+        name: "email",
+        required: false,
+        placeholder: "your@email.com"
+      },
+      {
+        type: "hidden",
+        label: "",
+        value: "Appendix trouble shooting",
+      },
+      {
+        type: "textarea",
+        label: "Message:",
+        name: "message",
+        placeholder: "If you come across a problem, please consider reporting it here, ideally with a solution if you find one.",
+      },
+      { type: "submit" }      
+    ],
+    styles: {
+      title: {
+        backgroundColor: "#57B444"
+      },
+      button: {
+        backgroundColor: "#57B444"
+      }
+    }
+  });
+</script>
+```

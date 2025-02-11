@@ -338,7 +338,7 @@ The results emphasize the need to balance regularization for predictions that ar
 
 Once the best parameter settings are selected, the final model can be trained using all available occurrence data. This approach ensures the model utilizes the full dataset, potentially improving its predictive power. The trained model can then serve as input for the [r.maxent.predict]{.style-function} module. Following the steps outlined in @sec-modelprediction, predictions can be generated under various environmental conditions or for new geographic areas.
 
-## Feature selection
+## Feature selection {#sec-featureselection}
 
 ### Background
 

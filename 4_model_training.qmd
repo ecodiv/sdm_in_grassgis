@@ -148,7 +148,7 @@ Open the [r.maxent.train]{.style-function} dialog and run the module with the fo
 
 : {tbl-colwidths="\[63,37\]"}
 
-<br>Tip: if you are using the r.maxent.train dialog screen, keep it open after it finishes. That way, for our next run, you only need to adjust some parameter settings instead of typing in all again.
+<br>Tip: if you are using the r.maxent.train dialog screen, keep it open after it finishes. That way, for the next run, you only need to adjust some parameter settings instead of typing in all again.
 :::
 
 [^4_model_training-2]: The (relative) path to the [species swd]{.style-data} file.
@@ -176,6 +176,10 @@ Open the [r.maxent.train]{.style-function} dialog and run the module with the fo
 [^4_model_training-13]: Create response curves, which visualize the (marginal) effect of each explanatory variable on the predicted probability.
 
 Depending on how you run the module, it will generate some information in the terminal, console, Python console, or the function's command output window (we will refer to any of these as the *console*). It also creates a number of files in the output directory you specify, and layers in the current mapset. We will look at these results in the next section.
+
+::: {.callout-tip appearance="simple"}
+If training the model seems to take forever, see @sec-toomanypresencepoints for possible solutions.
+:::
 
 ## Examine the results {#sec-4examinetheresults}
 

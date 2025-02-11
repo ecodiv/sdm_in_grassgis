@@ -20,7 +20,7 @@ There are several ways to deal with oversampling, focusing on the presence point
 
 Undersampling, on the other hand, is more difficult to address, especially when significant portions of a species' range are not adequately sampled. Although it does not resolve the issue, comparing GBIF occurrence data with other sources, such as Red List range maps (@fig-rangemapoccurrences), can provide useful insights into the extent of potential undersampling.
 
-### Point densities
+### Point densities {#sec-pointdensities}
 
 Before proceeding, let's check whether our GBIF occurrence dataset shows any signs of bias by analyzing how the density of occurrences varies across the study area. We can do this by counting the number of observations within each grid cell. To accomplish this, we will use the [r.vect.stats](https://grass.osgeo.org/grass-stable/manuals/addons/r.vect.stats.html) module, which allows us to perform statistical analysis on raster-vector combinations. It is one of the addons installed in @sec-addons.
 
@@ -214,7 +214,7 @@ The results of [r.univar]{.style-function} show that the number of observations 
 
 If we look at the attribute table, we'll see that where there are many observations, they often span several years and often involve the same observer. This suggests that certain areas have been surveyed more extensively than others, potentially leading to uneven sampling effort across the species's range.
 
-### Spatially thinning
+### Spatially thinning {#sec-spatialthinning}
 
 As mentioned earlier, we wanted to check whether our GBIF occurrence dataset shows any signs of bias. The results suggest that bias may be present. A simple way to reduce the risk of spatial autocorrelation caused by oversampling is through spatial thinning or sub-sampling the data [@beck2014a]. This method involves removing observation points from the training dataset to ensure a specified minimum distance between points or to limit the maximum density of points at each location.
 
