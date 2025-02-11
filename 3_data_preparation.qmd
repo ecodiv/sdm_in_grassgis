@@ -24,7 +24,7 @@ Undersampling, on the other hand, is more difficult to address, especially when 
 
 Before proceeding, let's check whether our GBIF occurrence dataset shows any signs of bias by analyzing how the density of occurrences varies across the study area. We can do this by counting the number of observations within each grid cell. To accomplish this, we will use the [r.vect.stats](https://grass.osgeo.org/grass-stable/manuals/addons/r.vect.stats.html) module, which allows us to perform statistical analysis on raster-vector combinations. It is one of the addons installed in @sec-addons.
 
-We want to create the layer in the [Erebia_alberganus]{.style-db} mapset, so we need to switch to that mapset first.
+We want to create the layer in the [species_data]{.style-db} mapset, so we need to switch to that mapset first.
 
 ::: {#exm-3Tw6fEB0hg .hiddendiv}
 :::
