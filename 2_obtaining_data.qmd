@@ -89,7 +89,7 @@ For an effective workflow, it is a good idea to organize your data well. For thi
 
 ### Boundaries {#sec-nationalboundaries}
 
-We'll use the 1:10m scale data from [Natural Earth](https://www.naturalearthdata.com/), a public domain map dataset available at various scales. We download the Shapefile from [Admin 0 - countries](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) and unzip the data to the working directory. Next, we import the Shapefile in GRASS GIS as [admin0]{.style-data} using [r.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html).
+We'll use the 1:10m scale data from [Natural Earth](https://www.naturalearthdata.com/), a public domain map dataset available at various scales. We download the Shapefile from [Admin 0 - countries](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) and unzip the data to the working directory. Next, we import the Shapefile in GRASS GIS as [admin0]{.style-data} using [v.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html).
 
 ::: {#exm-e84zgDAzAIs .hiddendiv}
 :::
