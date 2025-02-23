@@ -14,8 +14,8 @@ project:
     - "share"
 book:
   title: "Species distribution modeling"
-  subtitle: "Using Maxent in GRASS GIS"
-  date: today
+  subtitle: "Using Maxent in GRASS"
+  date: 2025-02-12
   author:
     - name: Paulo van Breugel
       url: https://ecodiv.earth/about.html
@@ -72,14 +72,13 @@ book:
   #       file: https://ecodiv.earth
 
   sidebar:
+      title: "SDM in GRASS<br><span class=\"modifieddate\">Updated: 2025-2-23</span>"
       logo: "images/logo_SDM2.png"
       style: "floating"
       search: true
       collapse-level: 0
       # footer: |
-      #    <p style="color:lightgrey;"><a href="https://has.nl/en">HAS green academy</a><br>
-      #    <a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-innovatieve-biomonitoring/">Innovative Biomonitoring</a><br>
-      #    First published: 10-12-2024</p>
+      #   <span class="modifieddate">Last modified: 2025-2-23</span>
   sharing: [twitter, facebook, linkedin]
   open-graph: true
   twitter-card:
@@ -109,7 +108,7 @@ format:
     code-annotations: select
     copyright: "Paulo van Breugel, Ecodiv.earth,  2024"
     license: CC BY-NC-SA
-    pagetitle: "Ecodiv.earth | sdm in grass gis"
+    pagetitle: "Ecodiv.earth | sdm in grass"
     author-meta: "Paulo van Breugel"
     link-external-icon: false
     link-external-newwindow: true

@@ -1,8 +1,8 @@
 # Automatization {#sec-automatization}
 
-In this chapter, we bring together the steps covered in previous chapters to demonstrate how the species distribution modeling (SDM) process can be automated in GRASS GIS using Python. Automation ensures consistency and reproducibility, reduces the risk of errors, and allows for efficient handling of iterative improvements and large datasets.
+In this chapter, we bring together the steps covered in previous chapters to demonstrate how the species distribution modeling (SDM) process can be automated in GRASS using Python. Automation ensures consistency and reproducibility, reduces the risk of errors, and allows for efficient handling of iterative improvements and large datasets.
 
-With GRASS GIS's robust geospatial processing capabilities, we can customize these workflows to address diverse ecological and conservation challenges. This chapter provides key Python scripts that replicate the SDM workflow, serving as a foundation for building scalable, reproducible, and efficient modeling pipelines.
+With GRASS's robust geospatial processing capabilities, we can customize these workflows to address diverse ecological and conservation challenges. This chapter provides key Python scripts that replicate the SDM workflow, serving as a foundation for building scalable, reproducible, and efficient modeling pipelines.
 
 ## Acquire the data
 

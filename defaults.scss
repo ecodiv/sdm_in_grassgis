@@ -358,7 +358,13 @@ section#footnotes {
 .column-margin .style-parameter {
   font-size: .8rem;
 }
-
+.modifieddate {
+  font-size: 0.9rem;
+  color: #ced4da;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
 // ------------- Alerts --------------------------------------------------------
 
 $alert-border-width:            0 !default;

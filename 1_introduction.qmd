@@ -1,6 +1,6 @@
 # Introduction {#sec-introduction}
 
-This tutorial introduces a GRASS GIS tool set for species distribution modeling, and shows how to use it effectively in combination with other core modules and add-ons to predict the future potential distribution of the almond-eyed ringlet butterfly. It also includes a few examples illustrating how the GRASS GIS environment facilitates the exploration and interpretation of model results within their geographic context.
+This tutorial introduces a GRASS tool set for species distribution modeling, and shows how to use it effectively in combination with other core modules and add-ons to predict the future potential distribution of the almond-eyed ringlet butterfly. It also includes a few examples illustrating how the GRASS environment facilitates the exploration and interpretation of model results within their geographic context.
 
 The first part focuses on the essential building blocks of creating a species distribution model, from data collection to prediction. In the second part, we’ll dive deeper into the options, choices, and parameter settings to validate and fine-tune the model.
 
@@ -31,17 +31,17 @@ If you find some errors or have suggestions for improvements, you can create an 
 
 ## Install the software
 
-Before diving into this reader, make sure to install GRASS GIS, Maxent, and Java. Below, you'll find a brief guide on where to download the software and how to install it. Later on, you'll also install a number of GRASS GIS addons. These provide additional functionality not yet available in the core software package.
+Before diving into this reader, make sure to install GRASS, Maxent, and Java. Below, you'll find a brief guide on where to download the software and how to install it. Later on, you'll also install a number of GRASS addons. These provide additional functionality not yet available in the core software package.
 
-### GRASS GIS
+### GRASS software
 
-Visit the GRASS GIS website and navigate to the [download page](https://grass.osgeo.org/download/) for your operating system via the menu. Be sure to use the stable release (at the time of writing, this is version 8.4.0).
+Visit the GRASS website and navigate to the [download page](https://grass.osgeo.org/download/) for your operating system via the menu. Be sure to use the stable release (at the time of writing, this is version 8.4.0).
 
 For Windows users, the [download page](https://grass.osgeo.org/download/windows/) offers two main options: the standalone winGRASS installer and the OSGeo4W installer. I recommend using the OSGeo4W installer, as it allows you to install a wide range of open-source geospatial software packages, including QGIS and GDAL/OGR. Additionally, it provides a more convenient way to keep your software up to date.
 
-Note that if you already have QGIS installed on your Windows system, there’s a good chance you also have GRASS GIS installed. In that case, simply check whether you’re using the latest version.
+Note that if you already have QGIS installed on your Windows system, there’s a good chance you also have GRASS installed. In that case, simply check whether you’re using the latest version.
 
-### GRASS GIS addons {#sec-addons}
+### GRASS addons {#sec-addons}
 
 GRASS addons are modules that are not (yet) part of the core software package and therefore need to be installed separately. This can be done using the [wxGUI Extension Manager]{.style-menu} or using the command line. See @sec-usingaddons for details. In this tutorials, we'll use a number of addons, which we will install first.
 
@@ -102,7 +102,7 @@ Follow the steps in the video below to install the [r.maxent.train]{.style-funct
 
 ### Maxent {#sec-maxentsoftware}
 
-Two of the addons we just installed ([r.maxent.train]{.style-function} and [r.maxent.predict]{.style-function}) use the Maxent software in the background. Download the Maxent software from the [Maxent website](https://biodiversityinformatics.amnh.org/open_source/maxent/) and extract the [Maxent.jar]{.style-apps} file. Install it into the GRASS GIS add-on directory using the [r.maxent.setup]{.style-function} module. This will allow the other add-ons to find and use it automatically.
+Two of the addons we just installed ([r.maxent.train]{.style-function} and [r.maxent.predict]{.style-function}) use the Maxent software in the background. Download the Maxent software from the [Maxent website](https://biodiversityinformatics.amnh.org/open_source/maxent/) and extract the [Maxent.jar]{.style-apps} file. Install it into the GRASS add-on directory using the [r.maxent.setup]{.style-function} module. This will allow the other add-ons to find and use it automatically.
 
 ::: {#exm-l4ovVBumNL .hiddendiv}
 :::
@@ -126,7 +126,7 @@ gs.run_command("r.maxent.setup", maxent="path-to-file/maxent.jar")
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.maxent.setup]{.style-function} module dialog and run it with the following parameter settings. 
+Open the [r.maxent.setup]{.style-function} module dialog and run it with the following parameter settings.
 
 | Parameter | Value                   |
 |-----------|-------------------------|
@@ -165,7 +165,7 @@ I have no access to an Apple computer, but perhaps [this page](https://javaforge
 
 If you have [Java]{.style-apps} on your computer, it should show you the version. If not, you'll get the message that it cannot be found. In that case, download it from e.g., [here](https://www.azul.com/downloads/#zulu) or [here](https://openjdk.org/) and install it.
 
-Now we need to ensure that [GRASS GIS]{.style-apps} can locate the [Java]{.style-apps} executable, a prerequisite for running [Maxent]{.style-apps}. On Linux, and in some cases on Windows, GRASS may have access to [Java]{.style-apps} without further steps. You can check this using the following command.
+Now we need to ensure that [GRASS]{.style-apps} can locate the [Java]{.style-apps} executable, a prerequisite for running [Maxent]{.style-apps}. On Linux, and in some cases on Windows, GRASS may have access to [Java]{.style-apps} without further steps. You can check this using the following command.
 
 ::: {#exm-eUGszZQwy4 .hiddendiv}
 :::
@@ -192,7 +192,7 @@ Open the [r.maxent.setup]{.style-function} module dialog and run it with the fol
 | Check if Java can be found on the system (j) | ✅    |
 :::
 
-If you see the message that [Java is accessible from GRASS GIS]{.style-output}, you can skip the rest of the steps on this page. If you get the warning that [Java cannot be found from GRASS GIS]{.style-output}, you need to find the path to the java executable. See below for suggestions for how to find this.
+If you see the message that [Java is accessible from GRASS]{.style-output}, you can skip the rest of the steps on this page. If you get the warning that [Java cannot be found from GRASS]{.style-output}, you need to find the path to the java executable. See below for suggestions for how to find this.
 
 ::: {#exm-sa2Ci8G2Aj .hiddendiv}
 :::

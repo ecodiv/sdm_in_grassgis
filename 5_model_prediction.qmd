@@ -553,7 +553,7 @@ Now we can create the map and report with area statistics again by repeating @ex
 ![The area statistics for the categorical layer [E_alberganus_binchange]{.style-data}.](images/r_cross_report_02.png){#fig-rcrossreport01 fig-align="left"}
 :::
 
-GRASS GIS includes various other modules that compute and visualize different (change) statistics. A good starting point is to explore the [toolbox](https://grass.osgeo.org/grass-stable/manuals/index.html) and the [list of addons](https://grass.osgeo.org/grass-stable/manuals/addons/). You have now completed the basic steps to create and use a species distribution model using Maxent in GRASS GIS. In subsequent sections we’ll dive deeper into the options, choices, and parameter settings to validate and fine-tune the model.
+GRASS includes various other modules that compute and visualize different (change) statistics. A good starting point is to explore the [toolbox](https://grass.osgeo.org/grass-stable/manuals/index.html) and the [list of addons](https://grass.osgeo.org/grass-stable/manuals/addons/). You have now completed the basic steps to create and use a species distribution model using Maxent in GRASS. In subsequent sections we’ll dive deeper into the options, choices, and parameter settings to validate and fine-tune the model.
 
 <br><br>
 

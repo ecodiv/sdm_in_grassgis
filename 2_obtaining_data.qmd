@@ -11,7 +11,7 @@ For this tutorial, we will download and import various data layers that we need 
 
 ## The database {#sec-creatingadatabase}
 
-Once you have started GRASS GIS, the first thing to do for this tutorial is to create a new GRASS GIS database called [GRASSdb]{.style-db}. Next, create a new project called [SDM]{.style-db} with the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
+Once you have started GRASS, the first thing to do for this tutorial is to create a new GRASS database called [GRASSdb]{.style-db}. Next, create a new project called [SDM]{.style-db} with the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
 
 ::: {#exm-2vSeGTk3HW .hiddendiv}
 :::
@@ -24,7 +24,7 @@ Once you have started GRASS GIS, the first thing to do for this tutorial is to c
 ## {{< fa brands python >}}
 
 ``` python
-# Create the folder for the GRASS GIS database
+# Create the folder for the GRASS database
 os.mkdir("path_to_directory")   # <1>
 
 # Create a new Project
@@ -79,7 +79,7 @@ Now, whenever you have to refer to a file, it is enough to specify the name of t
 
 ## Base layers {#sec-baselayers}
 
-We'll download and import a few base layers, including maps of the national boundaries, roads, rivers, and land use. While these layers could potentially be used as inputs for modeling, in this tutorial they will serve only as reference layers[^2_obtaining_data-2]. The steps in this section provide a hands-on way for newcomers to GRASS GIS to explore and practice basic data processing steps within the GRASS GIS environment. If your primary focus is learning about the Maxent modeling, you may choose to skip this section.
+We'll download and import a few base layers, including maps of the national boundaries, roads, rivers, and land use. While these layers could potentially be used as inputs for modeling, in this tutorial they will serve only as reference layers[^2_obtaining_data-2]. The steps in this section provide a hands-on way for newcomers to GRASS to explore and practice basic data processing steps within the GRASS environment. If your primary focus is learning about the Maxent modeling, you may choose to skip this section.
 
 [^2_obtaining_data-2]: *Reference layers* are datasets that provide context and help you to visually navigate the map and understand the geographic setting of the area being analyzed. One of the key advantages of modeling in a GIS environment is the ability to seamlessly integrate and compare model outcomes with these reference layers, and thus to explore and interpret results in their geographic context.
 
@@ -89,7 +89,7 @@ For an effective workflow, it is a good idea to organize your data well. For thi
 
 ### Boundaries {#sec-nationalboundaries}
 
-We'll use the 1:10m scale data from [Natural Earth](https://www.naturalearthdata.com/), a public domain map dataset available at various scales. We download the Shapefile from [Admin 0 - countries](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) and unzip the data to the working directory. Next, we import the Shapefile in GRASS GIS as [admin0]{.style-data} using [v.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html).
+We'll use the 1:10m scale data from [Natural Earth](https://www.naturalearthdata.com/), a public domain map dataset available at various scales. We download the Shapefile from [Admin 0 - countries](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) and unzip the data to the working directory. Next, we import the Shapefile in GRASS as [admin0]{.style-data} using [v.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html).
 
 ::: {#exm-e84zgDAzAIs .hiddendiv}
 :::
@@ -619,7 +619,7 @@ Land use plays a crucial role in determining the distribution of many species. T
 
 For this tutorial, we will use the most recent raster layer (as of this writing, the 2018 update) to represent land use. You can [download the dataset here](https://land.copernicus.eu/en/products/corine-land-cover/clc2018#download) (you'll need to have/make an account). After downloading, unzip the files to your working directory.
 
-Once the dataset is ready, import the raster layer into GRASS GIS using the [r.import](https://grass.osgeo.org/grass-stable/manuals/r.import.html) module. This tool allows you to import raster data into GRASS GIS while automatically reprojecting the data if its coordinate system differs from that of your current project. We let the module estimate the target resolution by setting the [resolution]{.style-parameter} to [estimates]{.style-parameter}. As resampling method, we use [nearest]{.style-parameter} (this is the default).
+Once the dataset is ready, import the raster layer into GRASS using the [r.import](https://grass.osgeo.org/grass-stable/manuals/r.import.html) module. This tool allows you to import raster data into GRASS while automatically reprojecting the data if its coordinate system differs from that of your current project. We let the module estimate the target resolution by setting the [resolution]{.style-parameter} to [estimates]{.style-parameter}. As resampling method, we use [nearest]{.style-parameter} (this is the default).
 
 ::: {#exm-5LWdebt7OV .hiddendiv}
 :::
@@ -735,6 +735,8 @@ r.colors map=CLC2018 rules=corina_clc_colorrules.txt
 
 : {tbl-colwidths="\[50,50\]"}
 :::
+
+Keep in mind that we imported the land cover raster at approximately its original resolution. For further analyses with this layer, it may be necessary to resample this layer so it matches the resolution of other raster layers. GRASS can handle resampling automatically "on the fly", which is convenient. However, it’s important to think critically about whether the default nearest neighbor method is truly the best option. We’ll revisit this topic later, but for now, make a note of it.
 
 ## Species data {#sec-speciesdata}
 
