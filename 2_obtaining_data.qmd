@@ -1203,7 +1203,7 @@ Unlike the data for current climate conditions, the data consists of one geoTIF 
 gdalinfo wc2.1_30s_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif 
 ```
 
-![[gdalifo]{.style-function} prints the names and some basic information about each of the bands in the GeoTiff file. The names of the first two bands are marked with a red outline.](images/gdalinfo_futclim.png){#fig-gdalinfofutclim}
+![[gdalinfo]{.style-function} prints the names and some basic information about each of the bands in the GeoTiff file. The names of the first two bands are marked with a red outline.](images/gdalinfo_futclim.png){#fig-gdalinfofutclim}
 :::
 
 The [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) module conveniently imports each band as a separate layer. The value of the [output]{.style-parameter} parameter will be used as prefix for the name of the imported raster layers, followed by the band number. If possible, use the [memory]{.style-parameter} parameter to increase the memory to be used by the module as this can speed up the import considerably.
