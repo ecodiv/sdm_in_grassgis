@@ -67,7 +67,7 @@ To confirm that the resulting map [E_alberganus_probability2]{.style-data} is id
 ## {{< fa solid terminal >}}
 
 ``` bash
-r.mapcalc expression="diff = E_alberganus_probability-E_alberganus_probability"
+r.mapcalc expression="diff = E_alberganus_probability-E_alberganus_probability2"
 ```
 
 ## {{< fa brands python >}}
@@ -76,7 +76,7 @@ r.mapcalc expression="diff = E_alberganus_probability-E_alberganus_probability"
 gs.run_command(
     "r.mapcalc",
     flags="r",
-    expression="diff = E_alberganus_probability-E_alberganus_probability",
+    expression="diff = E_alberganus_probability-E_alberganus_probability2",
 )
 ```
 
@@ -84,19 +84,19 @@ gs.run_command(
 
 Run the \[r.mapcalc{.style-function} function with the following parameters:
 
-| Parameter  | Value                                             |
-|------------|---------------------------------------------------|
-| Output     | diff                                              |
-| Expression | E_alberganus_probability-E_alberganus_probability |
+| Parameter  | Value                                              |
+|------------|----------------------------------------------------|
+| Output     | diff                                               |
+| Expression | E_alberganus_probability-E_alberganus_probability2 |
 
 : {tbl-colwidths="\[35,65\]"}
 :::
 
-Next, verify that all raster cells in the diff map are zero using the [r.univar](https://grass.osgeo.org/grass-stable/manuals/r.univar.html). Alternatively, check the metadata by right-clicking the layer in the [layer window]{.style-menu} and selecting [metadata]{.style-menu}).
+All raster cells in the diff map should be zero. You can check this using the [r.univar](https://grass.osgeo.org/grass-stable/manuals/r.univar.html). Alternatively, check the metadata by right-clicking the layer in the [layer window]{.style-menu} and selecting [metadata]{.style-menu}).
 
 ## Future distribution {#sec-e8039LmOdu}
 
-We will now use the same model that we used in the previous paragraph, and which we created in @sec-4trainthemodel, to project the future potential distribution of the almond-eyed ringlet butterfly for the period 2081–2100. This projection will be based on the *SSP585* climate scenario from the *EC-Earth3-Veg* general circulation model (GCM).
+We will now use the same model that we used in the previous paragraph to project the future potential distribution of the almond-eyed ringlet butterfly for the period 2081–2100. This projection will be based on the *SSP585* climate scenario from the *EC-Earth3-Veg* general circulation model (GCM).
 
 In @sec-obtainfutureclimatelayers, we downloaded the climate layers for the above-mentioned SSP and GCM and saved them in the mapset [climate_EC_Earth3_Veg]{.style-db}. Let's first make sure we have access to this mapset from the current mapset. As you might remember, we can use the [g.mapsets](https://grass.osgeo.org/grass-stable/manuals/g.mapsets.html) module for that.
 

@@ -191,6 +191,10 @@ Open the [r.maxent.train]{.style-function} dialog and run the module with the fo
 <br>Check the manual page to see what the last three flags are for.
 :::
 
+## Naming layers
+
+Names of maps (vector or raster) should begin with a character. Names starting with a number may cause problems.
+
 <!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->
 
 ```{=html}
@@ -222,7 +226,7 @@ Open the [r.maxent.train]{.style-function} dialog and run the module with the fo
         type: "textarea",
         label: "Message:",
         name: "message",
-        placeholder: "If you come across a problem, please consider reporting it here, ideally with a solution if you find one.",
+        placeholder: "If you come across a problem, please consider reporting it here, ideally with a solution if you find one. Alternative, report it on Github (see the link in the right-hand menu).",
       },
       { type: "submit" }      
     ],
