@@ -16,11 +16,9 @@ The table below provides an overview of the data used in this tutorial.
 | @sec-occurrence | [GBIF *Erebia alberganus* occurrence data](https://www.gbif.org/species/5134543) | vector |
 | @sec-climatedata | [Worldclim historical climate data](https://www.worldclim.org/data/worldclim21.html#) | raster |
 | @sec-obtainfutureclimatelayers | [Worldclim future climate data](https://www.worldclim.org/data/cmip6/cmip6climate.html) | raster |
-| @sec-landcover | [CORINE Land cover](https://land.copernicus.eu/en/products/corine-land-cover) | raster/vector |
+| @sec-landcover | [CORINE Land cover (CLC)](https://land.copernicus.eu/en/products/corine-land-cover) | raster/vector |
 
 : {tbl-colwidths="\[20,60,20\]"}
-
-<br>
 
 ### Other data sources {.unnumbered}
 
@@ -37,3 +35,9 @@ The list below provide a few potentially useful data sources.
 | Land cover and use | [Landelijk grondgebruik Nederland](https://lgn.nl/) |
 
 : {tbl-colwidths="\[30,70\]"}
+
+<br>
+
+## GRASS project {.unnumbered}
+
+You can download a GRASS project with the base layers (roads, rivers, country boundaries, EUDEM and CLC). [Download from here](https://nx66306.your-storageshare.de/s/7R3Eewybi6zfSyw), and extract the file into your GRASS database directory. This will replace the SDM directory you created earlier in @sec-creatingadatabase.

@@ -7,11 +7,11 @@ lightbox:
 
 # Acquire the data {#sec-data}
 
-For this tutorial, we will download and import various data layers that we need to develop a potential distribution model/map for our species, the almond-eyed ringlet (*Erebia alberganus*). This includes species distribution data and environmental data layers. The almond-eyed ringlet occurs in Europe, so we need a map of Europe to delimit our study area. For visualization purposes, we include some background layers, including a map of the national borders of European countries, rivers, major roads and urban areas in Europe.
+For this tutorial, we will download and import various data layers that we need to develop a potential distribution model/map for our species, the almond-eyed ringlet (*Erebia alberganus*). This includes species distribution data and environmental data layers. For visualization purposes, we'll use some background layers, including a map of the national borders of European countries, rivers, major roads and urban areas in Europe. 
 
 ## The database {#sec-creatingadatabase}
 
-Once you have started GRASS, the first thing to do for this tutorial is to create a new GRASS database called [GRASSdb]{.style-db}. Next, create a new project called [SDM]{.style-db} with the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
+Once you have started GRASS, the first thing you normally do is to open the GRASS database, or to create a new one to do for this tutorial is to create a new GRASS database called [GRASSdb]{.style-db}. Next, create a new project called [SDM]{.style-db} with the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
 
 ::: {#exm-2vSeGTk3HW .hiddendiv}
 :::
@@ -45,7 +45,11 @@ Now that you have your database ready, you can start with the next step, which i
 
 ## Working directory {#sec-workingdirectory}
 
-Certain modules require a file as input or output. You can use the full path to the file. However, if you define a working directory and you put your files in that working directory, you only need to provide the path relative to the working directory[^2_obtaining_data-1]. For this section, create your own working directory where you will store the downloaded data.
+Certain modules require a file as input or output. You can use the full path to the file. However, if you define a working directory and you put your files in that working directory, you only need to provide the path relative to the working directory[^2_obtaining_data-1]. For this section, create your own working directory where you will store the downloaded data. 
+
+::: {.callout-warning appearance="simple"}
+Never use the GRASS database directory, that you created in the previous section, for this. The GRASS directory is for GRASS data only
+:::
 
 [^2_obtaining_data-1]: The working directory is a directory where GRASS will look for or output files to if the full path is not specified.
 
@@ -75,13 +79,19 @@ The working directory can also be changed in wxGUI menu [Settings → GRASS work
 ![Set the working directory via the menu or using the command line. After doing so, GRASS will look for files in that location if the full path is not provided.](images/setworkingdirectory.png){#fig-setworkingdirectory}
 :::
 
-Now, whenever you have to refer to a file, it is enough to specify the name of the file instead of the full path. Note that this applies to external files such as text files or GeoTiff files. This does not apply to raster maps, vector maps and other geospatial data stored in GRASS database which do not need any path to be specified.
+Now, whenever you have to refer to an external file, such as text files or GeoTiff files, it is enough to specify the name of the file instead of the full path. 
 
 ## Base layers {#sec-baselayers}
 
-We'll download and import a few base layers, including maps of the national boundaries, roads, rivers, and land use. While these layers could potentially be used as inputs for modeling, in this tutorial they will serve only as reference layers[^2_obtaining_data-2]. The steps in this section provide a hands-on way for newcomers to GRASS to explore and practice basic data processing steps within the GRASS environment. If your primary focus is learning about the Maxent modeling, you may choose to skip this section.
+We'll download and import a few base layers, including maps of the national boundaries, roads, rivers, and land use. While these layers could potentially be used as inputs for modeling, in this tutorial they will serve only as reference layers[^2_obtaining_data-2]. 
 
 [^2_obtaining_data-2]: *Reference layers* are datasets that provide context and help you to visually navigate the map and understand the geographic setting of the area being analyzed. One of the key advantages of modeling in a GIS environment is the ability to seamlessly integrate and compare model outcomes with these reference layers, and thus to explore and interpret results in their geographic context.
+
+::: {.callout-tip appearance="simple"}
+The steps in this section provide a practical, hands-on introduction to basic data processing within the GRASS environment for new comers. 
+
+If your main interest lies in the Maxent modeling itself, you may choose to skip this section and simply [download the SDM project](https://nx66306.your-storageshare.de/s/7R3Eewybi6zfSyw) as a zip file. Extract the file into your GRASS database directory. This will replace the SDM directory you created earlier in @sec-creatingadatabase.
+:::
 
 ![The study area with the national boundaries, main roads and shaded relief (source: [Natural Earth](https://www.naturalearthdata.com/)) and the urban areas (source: [GLC](https://land.copernicus.eu/en/products/corine-land-cover)).](images/reference_layers.png){#fig-baselayers}
 

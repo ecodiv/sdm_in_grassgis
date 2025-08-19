@@ -72,7 +72,7 @@ book:
   #       file: https://ecodiv.earth
 
   sidebar:
-      title: "SDM in GRASS<br><span class=\"modifieddate\">Updated: 2025-2-23</span>"
+      title: "SDM in GRASS<br><span class=\"modifieddate\">Updated: 2025-8-18</span>"
       logo: "images/logo_SDM2.png"
       style: "floating"
       search: true

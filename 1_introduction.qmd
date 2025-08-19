@@ -6,6 +6,8 @@ The first part focuses on the essential building blocks of creating a species di
 
 ![Potential habitat of the Almond-eyed Ringlet (*Erebia alberganus*) in the Alps. Source: Paulo van Breugel](images/habitat.jpg){#fig-habitatalps fig-align="left"}
 
+This tutorial assumes basic knowledge of species distribution modeling (SDM) and GRASS. Are you new to SDM? Start with this free [video course by BCCVL](https://www.youtube.com/playlist?list=PL8nSYhbf9nDSotrn-JSZiJki1sTnnw3yS) or read Elith et al. [-@elith2009] for a deeper dive. New to GRASS? First read [Get started with GRASS GUI](https://grass-tutorials.osgeo.org/content/tutorials/get_started/fast_track.html) for a quick introduction and [Appendix A](A1_grassbasics.qmd) for some additional notes on working with GRASS.
+
 ## Using the reader
 
 This reader guides you step by step through the species modeling process. The examples demonstrate how to execute functions via the command line [{{< fa solid terminal >}}]{.paneltabcolor}, Python scripts [{{< fa brands python >}}]{.paneltabcolor}, and the GUI dialogs [{{< fa regular window-restore >}}]{.paneltabcolor}.
@@ -163,7 +165,7 @@ java --version
 I have no access to an Apple computer, but perhaps [this page](https://javaforge.com/how-to-find-java-path-in-mac/) can help you. Otherwise, you'll need to look it up yourself.
 :::
 
-If you have [Java]{.style-apps} on your computer, it should show you the version. If not, you'll get the message that it cannot be found. In that case, download it from e.g., [here](https://www.azul.com/downloads/#zulu) or [here](https://openjdk.org/) and install it.
+If you have [Java]{.style-apps} on your computer, it should show you the version. If not, you'll get the message that it cannot be found. In that case, download the Java Runtime Environment (JRE)  from e.g., the [azul.com download page](https://www.azul.com/downloads/#zulu) and install it.
 
 Now we need to ensure that [GRASS]{.style-apps} can locate the [Java]{.style-apps} executable, a prerequisite for running [Maxent]{.style-apps}. On Linux, and in some cases on Windows, GRASS may have access to [Java]{.style-apps} without further steps. You can check this using the following command.
 
