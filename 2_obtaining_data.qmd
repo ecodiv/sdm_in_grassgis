@@ -88,9 +88,7 @@ We'll download and import a few base layers, including maps of the national boun
 [^2_obtaining_data-2]: *Reference layers* are datasets that provide context and help you to visually navigate the map and understand the geographic setting of the area being analyzed. One of the key advantages of modeling in a GIS environment is the ability to seamlessly integrate and compare model outcomes with these reference layers, and thus to explore and interpret results in their geographic context.
 
 ::: {.callout-tip appearance="simple"}
-The steps in this section provide a practical, hands-on introduction to basic data processing within the GRASS environment for new comers. 
-
-If your main interest lies in the Maxent modeling itself, you may choose to skip this section and simply [download the SDM project](https://nx66306.your-storageshare.de/s/7R3Eewybi6zfSyw) as a zip file. Extract the file into your GRASS database directory. This will replace the SDM directory you created earlier in @sec-creatingadatabase.
+The steps in this section provide a practical, hands-on introduction to basic data processing within the GRASS environment for new comers. However, if your main interest lies in the Maxent modeling itself, you may choose to skip this section and simply [download the SDM.zip](https://nx66306.your-storageshare.de/s/sLBsLt9xjK75bCx). Extract the file into your GRASS database directory. This will replace the SDM directory you created earlier in @sec-creatingadatabase.
 :::
 
 ![The study area with the national boundaries, main roads and shaded relief (source: [Natural Earth](https://www.naturalearthdata.com/)) and the urban areas (source: [GLC](https://land.copernicus.eu/en/products/corine-land-cover)).](images/reference_layers.png){#fig-baselayers}
