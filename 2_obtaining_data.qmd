@@ -25,7 +25,7 @@ Once you have started GRASS, the first thing you normally do is to open the GRAS
 
 ``` python
 # Create the folder for the GRASS database
-os.mkdir("path_to_directory")
+os.mkdir("path_to_directory")   # <1>
 
 # Create a new Project
 gs.create_project(
@@ -38,9 +38,7 @@ gs.create_project(
 gs.run_command("g.mapset", mapset="PERMANENT", project="SDM")
 ```
 
-## {{< fa question >}}
-
-Replace the `path_to_directory` with the path to the directory where you want to create the database. Note, on Windows, paths are written using backslashes (\\) as the separator between folder names. On Unix based operating system such as macOS, Linux, and BSDs, the forward slash (/) is used as the path separator.
+1.  Replace the path with the path to the directory where you want to create the database. Note, on Windows, paths are written using backslashes (\\) as the separator between folder names. On Unix based operating system such as macOS, Linux, and BSDs, the forward slash (/) is used as the path separator.
 :::
 
 Now that you have your database ready, you can start with the next step, which is getting and preparing the input data for the species distribution modeling.
@@ -58,7 +56,7 @@ Never use the GRASS database directory, that you created in the previous section
 ::: {#exm-qpbGaVxfYh .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 Type [cd]{.style-function} followed by the path to the working directory in the [wxGUI Command Console]{.style-menu}. If you prefer to work on the terminal, run the same on the terminal.
@@ -85,118 +83,668 @@ Now, whenever you have to refer to an external file, such as text files or GeoTi
 
 ## Base layers {#sec-baselayers}
 
-We'll import a few base layers, including maps of the national boundaries, roads, rivers, and land use. They will serve as reference layers[^2_obtaining_data-2]. 
-
-![This is the study area, which includes the national boundaries, main roads, and shaded relief (source: [Natural Earth](https://www.naturalearthdata.com/)) and the urban areas (source: [GLC](https://land.copernicus.eu/en/products/corine-land-cover)). See [@sec-appbaselayers] for information on how these layers were created.](images/reference_layers.png){#fig-baselayers}
+We'll download and import a few base layers, including maps of the national boundaries, roads, rivers, and land use. While these layers could potentially be used as inputs for modeling, in this tutorial they will serve only as reference layers[^2_obtaining_data-2]. 
 
 [^2_obtaining_data-2]: *Reference layers* are datasets that provide context and help you to visually navigate the map and understand the geographic setting of the area being analyzed. One of the key advantages of modeling in a GIS environment is the ability to seamlessly integrate and compare model outcomes with these reference layers, and thus to explore and interpret results in their geographic context.
 
-First, [download the Geopackage sdm_base_layers.gpkg](https://ecodiv.earth/share/sdm_in_grassgis/sdm_base_layers.gpkg) and copy the file to your working directory. A GeoPackage (GPKG) is an open, standards-based geospatial data format that can contain one data layer or multiple layers. This GPKG contains three vector layers with respectively the boundries of European countries ([countries]{.style-db}), the main rivers ([rivers]{.style-db}]) and the roads ([roads]{.style-db}])in Europe. Import these layers in GRASS.
-
-::: {#exm-XmMn498Mh .hiddendiv}
+::: {.callout-tip appearance="simple"}
+The steps in this section provide a practical, hands-on introduction to basic data processing within the GRASS environment for new comers. However, if your main interest lies in the Maxent modeling itself, you may choose to skip this section and simply [download the SDM.zip](https://nx66306.your-storageshare.de/s/sLBsLt9xjK75bCx). Extract the file into your GRASS database directory. This will replace the SDM directory you created earlier in @sec-creatingadatabase.
 :::
 
-::: {.panel-tabset}
+![The study area with the national boundaries, main roads and shaded relief (source: [Natural Earth](https://www.naturalearthdata.com/)) and the urban areas (source: [GLC](https://land.copernicus.eu/en/products/corine-land-cover)).](images/reference_layers.png){#fig-baselayers}
+
+For an effective workflow, it is a good idea to organize your data well. For this tutorial, we'll keep the base layers in the [PERMANENT]{.style-db} mapset. We'll use separate mapsets for the input data for our modelling and the modelling results.
+
+### Boundaries {#sec-nationalboundaries}
+
+We'll use the 1:10m scale data from [Natural Earth](https://www.naturalearthdata.com/), a public domain map dataset available at various scales. We download the Shapefile from [Admin 0 - countries](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) and unzip the data to the working directory. Next, we import the Shapefile in GRASS as [admin0]{.style-data} using [v.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html).
+
+::: {#exm-e84zgDAzAIs .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
-v.in.ogr input=sdm_base_layers.gpkg layer=countries output=countries
-v.in.ogr input=sdm_base_layers.gpkg layer=roads output=roads
-v.in.ogr input=sdm_base_layers.gpkg layer=rivers output=rivers
+v.in.ogr \
+input=ne_10m_admin_0_countries.shp \
+output=admin0
 ```
 
 ## {{< fa brands python >}}
 
 ``` python
 gs.run_command(
-    "v.in.ogr", input="sdm_base_layers.gpkg", layer="countries", output="countries"
+    "v.in.ogr",
+    input="ne_10m_admin_0_countries.shp",
+    output="admin0",
 )
-gs.run_command(
-    "v.in.ogr", input="sdm_base_layers.gpkg", layer="roads", output="roads"
-)
-gs.run_command(
-    "v.in.ogr", input="sdm_base_layers.gpkg", layer="rivers", output="rivers"
-)
-
 ```
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.in.ogr]]{.style-function} from the [File]{.style-menu} menu or from the [Toolbox]{.style-menu} and on the first tab [Required]{.style-function} find the GeoPackage you just downloaded. Or, if you copied the file to your working directory, you can simply fill in the name of the file under the [Source input]{.style-function}
+Open the [v.in.ogr]{.style-function} dialog and fill in:
 
-![Name of the GeoPackage](images/baselayers_countries_step1.png){#fig-bcs1 fig-align="left" width=500}
+| Parameter | Value                        |
+|-----------|------------------------------|
+| Input     | ne_10m_admin_0_countries.shp |
+| Output    | admin0                       |
 
-Next, under the [Input]{.style-function} tab, select the layer [countries]{.style-parameter}. Leave the others unselected.
-
-![Layer to import](images/baselayers_countries_step2.png){#fig-bcs1 fig-align="left" width=500}
-
-And as last step, under the [Output]{.style-function} tab, give the output layer the name [countries]{.style-parameter}
-
-![Layer to import](images/baselayers_countries_step3.png){#fig-bcs1 fig-align="left" width=500}
-
-Now, repeat these steps for the other two layers. Make sure to give the [roads]{.style-data} layer the name [roads]{.style-parameter} and the [rivers]{.style-data} layer the name [rivers]{.style-parameter}.
-
-
-## {{< fa question >}}
-
-Note, the assumption is that the GeoPackage file is in your working directory, which you defined in @exm-qpbGaVxfYh. If not, you will have to provide the full path to the file.
-
-When using `v.in.ogr`, a GeoPackage is treated as a container of separate layers, not a single dataset. That means that if the GeoPackage contains multiple layers, each layer must be explicitly specified and imported individually.
-
+: {tbl-colwidths="\[50,50\]"}
 :::
 
-Next, download the raster layers [shaded_relief_NE.tif](https://ecodiv.earth/share/sdm_in_grassgis/shaded_relief_NE.tif) and [urban_areas.tif](https://ecodiv.earth/share/sdm_in_grassgis/urban_areas.tif) and copy the file to your working directory. Next, import these layers in GRASS with the [r.in.gdal]{.style-function} function.
+The Almond-eyed Ringlet occurs in parts of Europe, so we’ll limit the areas for which we download the rest of the data to Europe, by setting the extent of the computational region (@sec-computationalregion). This can be done using the [g.region](https://grass.osgeo.org/grass-stable/manuals/g.region.html) module. As input we can define the north, south, west and east limits, or we can define these interactively, using the [Set computational region extent interactively]{.style-menu} option under the [Various zoom options]{.style-menu} ![](images/zoom-more.png) button. For the latter, see the [{{< fa regular window-restore >}}]{.paneltabcolor} tab below.
 
-
-::: {#exm-Xm99Mh .hiddendiv}
+::: {#exm-7Z3CL3lWfe .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
-# Import urban areas raster
-r.in.gdal input=urban_areas.tif output=urban_areas
-
-# Import shaded relief raster
-r.in.gdal input=shaded_relief_NE.tif output=shaded_relief_NE
+g.region n=55 s=35 w=-10 e=33
 ```
 
 ## {{< fa brands python >}}
 
 ``` python
-# Import urban areas raster
-gs.run_command(
-    "r.in.gdal",
-    input="urban_areas.tif",
-    output="urban_areas"
-)
+gs.run_command("g.region", n=55, s=35, w=-10, e=33)
+```
 
-# Import shaded relief raster
+## {{< fa regular window-restore >}}
+
+{{< video "https://ecodiv.earth/share/sdm_in_grassgis/set_region_extent_interactively.mp4" >}}
+:::
+
+The next step is to create a vector layer [aoi]{.style-data} with a polygon representing the boundaries of the region's extent using [v.in.region](https://grass.osgeo.org/grass84/manuals/v.in.region.html).
+
+::: {#exm-skRCyG0NKS .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+v.in.region output=aoi
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("v.in.region", output="aoi")
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [v.in.region]{.style-function} dialog. Fill in:
+
+| Parameter | Value |
+|-----------|-------|
+| output    | aoi   |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+To save some space, we can use the [aoi]{.style-data} vector layer to clip the [admin0]{.style-data} layer to the spatial bounds of the computational region using [v.clip](https://grass.osgeo.org/grass-stable/manuals/v.clip.html), save the result as [countries]{.style-data}, and subsequently remove the [admin0]{.style-data} layer using the [g.remove](https://grass.osgeo.org/grass84/manuals/g.remove.html) module.
+
+::: {#exm-u9sDIGepop .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+v.clip input=admin0 clip=aoi output=countries
+g.remove -f type=vector name=admin0
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("v.clip", input="admin0", clip="aoi", output="countries")
+gs.run_command("g.remove", flags="f", type="vector", name="admin0")
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [v.clip]{.style-function} dialog, and fill in:
+
+| Parameter | Value     |
+|-----------|-----------|
+| Input     | admin0    |
+| Clip      | aoi       |
+| Output    | countries |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+### Roads {#sec-roads}
+
+We'll get the road data from Natural Earth as well. Download it from [here](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/roads/) and unzip it into your working directory. Similar to the previous step, we'll import the data as [tmp]{.style-data} using [v.in.ogr]{.style-function} with the [-r]{.style-parameter} flag.
+
+The vector data includes line features representing roads and ferry routes. Whether a line feature is a road or ferry route is defined in the [featurecla]{.style-parameter} column of the attribute table. We only want to import the roads. We can do this using the [where]{.style-parameter} parameter. This parameter takes as SQL [Where](https://www.sqlitetutorial.net/sqlite-where/) query as an argument to select the features that match a particular condition.
+
+::: {#exm-cMoYfaHQwQ .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+v.in.ogr -r \
+input=ne_10m_roads.shp \
+where="featurecla='Road'" \
+output=tmp
+```
+
+## {{< fa brands python >}}
+
+``` python
 gs.run_command(
-    "r.in.gdal",
-    input="shaded_relief_NE.tif",
-    output="shaded_relief_NE"
+    "v.in.ogr",
+    flags="r",
+    input="ne_10m_roads.shp",
+    where="featurecla='Road'",
+    output="tmp",
 )
 ```
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.in.gdal]{.style-function} from the [File]{.style-menu} menu or from the [Toolbox]{.style-menu} and on the first tab [Required]{.style-function} 
+Open the [v.in.ogr]{.style-function} dialog, and fill in:
 
-- Select as input the GeoTiff file [urban_areas.tif]{.style-db}
-- Set the name of the output raster layer as [urban_areas]{.style-parameter}.
-- Click on [Run]]{.style-function}
+| Parameter                                  | Value               |
+|--------------------------------------------|---------------------|
+| Input                                      | ne_10m_roads.shp    |
+| Output                                     | tmp                 |
+| Where                                      | `featurecla='Road'` |
+| Limit the import to the current region (r) | ✅                  |
 
-Now, repeat this, but:
-
-- Select as input the GeoTiff file [shaded_relief_NE.tif]{.style-db}
-- Set the name of the output raster layer as [shaded_relief_NE]{.style-parameter}.
-- Click on [Run]]{.style-function}
-
+: {tbl-colwidths="\[50,50\]"}
 :::
 
-Open the layers in the Layers panel and style them as you like. You can also add any other layer. For example, you can add the Corina land use layer. I'll leave that as an exercise for you.
+Next, we clip the layer to the boundaries of our region with [v.clip](https://grass.osgeo.org/grass-stable/manuals/v.clip.html) and remove the temporary data.
+
+In this particular case, we are out of luck, as the resulting vector layer does not have an attribute table. This type of error is often caused by incorrect attribute data, such as hard returns or invalid column names. The latter is the case here. There is a column 'add', which GRASS does not accept. There are two ways to fix this. Rename the offending column with [v.db.renamecolumn](https://grass.osgeo.org/grass-stable/manuals/v.db.renamecolumn.html) or remove it using [v.db.dropcolumn](https://grass.osgeo.org/grass-stable/manuals/v.db.dropcolumn.html). We'll go for the latter solution.
+
+::: {#exm-e84zg44AIs .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Remove problematic column
+v.db.dropcolumn map=tmp columns=add
+
+# Clip to aoi spatial bounds
+v.clip input=tmp clip=aoi output=roads
+
+# Remove temporary data
+g.remove -f type=vector name=tmp
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Remove problematic column
+gs.run_command("v.db.dropcolumn", map="tmp", columns="add")
+
+# Clip to aoi spatial bounds
+gs.run_command("v.clip", input="tmp", clip="aoi", output="roads")
+
+# Remove temporary data
+gs.run_command("g.remove", flags="f", type="vector", name="tmp")
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [v.db.dropcolumn]{.style-function} dialog.
+
+| Parameter | Value |
+|-----------|-------|
+| map       | tmp   |
+| column    | add   |
+
+: {tbl-colwidths="\[50,50\]"}
+
+Open the [v.clip]{.style-function} dialog, and fill in:
+
+| Parameter | Value |
+|-----------|-------|
+| input     | tmp   |
+| clip      | aoi   |
+| output    | roads |
+
+: {tbl-colwidths="\[50,50\]"}
+
+Open the [g.remove]{.style-function} dialog, and fill in:
+
+| Parameter         | Value  |
+|-------------------|--------|
+| type              | vector |
+| name              | tmp    |
+| Force removal (r) | ✅     |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+### Rivers {#sec-rivers}
+
+We get the river data from Natural Earth as well ([download link](https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-rivers-lake-centerlines/)). Download both the [rivers and lake centerlines]{.style-db} and [Europe supplement]{.style-db} Shapefiles and unzip them into your working directory. We'll use the same steps as above to import these layers.
+
+::: {#exm-TpZKQ69XSJ .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+v.in.ogr -r input=ne_10m_rivers_lake_centerlines.shp output=tmp1
+v.in.ogr -r input=ne_10m_rivers_europe.shp output=tmp2
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "v.in.ogr",
+    flags="r",
+    input="ne_10m_rivers_lake_centerlines.shp",
+    output="tmp1",
+)
+gs.run_command(
+    "v.in.ogr",
+    flags="r",
+    input="ne_10m_rivers_europe.shp",
+    output="tmp2",
+)
+```
+
+## {{< fa regular window-restore >}}
+
+To import [ne_10m_rivers_lake_centerlines.shp]{.style-data}, fill in the following parameters in [v.in.ogr]{.style-function}:
+
+| Parameter | Value |
+|----|----|
+| input | ne_10m_rivers_lake_centerlines.shp |
+| output | tmp1 |
+| Limit the import to the current region (r) | ✅ |
+
+: {tbl-colwidths="\[50,50\]"}
+
+And, to import the [ne_10m_rivers_europe.shp]{.style-data}:
+
+| Parameter                                  | Value                    |
+|--------------------------------------------|--------------------------|
+| input                                      | ne_10m_rivers_europe.shp |
+| output                                     | tmp2                     |
+| Limit the import to the current region (r) | ✅                       |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+We now clip the imported layers to the boundaries of the European mainland.
+
+::: {#exm-OtEsqXpc4Z .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bas
+v.clip input=tmp1 clip=aoi output=tmp3
+v.clip input=tmp2 clip=aoi output=tmp4
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("v.clip", input="tmp1", clip="aoi", output="tmp3")
+gs.run_command("v.clip", input="tmp2", clip="aoi", output="tmp4")
+```
+
+## {{< fa regular window-restore >}}
+
+To clip [tmp1]{.style-data}, open the [v.clip]{.style-function} dialog and fill in the following parameters:
+
+| Parameter | Value |
+|-----------|-------|
+| input     | tmp1  |
+| output    | aoi   |
+| clip      | tmp3  |
+
+: {tbl-colwidths="\[50,50\]"}
+
+And, to clip [tmp2]{.style-data} to the area of interest (aoi):
+
+| Parameter | Value |
+|-----------|-------|
+| input     | tmp2  |
+| output    | aoi   |
+| clip      | tmp4  |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+Next step would be to combine the two layers [tmp3]{.style-data} and [tmp4]{.style-data}. However, the columns in the attribute tables of the two layers are different, both in their names and their order. To make these tables compatible, we need to rearrange and rename the columns so that both tables have the same structure. This requires some SQL code, which we can run using the [db.execute](https://grass.osgeo.org/grass-stable/manuals/db.execute.html) module. We first rename the original tables.
+
+::: {#exm-HnzBvCZB2Y .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Rename the attribute tables # <1>
+db.execute sql="ALTER TABLE tmp3 RENAME TO tmp3old;"
+db.execute sql="ALTER TABLE tmp4 RENAME TO tmp4old;"
+```
+
+1.  We use the SQLite [ALTER TABLE](https://www.tutorialspoint.com/sqlite/sqlite_alter_command.htm) command to renames the existing attribute table. This will decouple them from the vector layer (geometry).
+
+## {{< fa brands python >}}
+
+``` python
+# Rename the attribute tables # <1>
+gs.run_command(
+    "db.execute",
+    sql="ALTER TABLE tmp3 RENAME TO tmp3old;",
+)
+gs.run_command(
+    "db.execute",
+    sql="ALTER TABLE tmp4 RENAME TO tmp4old;",
+)
+```
+
+1.  We use the SQLite [ALTER TABLE](https://www.tutorialspoint.com/sqlite/sqlite_alter_command.htm) command to renames the existing attribute table. This will decouple them from the vector layer (geometry).
+
+## {{< fa regular window-restore >}}
+
+To rename the table [tmp3]{.style-data} to [tmp3old]{.style-data}, open the [db.execute]{.style-function} dialog and, and in the [sql]{.style-parameter} field, we use the SQL [ALTER TABLE](https://www.tutorialspoint.com/sqlite/sqlite_alter_command.htm) command to rename the attribute tables of [tmp3]{.style-data}[^2_obtaining_data-3].
+
+| Parameter | Value                                |
+|-----------|--------------------------------------|
+| sql       | `ALTER TABLE tmp3 RENAME TO tmp3old` |
+
+: {tbl-colwidths="\[50,50\]"}
+
+Likewise, to rename the table [tmp4]{.style-data}:
+
+| Parameter | Value                                |
+|-----------|--------------------------------------|
+| sql       | `ALTER TABLE tmp4 RENAME TO tmp4old` |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+[^2_obtaining_data-3]: Note, this will decouple them from the vector layer (geometry).
+
+We then create new tables with a subset of columns from the original tables. We give these new tables the name of the original attribute tables. GRASS will automatically use these now as attribute tables.
+
+::: {#exm-Zr2t5IdNW1 .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Create new tables   # <1>
+db.execute \
+sql="CREATE TABLE tmp3 AS SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label FROM tmp3old"
+db.execute sql= "CREATE TABLE tmp4 AS SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label FROM tmp4old"
+```
+
+1.  We use the SQLite [CREATE TABLE](https://www.tutorialspoint.com/sqlite/sqlite_create_table.htm) command to create a new table with the original name, but with the correct structure, based on a selection of columns from the table we just renamed in the order we want. Note, this includes the [cat]{.style-data} column, which is used to link the table attributes to the vector features (see @sec-attributemanagement). The new table gets the name of the original table.
+
+## {{< fa brands python >}}
+
+``` python
+# New attribute tables # <1>
+gs.run_command(  # <2>
+    "db.execute",
+    sql=(
+        "CREATE TABLE tmp3 AS "
+        "SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label "
+        "FROM tmp3old"
+    ),
+)
+gs.run_command(
+    "db.execute",
+    sql=(
+        "CREATE TABLE tmp4 AS "
+        "SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label "
+        "FROM tmp4old"
+    ),
+)
+```
+
+1.  We use the SQLite [CREATE TABLE](https://www.tutorialspoint.com/sqlite/sqlite_create_table.htm) command to create a new table with the original name, but with the correct structure, based on a selection of columns from the table we just renamed in the order we want. Note, this includes the [cat]{.style-data} column, which is used to link the table attributes to the vector features (see @sec-attributemanagement). The new table gets the name of the original table.
+
+## {{< fa regular window-restore >}}
+
+To create a new attribute tables [tmp3]{.style-data} with a subset of the columns from [tmp3old]{.style-data}, open the [db.execute]{.style-function} dialog, and run it with the following SQL code[^2_obtaining_data-4]:
+
+| Parameter | Value |
+|----|----|
+| sql | `CREATE TABLE tmp3 AS SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label FROM tmp3old` |
+
+: {tbl-colwidths="\[10,90\]"}
+
+And to create a new attribute tables [tmp4]{.style-data} with a subset of the columns from [tmp4old]{.style-data}:
+
+| Parameter | Value |
+|----|----|
+| sql | `CREATE TABLE tmp4 AS SELECT cat,scalerank,featurecla,name,label,min_zoom,min_label FROM tmp4old` |
+
+: {tbl-colwidths="\[10,90\]"}
+:::
+
+[^2_obtaining_data-4]: We use the SQLite [CREATE TABLE](https://www.tutorialspoint.com/sqlite/sqlite_create_table.htm) command to create two new tables with the correct structure, based on a selection of columns from the table we just renamed. Note, this includes the [cat]{.style-data} column, which is used to link the table attributes to the vector features (see @sec-attributemanagement). The new tables get the name of the original tables.
+
+After we have assured the attribute tables of both layers have the same structure, we use [v.patch](https://grass.osgeo.org/grass-stable/manuals/v.patch.html) to combine them into one layer called [rivers]{.style-data}.
+
+::: {#exm-Qh4ZzKINHT .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+v.patch input=tmp3,tmp4 output=rivers
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("v.patch", input=["tmp3", "tmp4"], output="rivers")
+```
+
+## {{< fa regular window-restore >}}
+
+To patch the two vector layers [tmp3]{.style-data} and [tmp4]{.style-data}, open the [v.patch]{.style-function} dialog and run the function with the following parameters:
+
+| Parameter | Value     |
+|-----------|-----------|
+| input     | tmp3,tmp4 |
+| output    | rivers    |
+
+: {tbl-colwidths="\[30,70\]"}
+:::
+
+Last step is to remove the temporary layers. We use [db.droptable](https://grass.osgeo.org/grass-stable/manuals/db.droptable.html) to remove the 'stand-alone' tables, and [g.remove](https://grass.osgeo.org/grass-stable/manuals/g.remove.html) to remove the intermediate vector layers. We use the [pattern]{.style-parameter} parameter and a wildcard to remove all vector layers with a name that start with [tmp]{.style-parameter}. See the [g.remove]{.style-function} [manual page](https://grass.osgeo.org/grass-stable/manuals/g.remove.html) for more details.
+
+::: {#exm-FlhdR7On5I .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+db.droptable -f table=tmp3old  # <1>
+db.droptable -f table=tmp4old
+g.remove -f type=vector pattern=tmp*
+```
+
+1.  The [db.droptable]{.style-function} module runs the SQLite [DROP TABLE](https://www.tutorialspoint.com/sqlite/sqlite_drop_table.htm) function in the background to remove the old table.
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("db.droptable", flags="f", table="tmp3old")  # <1>
+gs.run_command("db.droptable", flags="f", table="tmp4old")
+gs.run_command("g.remove", flags="f", type="vector", pattern="tmp*")
+```
+
+1.  The [db.droptable]{.style-function} module runs the SQLite [DROP TABLE](https://www.tutorialspoint.com/sqlite/sqlite_drop_table.htm) function in the background to remove the old table.
+
+## {{< fa regular window-restore >}}
+
+Open the [db.droptable]{.style-function} dialog, and use the following parameter settings:
+
+| Parameter | Value   |
+|-----------|---------|
+| table     | tmp3old |
+
+: {tbl-colwidths="\[30,70\]"}
+
+Repeat this, but replace [tmp3old]{.style-parameter} with [tmp4old]{.style-parameter}.
+
+Run [g.remove]{.style-function} with the following parameter settings:
+
+| Parameter         | Value  |
+|-------------------|--------|
+| type              | vector |
+| pattern           | tmp\*  |
+| Force removal (r) | ✅     |
+
+: {tbl-colwidths="\[30,70\]"}
+:::
+
+### Land cover {#sec-landcover}
+
+Land use plays a crucial role in determining the distribution of many species. The [CORINE Land Cover](https://land.copernicus.eu/en/products/corine-land-cover) (CLC) dataset provides a comprehensive pan-European inventory of land cover and land use. It categorizes the landscape into 44 thematic classes, ranging from broad forested areas to detailed land uses such as vineyards. Updated every six years, the dataset offers both status and change layers, making it a valuable resource for ecological studies.
+
+For this tutorial, we will use the most recent raster layer (as of this writing, the 2018 update) to represent land use. You can [download the dataset here](https://land.copernicus.eu/en/products/corine-land-cover/clc2018#download) (you'll need to have/make an account). After downloading, unzip the files to your working directory.
+
+Once the dataset is ready, import the raster layer into GRASS using the [r.import](https://grass.osgeo.org/grass-stable/manuals/r.import.html) module. This tool allows you to import raster data into GRASS while automatically reprojecting the data if its coordinate system differs from that of your current project. We let the module estimate the target resolution by setting the [resolution]{.style-parameter} to [estimates]{.style-parameter}. As resampling method, we use [nearest]{.style-parameter} (this is the default).
+
+::: {#exm-5LWdebt7OV .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.import extent=region resolution=estimated resample=nearest \
+input=U2018_CLC2018_V2020_20u1.tif output=CLC2018 \
+title=U2018_CLC2018_V2020_20u1 memory=1000 
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "r.import",
+    extent="region",
+    resolution="estimated",
+    resample="nearest",
+    input="U2018_CLC2018_V2020_20u1.tif",
+    output="CLC2018",
+    title="U2018_CLC2018_V2020_20u1",
+    memory=1000,
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Run the module [r.import]{.style-function} with the following parameters.
+
+| Parameter  | Value                        |
+|------------|------------------------------|
+| extent     | region                       |
+| resolution | estimated                    |
+| resample   | nearest                      |
+| input      | U2018_CLC2018_V2020_20u1.tif |
+| output     | CLC2018                      |
+| title      | U2018_CLC2018_V2020_20u1     |
+| memory     | 1000                         |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+To assign category labels to our land use map, we use the [r.category](https://grass.osgeo.org/grass-stable/manuals/r.category.html) module. This module allows users to assign category labels to raster values using rules from a text file. The file should have no header, with each line formatted as `raster_value|raster_label` (using a pipe as the separator).
+
+The raster values and labels can be extracted from the [U2018_CLC2018_V2020_20u1.tif.vat.dbf]{.style-file} file, which is included in the downloaded land use map. Open this file in LibreOffice or Excel. The first column contains the raster values, and the third column contains the labels. Use this data to create a category rules file by copying the values and labels into a text file (without the header)[^2_obtaining_data-5]. Save the file as [corina_clc_categories.txt]{.style-file} in your working directory, and apply it using:
+
+[^2_obtaining_data-5]: If you don't know how to do this, see [this spreadsheet](share/corina_reclass_color_rules.ods). You can copy the values from the *category rules* column (without the header) to a text file and save it in your working directory as [corina_clc_categories.txt]{.style-file}.
+
+::: {#exm-BcEwmgX1sG .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.category map=CLC2018 separator=pipe rules=corina_clc_categories.txt
+```
+
+## {{< fa brands python >}}
+
+``` bash
+gs.run_command(
+    "r.category", map="CLC2018", separator="pipe", rules="corina_clc_categories.txt"
+)
+```
+
+## {{< fa regular window-restore >}}
+
+Run [r.category]{.style-function} with the following parameters:
+
+| Parameter | Value                     |
+|-----------|---------------------------|
+| map       | CLC2018                   |
+| separator | pipe                      |
+| rules     | corina_clc_categories.txt |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+To assign a color table to the map, we use the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) module. Color rules can be created using values from columns 1, 4, 5, and 6 of the same [.dbf]{.style-file} file. The [r.colors]{.style-function} manual page provides information about the required format. Or you can follow the example in the [accompanying spreadsheet](share/corina_reclass_color_rules.ods) to create the color rules file. Save it as [corina_clc_colorrules.txt]{.style-file} and apply it using:
+
+::: {#exm-BcEwmgX1sG .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+r.colors map=CLC2018 rules=corina_clc_colorrules.txt
+```
+
+## {{< fa brands python >}}
+
+``` bash
+gs.run_command(
+    "r.colors", map="CLC2018", rules="corina_clc_colorrules.txt"
+)
+```
+
+## {{< fa regular window-restore >}}
+
+``` bash
+r.colors map=CLC2018 rules=corina_clc_colorrules.txt
+```
+
+| Parameter | Value                     |
+|-----------|---------------------------|
+| map       | CLC2018                   |
+| rules     | corina_clc_colorrules.txt |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+Keep in mind that we imported the land cover raster at approximately its original resolution. For further analyses with this layer, it may be necessary to resample this layer so it matches the resolution of other raster layers. GRASS can handle resampling automatically "on the fly", which is convenient. However, it’s important to think critically about whether the default nearest neighbor method is truly the best option. We’ll revisit this topic later, but for now, make a note of it.
 
 ## Species data {#sec-speciesdata}
 
@@ -211,7 +759,7 @@ We'll create a new mapset [species_data]{.style-db} for our species distribution
 ::: {#exm-XmMn4IG2Mh .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -274,7 +822,7 @@ The downloaded file is a tab delimited text file, which can be imported with the
 ::: {#exm-EZ65hmOvkK .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -336,7 +884,7 @@ Note that, if the region and the raster layer are not perfectly aligned, the are
 ::: {#exm-OgizA6dRXy .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -382,56 +930,50 @@ To avoid having to type in the same command 19 times, we can use a small script 
 ::: {#exm-vavvH110fv .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
-base="wc2.1_30s_bio_"
-for n in {1..19}; do
-    input="${base}${n}.tif"
-    output="bio_${n}"
-    r.in.gdal -r input=${input} output=${output} memory=1000
+base="wc2.1_30s_bio_"   # <1>
+for n in {1..19}; do # <2>
+    input="${base}${n}.tif" # <3>
+    output="bio_${n}" # <4>
+    r.in.gdal -r input=${input} output=${output} memory=1000  # <5>
 done
 ```
+
+1.  Change the base name of the GeoTiff files if you downloaded the lower resolution data. In the for loop, the base name, number and file extension will be combined to the name of the file to be imported.
+2.  The 'for' loop will import the layer 1 to 19. Each round, the names of the input and output layers are created and used as input for r.in.gdal.
+3.  The number and file extension are added to complete the path+name of the file to be imported.
+4.  The name of the imported raster layer is created by combining the base name (bio\_) and the number.
+5.  The [-r]{.style-parameter} flag is set to limit the import to the regional bounds. To speed up the import, the [memory]{.style-parameter} parameter should be set to be equal to the size of the import file. If that is not possible, use the maximum value that is possible on your system.
 
 ## {{< fa brands python >}}
 
 ``` python
-base = "wc2.1_30s_bio_"
-for n in range(1, 20):
-    input = f"{base}{n}.tif"
-    output = f"bio_{n}"
+base = "wc2.1_30s_bio_"            # <1>
+for n in range(1, 20):        # <2>
+    input = f"{base}{n}.tif"  # <3>
+    output = f"bio_{n}"       # <4>
     gs.run_command(
         "r.in.gdal",
-        flags="r",
+        flags="r",            # <5>
         input=input,
         output=output,
-        memory=1000,
+        memory=1000,          # <6>
     )
 ```
+
+1.  Change the base name of the GeoTiff files if you downloaded the lower resolution data. In the for loop, the base name, number and file extension will be combined to the name of the file to be imported. Note, the assumption is that you have downloaded the GeoTiff files to your working directory.
+2.  The 'for' loop will import the layer 1 to 19. Each round, the names of the input and output layers are created and used as input for r.in.gdal.
+3.  Because the file names only differ in the last number, we can simply create the name of the input layer by combining the base name (base) and the number (n).
+4.  Similar, the name of the imported raster layer is created by combining the base name (bio\_) and the number.
+5.  The -r flag is set to limit the import to the regional bounds.
+6.  To speed up the import, the memory value should be set to be equal to the size of the import file. If that is not possible, use the maximum value that is possible on your system.
 
 ## {{< fa regular window-restore >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/import_climate_data.mp4" >}}
-
-
-## {{< fa question >}}
-
-The code does the follow.
-
-In the first line, you define the base name `wc2.1_30s_bio_`. Note that if you downloaded the lower resolution data, you need to change this to match the base name of the GeoTIFF files that you downloaded. In the for loop, the base name, number and file extension will be combined to the name of the file to be imported.
-
-The 'for' loop will import the layer 1 to 19. Each round, 
-
-1. the names of the input and output layers are created and used as input for r.in.gdal.
-2. The number and file extension are added to complete the path+name of the file to be imported.
-3.  The name of the imported raster layer is created by combining the base name (bio\_) and the number.
-
-In the `r.in.gdal` command:
-
-- the [-r]{.style-parameter} flag is set to limit the import to the regional bounds. 
-- To speed up the import, the [memory]{.style-parameter} parameter should be set to be equal to the size of the import file. If that is not possible, use the maximum value that is possible on your system.
-
 :::
 
 As mentioned earlier, GRASS will import raster layers with the resolution and alignment of the original raster files. This means the computational region and the raster layers may not be perfectly aligned. In addition, the region’s resolution may not match that of the imported layers. To check this, you can run with the [-g]{.style-parameter} and compare the outcomes with those of the [r.info](https://grass.osgeo.org/grass-stable/manuals/r.info.html) module.
@@ -439,7 +981,7 @@ As mentioned earlier, GRASS will import raster layers with the resolution and al
 ::: {#exm-uqHZOxgy43 .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -480,7 +1022,7 @@ To ensure that the region's settings (extent, resolution, orientation) match tho
 ::: {#exm-V0FK3TyzcN .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -523,7 +1065,7 @@ In Section [-@sec-nationalboundaries] we created the vector layer [aoi]{.style-d
 ::: {#exm-sm1p6oj49Z .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -537,8 +1079,10 @@ v.in.region output=aoi --overwrite
 ``` python
 gs.run_command("g.mapset", mapset="PERMANENT")
 gs.run_command("g.region", region="aoi@climate_current")
-gs.run_command("v.in.region", output="aoi", overwrite=True)
+gs.run_command("v.in.region", output="aoi", overwrite=True) # <1>
 ```
+
+1.  On the command line, `--overwrite` is used to tell GRASS to overwrite an existing layer. In Python, do do the same, you set the overwrite parameter to True or False
 
 ## {{< fa regular window-restore >}}
 
@@ -566,11 +1110,6 @@ Run the [v.in.region]{.style-function} module with the following parameter setti
 | Allow output files to overwrite existing files (overwrite) | ✅    |
 
 : {tbl-colwidths="\[50,50\]"}
-
-## {{< fa question >}}
-
-On the command line, `--overwrite` is used to tell GRASS to overwrite an existing layer. In Python, do do the same, you set the overwrite parameter to True or False, like: `overwrite=True`
-
 :::
 
 @fig-bioclimvars shows the bioclimatic maps 1 to 19 that we have just imported for our study area. The maps also show the range map of the Almond-eyed Ringlet butterfly. In case you are interested, see [here](#sec-bioclimvars) for the code used to create the maps.
@@ -628,7 +1167,7 @@ We'll create a new mapset [climate_EC_Earth3_Veg]{.style-db} to store the climat
 ::: {#exm-5XQmiajE7Z .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -680,11 +1219,12 @@ The [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) mod
 ::: {#exm-1a5tTJ1LeP .hiddendiv}
 :::
 
-::: {.panel-tabset}
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 ``` bash
-r.in.gdal -r input=wc2.1_30s_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=bio memory=1000
+r.in.gdal -r input=wc2.1_30s_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif \
+output=bio memory=1000
 ```
 
 ## {{< fa brands python >}}
