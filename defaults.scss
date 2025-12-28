@@ -722,13 +722,6 @@ div.sourceCode {
   margin-left: 1.75rem;
 }
 
-pre.code-overflow-wrap > code.sourceCode {
-  white-space: pre-wrap;
-  text-indent: 0;
-  padding-left: 0;
-}
-
-
 /*==============================================================================
 exercise
 ==============================================================================*/
@@ -828,15 +821,10 @@ Hacks
   /* scroll-margin-top: 4em; */
 }
 
-.hiddendiv {
-  position: relative;
-}
-
 .hiddendiv p {
   color: $grass-color;
   margin-bottom: -54px;
-  position: absolute;
-  right: 10px;
+  margin-left: 145px;
   padding-top: 12px;
   font-size: 1em;
 }
