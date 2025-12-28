@@ -15,7 +15,8 @@ project:
 book:
   title: "Species distribution modeling"
   subtitle: "Using Maxent in GRASS"
-  date: 2025-02-12
+  date: today
+  version: 2026
   author:
     - name: Paulo van Breugel
       url: https://ecodiv.earth/about.html
@@ -56,6 +57,7 @@ book:
     - A3_sampledata.qmd
     - A4_scriptmap.qmd
     - A6_troubleshooting.qmd
+    - A7_baselayers.qmd
 
   bread-crumbs: false
   page-navigation: true
@@ -72,7 +74,7 @@ book:
   #       file: https://ecodiv.earth
 
   sidebar:
-      title: "SDM in GRASS<br><span class=\"modifieddate\">Updated: 2025-8-18</span>"
+      title: "SDM in GRASS<br><span class=\"modifieddate\">1st publication date: 2025-2-12</span>"
       logo: "images/logo_SDM2.png"
       style: "floating"
       search: true
@@ -106,7 +108,7 @@ format:
     code-overflow: scroll
     code-line-numbers: true
     code-annotations: select
-    copyright: "Paulo van Breugel, Ecodiv.earth,  2024"
+    copyright: "Paulo van Breugel, Ecodiv.earth,  2024-2026"
     license: CC BY-NC-SA
     pagetitle: "Ecodiv.earth | sdm in grass"
     author-meta: "Paulo van Breugel"

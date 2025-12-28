@@ -1,10 +1,10 @@
-# Sample data {#sec-sampledata}
+# Data sources {#sec-sampledata}
 
 The table below provides an overview of the raster and vector data used in this tutorial, including a link to source. In addition, a few potentially useful data sources are provided. For a much more extensive list of curated list of public data sets, see [this link](https://github.com/awesomedata/awesome-public-datasets).
 
 ### Data in this tutorial {.unnumbered}
 
-The table below provides an overview of the data used in this tutorial. If you skipped @#sec-baselayers, you can download the files described in that section as a project [here](https://nx66306.your-storageshare.de/s/sLBsLt9xjK75bCx). Download the SDM.zip file and unzip it to your GRASSdb. If you already created a SDM project, replace it, or first rename it.
+The table below provides an overview of the data used in this tutorial. In the linked sections, you'll find the download links for the layers.
 
 | Section | Name + link | Type |
 |----|----|----|

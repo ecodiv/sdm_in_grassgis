@@ -481,7 +481,7 @@ To assess if and where future conditions are outside the range of conditions obs
 
 ``` bash
 # Compute mess
-r.mess flags=mnkci \# <1>
+r.mess -m -n -k -c -i \    # <1>
 ref_env=bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 \
 proj_env=bio.1,bio.2,bio.4,bio.8,bio.9,bio.13,bio.14,bio.15,bio.19 \
 ref_rast=referencepoints output=mess nprocs=2 memory=1000

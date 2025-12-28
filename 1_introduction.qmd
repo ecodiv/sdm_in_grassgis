@@ -10,7 +10,7 @@ This tutorial assumes basic knowledge of species distribution modeling (SDM) and
 
 ## Using the reader
 
-This reader guides you step by step through the species modeling process. The examples demonstrate how to execute functions via the command line [{{< fa solid terminal >}}]{.paneltabcolor}, Python scripts [{{< fa brands python >}}]{.paneltabcolor}, and the GUI dialogs [{{< fa regular window-restore >}}]{.paneltabcolor}.
+This reader guides you step by step through the species modeling process. The examples demonstrate how to execute functions via the command line [{{< fa solid terminal >}}]{.paneltabcolor}, Python scripts [{{< fa brands python >}}]{.paneltabcolor}, and the GUI dialogs [{{< fa regular window-restore >}}]{.paneltabcolor}. If there is a [{{< fa question >}}]{.paneltabcolor} tab, click it for tips or code explanations.
 
 While detailed explanations of the various settings and parameters are not always provided, each function includes a link to its corresponding help page. These help pages are comprehensive, and reading them is highly recommended to fully understand the choices made in the tutorial and the options available to you.
 
