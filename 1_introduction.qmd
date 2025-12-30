@@ -12,6 +12,12 @@ This tutorial assumes basic knowledge of species distribution modeling (SDM) and
 
 This reader guides you step by step through the species modeling process. The examples demonstrate how to execute functions via the command line [{{< fa solid terminal >}}]{.paneltabcolor}, Python scripts [{{< fa brands python >}}]{.paneltabcolor}, and the GUI dialogs [{{< fa regular window-restore >}}]{.paneltabcolor}. If there is a [{{< fa question >}}]{.paneltabcolor} tab, click it for tips or code explanations.
 
+::: {.callout-warning  appearance="simple"}
+
+Do not copy command-line examples blindly. Code snippets often contain placeholders, such as `path-to-file`, that must be replaced with, in this case, the actual location of the file on your system. Always check whether paths, filenames, and parameters need to be adapted before running a command.
+
+:::
+
 While detailed explanations of the various settings and parameters are not always provided, each function includes a link to its corresponding help page. These help pages are comprehensive, and reading them is highly recommended to fully understand the choices made in the tutorial and the options available to you.
 
 ::: {.callout-tip appearance="simple" collapse="true"}
@@ -37,11 +43,14 @@ Before diving into this reader, make sure to install GRASS, Maxent, and Java. Be
 
 ### GRASS software
 
-Visit the GRASS website and navigate to the [download page](https://grass.osgeo.org/download/) for your operating system via the menu. Be sure to use the stable release (at the time of writing, this is version 8.4.0).
+Visit the GRASS website and navigate to the [download page](https://grass.osgeo.org/download/) for your operating system via the menu. Be sure to use the stable release (at the time of writing, this is version 8.4.2).
+
+::: {.callout-tip appearance="simple" collapse="true"}
+Note that if you already have QGIS installed on your Windows system, there’s a good chance you also have GRASS installed. In that case, simply check whether the latest version is installed.
+:::
 
 For Windows users, the [download page](https://grass.osgeo.org/download/windows/) offers two main options: the standalone winGRASS installer and the OSGeo4W installer. I recommend using the OSGeo4W installer, as it allows you to install a wide range of open-source geospatial software packages, including QGIS and GDAL/OGR. Additionally, it provides a more convenient way to keep your software up to date.
 
-Note that if you already have QGIS installed on your Windows system, there’s a good chance you also have GRASS installed. In that case, simply check whether you’re using the latest version.
 
 ### GRASS addons {#sec-addons}
 
@@ -97,14 +106,18 @@ gs.run_command("g.extension", extension="v.scatterplot")
 
 ## {{< fa regular window-restore >}}
 
-Follow the steps in the video below to install the [r.maxent.train]{.style-function} addon. Repeat this for the other addons.
+Follow the steps shown in the video below to install the r.maxent.train addon. Repeat the same procedure for the remaining addons. Once installed, the addons are immediately available for use; however, a restart of GRASS GIS may be required for them to appear in the toolbox.
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/install_addons.mp4" >}}
 :::
 
 ### Maxent {#sec-maxentsoftware}
 
-Two of the addons we just installed ([r.maxent.train]{.style-function} and [r.maxent.predict]{.style-function}) use the Maxent software in the background. Download the Maxent software from the [Maxent website](https://biodiversityinformatics.amnh.org/open_source/maxent/) and extract the [Maxent.jar]{.style-apps} file. Install it into the GRASS add-on directory using the [r.maxent.setup]{.style-function} module. This will allow the other add-ons to find and use it automatically.
+Two of the addons we just installed ([r.maxent.train]{.style-function} and [r.maxent.predict]{.style-function}) use the Maxent software in the background. We therefore need to install this software.
+
+Download the Maxent software (version 3.4.4) from the [Maxent website](https://biodiversityinformatics.amnh.org/open_source/maxent/) and extract the [Maxent.jar]{.style-apps} file. 
+
+Install it into the GRASS add-on directory using the [r.maxent.setup]{.style-function} module. This will allow the other add-ons to find and use it automatically.
 
 ::: {#exm-l4ovVBumNL .hiddendiv}
 :::
@@ -139,9 +152,12 @@ Note that you can also use the browse button in the [r.maxent.setup]{.style-func
 
 Note that you only have to do this once. If you already installed the Maxent.jar file, but want to update it, you can use the [-u]{.style-parameter} flag. This will replace the older version with the new one.
 
-### Java OpenJDK
+### Java JRE
 
 The [Maxent]{.style-apps} software requires [Java]{.style-apps} or the [Java Runtime Environment]{.style-apps} (JRE) version 1.4 or later to be installed on your computer. There is a good chance you already have [Java]{.style-apps} installed. You can check this using the step below.
+
+::: {#exm-forg895afd .hiddendiv}
+:::
 
 ::: {.panel-tabset group="os"}
 ## {{< fa brands linux >}}
@@ -163,11 +179,14 @@ java --version
 ## {{< fa brands apple >}}
 
 I have no access to an Apple computer, but perhaps [this page](https://javaforge.com/how-to-find-java-path-in-mac/) can help you. Otherwise, you'll need to look it up yourself.
+
 :::
 
 If you have [Java]{.style-apps} on your computer, it should show you the version. If not, you'll get the message that it cannot be found. In that case, download the Java Runtime Environment (JRE)  from e.g., the [azul.com download page](https://www.azul.com/downloads/#zulu) and install it.
 
-Now we need to ensure that [GRASS]{.style-apps} can locate the [Java]{.style-apps} executable, a prerequisite for running [Maxent]{.style-apps}. On Linux, and in some cases on Windows, GRASS may have access to [Java]{.style-apps} without further steps. You can check this using the following command.
+![Download section of Java 25 JRE for various operating systems on the Azul download page.](images/downloadjavaJRE.png){#fig-azuldownloadpage width=650}
+
+Now we need to ensure that [GRASS]{.style-apps} can locate the [Java]{.style-apps} executable. On Linux, and in some cases on Windows, GRASS may have access to [Java]{.style-apps} without further steps. You can check this using the following command.
 
 ::: {#exm-eUGszZQwy4 .hiddendiv}
 :::

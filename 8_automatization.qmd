@@ -129,7 +129,7 @@ species_rangemap_file = "data_0.shp"
 species_occurrence_file = "0104058-240626123714530.csv"
 
 # Define output layer names
-species_rangemap_layer = "Erebia_alberganus_rangemap"
+species_rangemap_layer = "E_alberganus_rangemap"
 species_obs_layer = "Erebia_alberganus_obs"
 
 # Set working directory

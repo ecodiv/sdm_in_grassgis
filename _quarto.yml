@@ -93,7 +93,7 @@ book:
 
 cite-method: citeproc
 bibliography: references.bib
-csl: diabetologia.csl #nature-no-superscript.csl
+csl: style/diabetologia.csl #nature-no-superscript.csl
 link-citations: true
 
 crossref:
@@ -115,11 +115,12 @@ format:
     link-external-icon: false
     link-external-newwindow: true
     theme:
-      light: [cosmo, defaults.scss]
-      dark: [slate, defaults.sccs]
+      light: [cosmo, style/defaults.scss]
+      dark: [slate, style/defaults.sccs]
     fontsize: 1em
     mainfont: Helvetica
     number-sections: true
+    fig-align: left
     crossref:
       sec-prefix: Chapter
       fig-title: Figure

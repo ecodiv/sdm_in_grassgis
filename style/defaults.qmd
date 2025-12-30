@@ -1,0 +1,80 @@
+The following typographical conventions are used in this reader:
+
+-   [Names of databases, storage locations, file names]{.style-db}
+-   [Names of GRASS data layers]{.style-data}
+-   [Menu and toolbar items]{.style-menu}
+-   [Name of programs, code libraries, addons]{.style-apps}
+-   [Function names, parameters, variable names]{.style-function}
+-   [Parameter settings, user-supplied values]{.style-parameter}
+
+
+
+::: {#exm-2vSeGTk3HW .hiddendiv}
+:::
+
+## {{< fa solid terminal >}}
+
+``` bash
+
+```
+
+::: panel-tabset
+## {{< fa regular window-restore >}}
+
+
+
+## {{< fa brands python >}}
+
+``` python
+
+```
+
+## {{< fa question >}}
+
+Explanations or tips
+
+:::
+
+
+##############################################################
+
+::: {.callout-tip appearance="simple" collapse="true"}
+## Typographical conventions
+
+:::
+
+###############################################################
+
+
+| Parameter | Value                            |
+|-----------|----------------------------------|
+| A         | a                                |
+| B         | b                                |
+| C         | ✅                               |
+| Where     | [featurecla='Road']{.style-code} |
+
+::: {#exm-intro01 .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+```
+
+## {{< fa brands python >}}
+
+``` python
+```
+
+## {{< fa regular window-restore >}}
+
+Type in [g.mapset]{.style-function} in the console to open the dialog, and use the following parameter settings.
+
+| Parameter                             | Value                 |
+|---------------------------------------|-----------------------|
+| Name of mapset (mapset)               | climate_EC_Earth3_Veg |
+| Create mapset if it doesn't exist (c) | ✅                    |
+:::
+
+{{< video "https://ecodiv.earth/share/sdm_in_grassgis/import_climate_data.mp4" >}}
