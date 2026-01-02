@@ -8,7 +8,7 @@ $theme: "ecodiv" !default;
 
 // ------------- Colors: Generic -----------------------------------------------
 
-$white:    #fff !default;
+$white: #fff !default;
 $gray-code: #f1f3f5 !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
@@ -19,29 +19,29 @@ $gray-600: #868e96 !default;
 $gray-700: #495057 !default;
 $gray-800: #373a3c !default;
 $gray-900: #212529 !default;
-$black:    #000 !default;
+$black: #000 !default;
 
-$blue:    #2780e3 !default;
-$indigo:  #6610f2 !default;
-$purple:  #613d7c !default;
-$pink:    #e83e8c !default;
-$red:     #ff0039 !default;
-$orange:  #f0ad4e !default;
-$yellow:  #ff7518 !default;
-$green:   #3fb618 !default;
-$teal:    #20c997 !default;
-$cyan:    #9954bb !default;
+$blue: #2780e3 !default;
+$indigo: #6610f2 !default;
+$purple: #613d7c !default;
+$pink: #e83e8c !default;
+$red: #ff0039 !default;
+$orange: #f0ad4e !default;
+$yellow: #ff7518 !default;
+$green: #3fb618 !default;
+$teal: #20c997 !default;
+$cyan: #9954bb !default;
 
 // ------------- Colors: HAS Academy -------------------------------------------
 
 $haslightgreen: #1CD354 !default;
-$hasdarkgreen:  #274232 !default;
-$haslightblue:  #008AFF !default;
-$hasdarkblue:   #163951 !default;
-$haslightpink:  #E324BA !default;
-$hasdarkpink:   #421B44 !default;
-$haslightred:   #ED2B00 !default;
-$hasdarkred:    #511A23 !default;
+$hasdarkgreen: #274232 !default;
+$haslightblue: #008AFF !default;
+$hasdarkblue: #163951 !default;
+$haslightpink: #E324BA !default;
+$hasdarkpink: #421B44 !default;
+$haslightred: #ED2B00 !default;
+$hasdarkred: #511A23 !default;
 
 // ------------- Colors: Ecodiv ------------------------------------------------
 
@@ -62,7 +62,7 @@ $grass-color: #0b8b36 !default;
 $grass-color-alt: #9ED29C !default;
 $grass-color-light: #EFF4E8 !default;
 $grass-background-color: #eff3e9ff !default;
-$grass-background-opac: rgb(239,244,232, 0.5) !default;
+$grass-background-opac: rgb(239, 244, 232, 0.5) !default;
 $grass-color-light-borders: #DBE2D2 !default;
 $grass-color-dark: #B8C6A5 !default;
 $grey-color-light: #CCCCCC !default;
@@ -76,14 +76,14 @@ $border-gray-light: #dee2e6 !default;
 
 // ------------- Colors: Semantic Palette --------------------------------------
 
-$primary:       $gray-900 !default;
-$secondary:     $ecodivlightblue !default;
-$success:       $haslightgreen !default;
-$info:          $haslightpink !default;
-$warning:       $hasdarkpink !default;
-$danger:        $haslightred !default;
-$light:         $haslightblue !default;
-$dark:          $hasdarkblue !default;
+$primary: $gray-900 !default;
+$secondary: $ecodivlightblue !default;
+$success: $haslightgreen !default;
+$info: $haslightpink !default;
+$warning: $hasdarkpink !default;
+$danger: $haslightred !default;
+$light: $haslightblue !default;
+$dark: $hasdarkblue !default;
 
 // ------------- Accessibility ------------------------------------------------
 
@@ -98,7 +98,7 @@ $headings-font-weight: 400 !default;
 $font-size-root: 16px !default;
 $h1-font-size: 1.6rem !default;
 $h2-font-size: 1.4rem !default;
-$h3-font-size: 1rem !default;
+$h3-font-size: 1.1rem !default;
 $h4-font-size: 1rem !default;
 $h5-font-size: 1rem !default;
 $toc-font-size: 1rem !default;
@@ -119,6 +119,7 @@ $progress-height: .5rem !default;
 // ------------- Web Fonts ----------------------------------------------------
 
 $web-font-path: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap" !default;
+
 @if $web-font-path {
   @import url($web-font-path);
 }
@@ -176,20 +177,20 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@3
   line-height: 1.2rem !important;
 }
 
-.sidebar nav[role="doc-toc"] ul > li > a,
-.sidebar nav[role="doc-toc"] ul > li > ul > li > a {
+.sidebar nav[role="doc-toc"] ul>li>a,
+.sidebar nav[role="doc-toc"] ul>li>ul>li>a {
   color: $gray-600 !important;
 }
 
-.sidebar nav[role="doc-toc"] ul > li > a.active,
-.sidebar nav[role="doc-toc"] ul > li > ul > li > a.active {
+.sidebar nav[role="doc-toc"] ul>li>a.active,
+.sidebar nav[role="doc-toc"] ul>li>ul>li>a.active {
   border-left: 1px solid $gray-700;
   color: $ecodivgreen !important;
 }
 
 div.sidebar-item-container,
-div.sidebar-item-container .show > .nav-link,
-div.sidebar-item-container .sidebar-link > code {
+div.sidebar-item-container .show>.nav-link,
+div.sidebar-item-container .sidebar-link>code {
   color: $gray-600;
 }
 
@@ -198,8 +199,8 @@ div.sidebar-item-container .sidebar-link > code {
 }
 
 div.sidebar-item-container .active,
-div.sidebar-item-container .show > .nav-link,
-div.sidebar-item-container .sidebar-link > code {
+div.sidebar-item-container .show>.nav-link,
+div.sidebar-item-container .sidebar-link>code {
   color: $ecodivblue;
   font-weight: 600;
 }
@@ -209,8 +210,8 @@ div.sidebar-item-container .sidebar-link > code {
   font-weight: 600;
 }
 
-.sidebar nav[role="doc-toc"] ul > li > a:hover,
-.sidebar nav[role="doc-toc"] ul > li > ul > li > a:hover {
+.sidebar nav[role="doc-toc"] ul>li>a:hover,
+.sidebar nav[role="doc-toc"] ul>li>ul>li>a:hover {
   color: $ecodivblue !important;
 }
 
@@ -236,7 +237,7 @@ body {
 // ------------- Headings & Titles --------------------------------------------
 
 h1.title {
-  font-size: 2.2rem !important;
+  font-size: $h1-font-size !important;
 }
 
 #title-block-header.quarto-title-block.default .quarto-title h1.title {
@@ -246,14 +247,17 @@ h1.title {
 h2 {
   margin-top: 1.5rem !important;
   color: $ecodivblue;
+  font-size: $h2-font-size !important;
 }
 
-H2 > .header-section-number {
+h2>.header-section-number {
   color: $ecodivblue;
+  font-size: $h2-font-size !important;
 }
 
 h3 {
   color: $heading-gray;
+  font-size: $h3-font-size !important;
 }
 
 .quarto-section-identifier {
@@ -274,6 +278,50 @@ a:hover {
   text-decoration-color: $ecodivgreen-hover !important;
 }
 
+// ------------- Code & Special Text Styles ----------------------------------
+
+.style-data {
+  font-family: "Source Code Pro", "Courier New", Courier, monospace;
+  background-color: #f5f5f5;
+  padding: 0.1em 0.25em;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-size: 1em;
+}
+
+.style-parameter {
+  font-family: "Source Code Pro", "Courier New", Courier, monospace;
+  color: #2a4b8d;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 1.1em !important;
+}
+
+style-value {
+  font-family: "Source Code Pro", "Courier New", Courier, monospace;
+  background-color: #eef3fa;
+  padding: 0.1em 0.25em;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-size: 1em;
+}
+
+.style-menu {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.style-output {
+  font-family: "Source Code Pro", "Courier New", Courier, monospace;
+  font-size: 1em;
+  background-color: #f3f6f8;
+  color: #444;
+  padding: 0.1em 0.1em;
+  border-radius: 3px;
+  margin: 0.6em 0;
+  white-space: pre-wrap;
+}
+
 // ------------- Captions & Figures ------------------------------------------
 
 .figure-caption,
@@ -285,13 +333,10 @@ caption {
   text-align: left !important;
 }
 
-.column-margin figcaption .style-function,
 .column-margin figcaption .style-data,
 .column-margin figcaption .style-menu,
 .column-margin figcaption .style-parameter,
-.column-margin figcaption .style-apps,
-.column-margin figcaption .style-file,
-.column-margin figcaption .style-folder {
+.column-margin figcaption .style-value {
   color: $text-muted-gray !important;
 }
 
@@ -303,88 +348,13 @@ caption {
   margin-bottom: auto;
 }
 
-// ------------- Code & Special Text Styles ----------------------------------
-
-.style-data {
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: $ecodivgreen-hover;
-}
-
-.style-db {
-  font-style: italic;
-}
-
-.style-apps {
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: $hasdarkred;
-}
-
-.style-function {
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: $hasdarkblue;
-}
-
-.style-menu {
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: $hasdarkpink;
-}
-
-.style-parameter {
-  font-family: monospace;
-  font-size: 0.98rem;
-  font-style: italic;
-}
-
-.style-variable {
-  font-family: monospace;
-  font-size: 0.98rem;
-  font-style: italic;
-}
-
-.style-code {
-  font-family: monospace;
-  font-size: 0.9rem;
-}
-
-.style-output {
-  font-family: monospace;
-  font-size: 0.9rem;
-}
-
-.style-file {
-  font-family: monospace;
-  font-size: 0.9rem;
-}
-
-.style-folder {
-  font-family: monospace;
-  font-size: 0.9rem;
-}
-
 // ------------- Special Text in Margins & Columns ---------------------------
 
-.column-margin .style-data {
-  font-size: .8rem;
-}
-
-.column-margin .style-db {
-  font-size: .825rem;
-}
-
-.column-margin .style-apps {
-  font-size: .8rem;
-}
-
-.column-margin .style-function {
-  font-size: .8rem;
-}
-
-.column-margin .style-parameter {
-  font-size: .8rem;
+.column-margin figcaption .style-data,
+.column-margin figcaption .style-menu,
+.column-margin figcaption .style-parameter,
+.column-margin figcaption .style-value {
+  font-size: .9rem;
 }
 
 // ------------- Metadata Text ------------------------------------------------
@@ -413,19 +383,17 @@ caption {
   text-decoration: none !important;
 }
 
-section#footnotes > hr {
+section#footnotes>hr {
   display: none !important;
 }
 
-.footnotes .style-function,
-.footnotes .style-data,
-.footnotes .style-menu,
-.footnotes .style-parameter,
-.footnotes .style-apps,
-.footnotes .style-file,
-.footnotes .style-folder,
+.column-margin figcaption .style-data,
+.column-margin figcaption .style-menu,
+.column-margin figcaption .style-parameter,
+.column-margin figcaption .style-value,
 .footnotes code {
   color: $gray-500 !important;
+  font-size: 0.95rem !important;
 }
 
 // ============================================================================
@@ -486,24 +454,22 @@ section#footnotes > hr {
 .callout.callout-style-default .callout-body,
 .callout.callout-style-simple .callout-body,
 .callout.callout-style-minimal .callout-body {
-  font-size: 0.95rem;
+  font-size: .95rem;
 }
 
-.callout-body .style-file,
-.callout-body .style-apps,
-.callout-body .style-folder,
-.callout-body .style-parameter,
-.callout-body .style-function,
-.callout-body .style-data,
-.callout-body .style-menu {
-  font-size: 0.95rem !important;
+.callout.callout-style-default > div.callout-header,
+.callout.callout-style-simple > div.callout-header,
+.callout.callout-style-minimal > div.callout-header
+ {
+  font-weight: 600;
+  font-size: .92rem;
 }
 
 div.callout-tip.callout {
   border-left-color: $ecodivgreen !important;
 }
 
-div.callout-tip.callout-style-default > .callout-header {
+div.callout-tip.callout-style-default>.callout-header {
   background-color: $ecodivgreen-background !important;
 }
 
@@ -511,13 +477,13 @@ div.callout-note.callout {
   border-left-color: $ecodivblue !important;
 }
 
-div.callout-note.callout-style-default > .callout-header {
+div.callout-note.callout-style-default>.callout-header {
   background-color: $ecodivblue-background !important;
 }
 
 // Callout boxes in the margin //
 .column-margin div.callout-tip.callout,
-.column-margin div.callout-note.callout, 
+.column-margin div.callout-note.callout,
 .column-margin div.callout-warning.callout,
 .column-margin div.callout-important.callout {
   border-left: 1px solid #dee2e6 !important;
@@ -560,7 +526,7 @@ div.callout-note.callout-style-default > .callout-header {
   border-top: none !important;
 }
 
-.tab-pane > p {
+.tab-pane>p {
   padding-top: 0em;
 }
 
@@ -575,7 +541,7 @@ div.callout-note.callout-style-default > .callout-header {
 .panel-tabset .style-apps,
 .panel-tabset .style-folder,
 .panel-tabset .style-menu {
-  font-size: .95rem !important;
+  font-size: 1rem !important;
 }
 
 // ------------- Tabsets: Exercise Tabs ----------------------------------------
@@ -583,7 +549,7 @@ div.callout-note.callout-style-default > .callout-header {
 .panel-tabset.exercise .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link.active {
   background-color: $ecodivblue-background !important;
-  border-color:  $ecodivblue-borders !important;
+  border-color: $ecodivblue-borders !important;
 }
 
 .panel-tabset.exercise .nav-tabs .nav-item .nav-link {
@@ -606,7 +572,7 @@ div.callout-note.callout-style-default > .callout-header {
 .panel-tabset.exercise .style-apps,
 .panel-tabset.exercise .style-folder,
 .panel-tabset.exercise .style-menu {
-  font-size: .9rem !important;
+  font-size: 1rem !important;
 }
 
 // ------------- Tables in Tabs -----------------------------------------------
@@ -614,7 +580,7 @@ div.callout-note.callout-style-default > .callout-header {
 .tab-content th {
   font-weight: 600;
   font-size: 0.92rem;
-  color:  grey;
+  color: grey;
 }
 
 .tab-content .table {
@@ -624,13 +590,13 @@ div.callout-note.callout-style-default > .callout-header {
   font-size: 0.92rem;
 }
 
-.tab-content .table > thead {
+.tab-content .table>thead {
   border-bottom: 3px solid white;
   border-left: 3px solid white;
   padding-top: 0 !important;
 }
 
-.tab-content .table > :not(caption) > * > * {
+.tab-content .table> :not(caption)>*>* {
   padding: .2rem .5rem;
 }
 
@@ -646,11 +612,11 @@ div.sourceCode {
   margin-top: 0.5em;
 }
 
-div.sourceCode + p {
+div.sourceCode+p {
   margin-top: 1em;
 }
 
-pre.code-overflow-wrap > code.sourceCode {
+pre.code-overflow-wrap>code.sourceCode {
   white-space: pre-wrap;
   text-indent: 0;
   padding-left: 0;
@@ -683,8 +649,8 @@ pre.code-overflow-wrap > code.sourceCode {
   margin-bottom: $space_text_object_bottom;
 }
 
-.quarto-layout-panel > figure > figcaption,
-.quarto-layout-panel > .panel-caption {
+.quarto-layout-panel>figure>figcaption,
+.quarto-layout-panel>.panel-caption {
   margin-top: 0;
 }
 
@@ -693,7 +659,7 @@ pre.code-overflow-wrap > code.sourceCode {
   margin-bottom: 0.5rem;
 }
 
-figure > figcaption.quarto-float-caption-bottom {
+figure>figcaption.quarto-float-caption-bottom {
   margin-bottom: 1.5em;
 }
 
@@ -766,7 +732,7 @@ details.reading {
   border-left: 5px solid #1cd354 !important;
 }
 
-details > summary {
+details>summary {
   color: var(--bs-body-color);
 }
 
@@ -790,7 +756,7 @@ summary {
   font-size: 0.99em;
 }
 
-details[open] > summary {
+details[open]>summary {
   color: #464646;
   border-bottom: 1px dotted #274232;
   margin-bottom: 1.5rem;
@@ -886,6 +852,7 @@ theorem.exercise {
 // ------------- Responsive Design -------------------------------------------
 
 @media (max-width: 768px) {
+
   .hiddendiv,
   .hiddendiv p {
     display: block;

@@ -8,9 +8,9 @@ In this section, we’ll use the model developed in @sec-4trainthemodel to proje
 
 ## Current distribution {#sec-WZPnHz9gkh}
 
-When we ran the [r.maxent.train]{.style-function} in @sec-4trainthemodel, we used the [predictionlayer]{.style-parameter} parameter to instruct the function to create a probability distribution map of our species under current conditions. Alternatively, we could use the [r.maxent.predict](https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.predict.html) addon to achieve the same result. Let's try it out.
+When we ran the `r.maxent.train` in @sec-4trainthemodel, we used the [predictionlayer]{.style-parameter} parameter to instruct the function to create a probability distribution map of our species under current conditions. Alternatively, we could use the [r.maxent.predict](https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.predict.html) addon to achieve the same result. Let's try it out.
 
-The minimum input requirements of [r.maxent.predict]{.style-function} are the names of the input raster layers, the [lambdas]{.style-output} file and the raster layers corresponding to the predictor variables described in the lambdas file. The [lambdas]{.style-output} file, one of the outputs from the [r.maxent.train]{.style-function} module, can be found in the output folder [model_01]{.style-output}. It has the extension *.lambdas* and describes the Maxent model.
+The minimum input requirements of `r.maxent.predict` are the names of the input raster layers, the [lambdas]{.style-data} file and the raster layers corresponding to the predictor variables described in the lambdas file. The [lambdas]{.style-data} file, one of the outputs from the `r.maxent.train` module, can be found in the output folder [model_01]{.style-data}. It has the extension *.lambdas* and describes the Maxent model.
 
 ::: {#exm-VwlODGvXBe .hiddendiv}
 :::
@@ -47,7 +47,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.maxent.predict]{.style-function} dialog and run it with the following parameter settings:
+Open the `r.maxent.predict` dialog and run it with the following parameter settings:
 
 | Parameter  | Value                                                     |
 |------------|-----------------------------------------------------------|
@@ -58,7 +58,7 @@ Open the [r.maxent.predict]{.style-function} dialog and run it with the followin
 : {tbl-colwidths="\[35,65\]"}
 :::
 
-To confirm that the resulting map [E_alberganus_probability2]{.style-data} is identical to the map [E_alberganus_probability]{.style-data} that we created earlier in @sec-4trainthemodel, we compute the difference between the two maps using the [r.mapcalc]{.style-function} module.
+To confirm that the resulting map [E_alberganus_probability2]{.style-data} is identical to the map [E_alberganus_probability]{.style-data} that we created earlier in @sec-4trainthemodel, we compute the difference between the two maps using the r.mapcalc` module.
 
 ::: {#exm-iZAJ53ha7v .hiddendiv}
 :::
@@ -98,7 +98,7 @@ All raster cells in the diff map should be zero. You can check this using the [r
 
 We will now use the same model that we used in the previous paragraph to project the future potential distribution of the almond-eyed ringlet butterfly for the period 2081–2100. This projection will be based on the *SSP585* climate scenario from the *EC-Earth3-Veg* general circulation model (GCM).
 
-In @sec-obtainfutureclimatelayers, we downloaded the climate layers for the above-mentioned SSP and GCM and saved them in the mapset [climate_EC_Earth3_Veg]{.style-db}. Let's first make sure we have access to this mapset from the current mapset. As you might remember, we can use the [g.mapsets](https://grass.osgeo.org/grass-stable/manuals/g.mapsets.html) module for that.
+In @sec-obtainfutureclimatelayers, we downloaded the climate layers for the above-mentioned SSP and GCM and saved them in the mapset [climate_EC_Earth3_Veg]{.style-data}. Let's first make sure we have access to this mapset from the current mapset. As you might remember, we can use the [g.mapsets](https://grass.osgeo.org/grass-stable/manuals/g.mapsets.html) module for that.
 
 ::: {#exm-HXKf6KsqSt .hiddendiv}
 :::
@@ -120,10 +120,10 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-In the menu, go to [Settings → GRASS working environment → Mapset access]{.style-menu} and select the mapsets [climate_EC_Earth3_Veg]{.style-db}.
+In the menu, go to [Settings → GRASS working environment → Mapset access]{.style-menu} and select the mapsets [climate_EC_Earth3_Veg]{.style-data}.
 :::
 
-We now use the [r.maxent.predict]{.style-function} addon to apply the Maxent model to this set of climate raster data. The settings are similar to those used in the previous paragraph, with one exception: the raster names of the future climate layers do not match the variable names used to create the Maxent model. To address this, we use the [variables]{.style-parameter} parameter to provide the corresponding variable names[^5_model_prediction-1].
+We now use the `r.maxent.predict` addon to apply the Maxent model to this set of climate raster data. The settings are similar to those used in the previous paragraph, with one exception: the raster names of the future climate layers do not match the variable names used to create the Maxent model. To address this, we use the [variables]{.style-parameter} parameter to provide the corresponding variable names[^5_model_prediction-1].
 
 [^5_model_prediction-1]: Alternatively, the [alias_file]{.style-parameter} parameter can be used to provide a CSV file with the names of the explanatory variables (first column) and the names of the corresponding raster layers (second column).
 
@@ -167,7 +167,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.maxent.predict]{.style-function} dialog and run it with the following parameter settings:
+Open the `r.maxent.predict` dialog and run it with the following parameter settings:
 
 | Parameter | Value |
 |----|----|
@@ -209,7 +209,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.colors]{.style-function} dialog and run it with the following parameter settings:
+Open the `r.colors` dialog and run it with the following parameter settings:
 
 | Parameter | Value                    |
 |-----------|--------------------------|
@@ -263,11 +263,11 @@ gs.run_command("r.colors", map="E_alb_diff", color="differences")
 
 ## {{< fa regular window-restore >}}
 
-Open the [raster map calculator]{.style-function} from the [raster]{.style-menu} and run it with the following expression.
+Open the `raster map calculator` from the [raster]{.style-menu} and run it with the following expression.
 
 ![Use the raster map calculator to calculate the differences in habitat suitability scores between current and future distributions.](images/rastercalculator_changemap01.png){#fig-rastmapchangemap fig-align="left"}
 
-Next, open the [r.colors]{.style-function} module, and run it with the following parameters.
+Next, open the `r.colors` module, and run it with the following parameters.
 
 | Parameter | Value       |
 |-----------|-------------|
@@ -315,7 +315,7 @@ echo -e "0 white\n1 green" | r.colors map=E_alberganus_bin rules=- # <1>
 echo -e "0 white\n1 green" | r.colors map=E_alberganus_futprob rules=-
 ```
 
-1.  With [echo -e]{.style-function} you normally print a text to the screen. Here, these are the color instructions. The '\|' (pipe) symbol, takes what would have been printed on the screen and sends it directly into the next command, [r.colors]{.style-function}, as input. The [rules=-]{.style-parameter} part tells [r.colors]{.style-function} to get its color instructions from the previous command (instead of a file). The dash (-) means "read from the pipeline," which is the output of echo.
+1.  With `echo -e` you normally print a text to the screen. Here, these are the color instructions. The '\|' (pipe) symbol, takes what would have been printed on the screen and sends it directly into the next command, `r.colors`, as input. The [rules=-]{.style-parameter} part tells `r.colors` to get its color instructions from the previous command (instead of a file). The dash (-) means "read from the pipeline," which is the output of echo.
 
 ## {{< fa brands python >}}
 
@@ -426,7 +426,7 @@ units=kilometers,percent # <2>
 ```
 
 1.  The [-n]{.style-parameter} flag tells r.report to not report on no data values.
-2.  You can choose in what unit(s) [r.report]{.style-function} should report the area statistics.
+2.  You can choose in what unit(s) `r.report` should report the area statistics.
 
 ## {{< fa brands python >}}
 
@@ -440,7 +440,7 @@ gs.run_command(
 ```
 
 1.  The [-n]{.style-parameter} flag tells r.report to not report on no data values.
-2.  You can choose in what unit(s) [r.report]{.style-function} should report the area statistics.
+2.  You can choose in what unit(s) `r.report` should report the area statistics.
 
 ## {{< fa regular window-restore >}}
 
@@ -455,7 +455,7 @@ Open the [r.report]{.style-menu} module and run it with the following parameters
 : {tbl-colwidths="\[35,65\]"}
 :::
 
-[^5_model_prediction-7]: You can choose in what unit(s) [r.report]{.style-function} should report the area statistics.
+[^5_model_prediction-7]: You can choose in what unit(s) `r.report` should report the area statistics.
 
 [^5_model_prediction-8]: The [-n]{.style-parameter} flag tells r.report to not report on no data values.
 
@@ -526,7 +526,7 @@ gs.write_command(
 
 ## {{< fa regular window-restore >}}
 
-You can find the [r.category]{.style-function} in the [raster]{.style-menu} menu.
+You can find the `r.category` in the [raster]{.style-menu} menu.
 
 ::: {#fig-catcross layout-ncol="3"}
 ![](images/r_category_crossproduct_00.png){group="rcat"}
@@ -535,7 +535,7 @@ You can find the [r.category]{.style-function} in the [raster]{.style-menu} menu
 
 ![](images/r_category_crossproduct_01.png){group="rcat"}
 
-Using [r.category]{.style-function} to rename the categories of the raster layer [E_alberganus_presabschange]{.style-data} (click on the images to enlarge).
+Using `r.category` to rename the categories of the raster layer [E_alberganus_presabschange]{.style-data} (click on the images to enlarge).
 :::
 
 To change the colors of the categories, see @exm-Yc5f3VPPR2.

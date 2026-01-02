@@ -6,7 +6,7 @@ import os
 os.chdir("/home/paulo/SDM/Outputs/")
 
 # Set region
-gs.run_command("g.region", region="region_aoi@climate_current")
+gs.run_command("g.region", region="region_aoi@climate")
 
 # Variable
 variables = [f"bio.{num}" for num in list(range(1, 20))]

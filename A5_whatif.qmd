@@ -4,7 +4,7 @@ Throughout the tutorial, choices were made, such as the extent of the study area
 
 ## Weighted background points {#sec-weightedbackground}
 
-In @sec-bgpselection the [r.random]{.style-function} module was used to create point layer with randomly selected background points. However, the data we work with has the longitude/latitude coordinate reference system. Because the size of raster cells varies by latitude, the sample density varies by latitude as well. The [r.random.weight](https://grass.osgeo.org/grass-stable/manuals/r.random.cells.html) module offers the option to adjusts the probability of selecting a cells according to cell area. The module requires a weight raster layer which we can create using [r.mapcalc](https://grass.osgeo.org/grass-stable/manuals/r.mapcalc.html). The weight in this case is the cell surface area.
+In @sec-bgpselection the `r.random` module was used to create point layer with randomly selected background points. However, the data we work with has the longitude/latitude coordinate reference system. Because the size of raster cells varies by latitude, the sample density varies by latitude as well. The [r.random.weight](https://grass.osgeo.org/grass-stable/manuals/r.random.cells.html) module offers the option to adjusts the probability of selecting a cells according to cell area. The module requires a weight raster layer which we can create using [r.mapcalc](https://grass.osgeo.org/grass-stable/manuals/r.mapcalc.html). The weight in this case is the cell surface area.
 
 ::: panel-tabset
 ## {{< fa solid terminal >}}

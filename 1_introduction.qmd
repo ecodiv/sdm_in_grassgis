@@ -23,14 +23,19 @@ While detailed explanations of the various settings and parameters are not alway
 ::: {.callout-tip appearance="simple" collapse="true"}
 ## Typographical conventions
 
-The following typographical conventions are used in this reader:
+This tutorial uses consistent typographic conventions to distinguish between data objects, software elements, and code-related concepts. Paying attention to these conventions will help you understand what you are expected to click, type, or interpret at each step.
 
--   [Names of databases, storage locations, file names]{.style-db}
--   [Names of GRASS data layers]{.style-data}
--   [Menu and toolbar items]{.style-menu}
--   [Name of programs, code libraries, addons]{.style-apps}
--   [Function names, parameters, variable names]{.style-function}
--   [Parameter settings, user-supplied values]{.style-parameter}
+| Element | Example |
+|-------|--------|
+| Databases, folders, files | [SDM]{.style-data}, [maxent.jar]{.style-data} |
+| GRASS data layers | [bio_1@climate]{.style-data} |
+| Programs and libraries | *GRASS GIS*, *QGIS* |
+| GRASS modules, functions | `r.maxent`, `v.import()` |
+| Parameters, variables | [vector]{.style-parameter}, [output]{.style-parameter} |
+| Parameter values | [occurrences]{.style-value} |
+| Menu and toolbar items | [File → Import]{.style-menu} |
+| Module output, messages | [duplicate points detected]{.style-output} |
+
 :::
 
 Throughout the text you'll find literature references and footnotes. You are encouraged to check them out. Simply hover over the link with your mouse. You'll also find that some code includes explanatory notes. You can read these notes by clicking on the number next to the code.
@@ -113,11 +118,11 @@ Follow the steps shown in the video below to install the r.maxent.train addon. R
 
 ### Maxent {#sec-maxentsoftware}
 
-Two of the addons we just installed ([r.maxent.train]{.style-function} and [r.maxent.predict]{.style-function}) use the Maxent software in the background. We therefore need to install this software.
+Two of the addons we just installed (*r.maxent.train* and *r.maxent.predict*) use the *Maxent* software in the background. We therefore need to install this software.
 
-Download the Maxent software (version 3.4.4) from the [Maxent website](https://biodiversityinformatics.amnh.org/open_source/maxent/) and extract the [Maxent.jar]{.style-apps} file. 
+Download the Maxent software (version 3.4.4) from the [Maxent website](https://biodiversityinformatics.amnh.org/open_source/maxent/) and extract the *Maxent.jar* file. 
 
-Install it into the GRASS add-on directory using the [r.maxent.setup]{.style-function} module. This will allow the other add-ons to find and use it automatically.
+Install it into the GRASS add-on directory using the `r.maxent.setup` module. This will allow the other add-ons to find and use it automatically.
 
 ::: {#exm-l4ovVBumNL .hiddendiv}
 :::
@@ -125,7 +130,7 @@ Install it into the GRASS add-on directory using the [r.maxent.setup]{.style-fun
 ::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
-Make sure you know where you have extracted the [Maxent.jar]{.style-file} file. You need to provide the full path below.
+Make sure you know where you have extracted the *Maxent.jar* file. You need to provide the full path below.
 
 ``` bash
 r.maxent.setup maxent=path-to-file/maxent.jar
@@ -133,7 +138,7 @@ r.maxent.setup maxent=path-to-file/maxent.jar
 
 ## {{< fa brands python >}}
 
-Make sure you know where you have extracted the [Maxent.jar]{.style-file} file. You need to provide the full path to the [maxent]{.style-parameter}.
+Make sure you know where you have extracted the *Maxent.jar* file. You need to provide the full path to the file.
 
 ``` python
 gs.run_command("r.maxent.setup", maxent="path-to-file/maxent.jar")
@@ -141,20 +146,20 @@ gs.run_command("r.maxent.setup", maxent="path-to-file/maxent.jar")
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.maxent.setup]{.style-function} module dialog and run it with the following parameter settings.
+Open the `r.maxent.setup` module dialog and run it with the following parameter settings.
 
 | Parameter | Value                   |
 |-----------|-------------------------|
 | maxent    | path-to-file/maxent.jar |
 
-Note that you can also use the browse button in the [r.maxent.setup]{.style-function} window to find the file.
+Note that you can also use the browse button in the `r.maxent.setup` module dialog to find the file.
 :::
 
-Note that you only have to do this once. If you already installed the Maxent.jar file, but want to update it, you can use the [-u]{.style-parameter} flag. This will replace the older version with the new one.
+Note that you only have to do this once. If you already installed the *Maxent.jar* file, but want to update it, you can use the `-u` flag. This will replace the older version with the new one.
 
 ### Java JRE
 
-The [Maxent]{.style-apps} software requires [Java]{.style-apps} or the [Java Runtime Environment]{.style-apps} (JRE) version 1.4 or later to be installed on your computer. There is a good chance you already have [Java]{.style-apps} installed. You can check this using the step below.
+The *Maxent* software requires *Java* or the *Java Runtime Environment* (JRE) version 1.4 or later to be installed on your computer. There is a good chance you already have Java installed. You can check this using the step below.
 
 ::: {#exm-forg895afd .hiddendiv}
 :::
@@ -170,7 +175,7 @@ java --version
 
 ## {{< fa brands windows >}}
 
-In the Window search bar, type [cmd]{.style-menu} and hit enter. This will open the Command prompt. Next, type in the following code string.
+In the Window search bar, type `cmd` and hit enter. This will open the Command prompt. Next, type in the following code string.
 
 ``` bash
 java --version
@@ -182,11 +187,11 @@ I have no access to an Apple computer, but perhaps [this page](https://javaforge
 
 :::
 
-If you have [Java]{.style-apps} on your computer, it should show you the version. If not, you'll get the message that it cannot be found. In that case, download the Java Runtime Environment (JRE)  from e.g., the [azul.com download page](https://www.azul.com/downloads/#zulu) and install it.
+If you have *Java* on your computer, it should show you the version. If not, you'll get the message that it cannot be found. In that case, download the Java Runtime Environment (JRE)  from e.g., the [azul.com download page](https://www.azul.com/downloads/#zulu) and install it.
 
 ![Download section of Java 25 JRE for various operating systems on the Azul download page.](images/downloadjavaJRE.png){#fig-azuldownloadpage width=650}
 
-Now we need to ensure that [GRASS]{.style-apps} can locate the [Java]{.style-apps} executable. On Linux, and in some cases on Windows, GRASS may have access to [Java]{.style-apps} without further steps. You can check this using the following command.
+Now we need to ensure that *GRASS* can locate the *Java* executable. On Linux, and in some cases on Windows, GRASS may have access to Java without further steps. You can check this using the following command.
 
 ::: {#exm-eUGszZQwy4 .hiddendiv}
 :::
@@ -206,7 +211,7 @@ gs.run_command("r.maxent.setup", flags="j")
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.maxent.setup]{.style-function} module dialog and run it with the following parameter settings.
+Open the `r.maxent.setup` module dialog and run it with the following parameter settings.
 
 | Parameter                                    | Value |
 |----------------------------------------------|-------|
@@ -237,13 +242,13 @@ To find out, in the Window search bar, type [cmd]{.style-menu} and hit enter. Th
 where java
 ```
 
-If the code above doesn't work, you can try the code below (you can also try to replace [java.exe]{.style-apps} with [javac.exe]{.style-apps}).
+If the code above doesn't work, you can try the code below (you can also try to replace `java.exe` with `javac.exe`).
 
 ``` bash
 for %i in (java.exe) do @echo.   %~$PATH:i
 ```
 
-Alternatively, you can search for the [java.exe]{.style-apps} file on the disk. Open [My Computer]{.style-menu} where you can see [C drive]{.style-menu}, [D drive]{.style-menu} etc. On the top right corner you can see [Search bar]{.style-menu}. Enter [java.exe]{.style-apps} and hit enter. Note, this may take some time.
+Alternatively, you can search for the [java.exe]{.style-data} file on the disk. Open [My Computer]{.style-menu} where you can see [C drive]{.style-menu}, [D drive]{.style-menu} etc. On the top right corner you can see [Search bar]{.style-menu}. Enter `java.exe` and hit enter. Note, this may take some time.
 
 ## {{< fa brands apple >}}
 
@@ -270,14 +275,14 @@ gs.run_command("r.maxent.setup", java="path-to-java/java.exe")
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.maxent.setup]{.style-function} module dialog and run it with the following parameter settings.
+Open the `r.maxent.setup` module dialog and run it with the following parameter settings.
 
 | Parameter | Value                 |
 |-----------|-----------------------|
 | java      | path-to-java/java.exe |
 :::
 
-Note that @exm-l4ovVBumNL and @exm-WkMBbifIZR can be combined in one step by providing both the [maxent]{.style-parameter} and [java]{.style-parameter} parameters to [r.maxent.setup]{.style-function} at the same time.
+Note that @exm-l4ovVBumNL and @exm-WkMBbifIZR can be combined in one step by providing both the [maxent]{.style-parameter} and [java]{.style-parameter} parameters to `r.maxent.setup` at the same time.
 
 <!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->
 

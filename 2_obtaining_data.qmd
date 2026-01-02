@@ -11,7 +11,7 @@ For this tutorial, we will download and import various data layers that we need 
 
 ## The database {#sec-creatingadatabase}
 
-Once you have started GRASS, the first thing you normally do is to open the GRASS database, or to create a new one to do for this tutorial is to create a new GRASS database called [GRASSdb]{.style-db}. Next, create a new project called [SDM]{.style-db} with the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
+Once you have started GRASS, the first thing you normally do is to open the GRASS database, or to create a new one to do for this tutorial is to create a new GRASS database called [GRASSdb]{.style-data}. Next, create a new project called [SDM]{.style-data} with the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
 
 ::: {#exm-2vSeGTk3HW .hiddendiv}
 :::
@@ -61,7 +61,7 @@ Never use the GRASS database directory, that you created in the previous section
 ::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
-Type [cd]{.style-function} followed by the path to the working directory in the [wxGUI Command Console]{.style-menu}. If you prefer to work on the terminal, run the same on the terminal.
+Type `cd` followed by the path to the working directory in the [wxGUI Command Console]{.style-menu}. If you prefer to work on the terminal, run the same on the terminal.
 
 ``` bash
 cd replace-for-path-to-working-directory
@@ -76,7 +76,7 @@ os.chdir("replace-for-path-to-working-directory")
 
 ## {{< fa regular window-restore >}}
 
-The working directory can also be changed in wxGUI menu [Settings → GRASS working environment → Change working directory]{.style-function}
+The working directory can also be changed in wxGUI menu [Settings → GRASS working environment → Change working directory]{.style-menu}
 
 ![Set the working directory via the menu or using the command line. After doing so, GRASS will look for files in that location if the full path is not provided.](images/setworkingdirectory.png){#fig-setworkingdirectory}
 
@@ -97,7 +97,7 @@ We'll import a few base layers, including maps of the national boundaries, roads
 
 [^2_obtaining_data-2]: *Reference layers* are datasets that provide context and help you to visually navigate the map and understand the geographic setting of the area being analyzed. One of the key advantages of modeling in a GIS environment is the ability to seamlessly integrate and compare model outcomes with these reference layers, and thus to explore and interpret results in their geographic context.
 
-First, download the Geopackage [sdm_base_layers.gpkg](https://ecodiv.earth/share/sdm_in_grassgis/sdm_base_layers.gpkg) and copy the file to your working directory. A GeoPackage (GPKG) is an open, standards-based geospatial data format that can contain one data layer or multiple layers. This GPKG contains three vector layers with respectively the boundries of European countries ([countries]{.style-db}), the main rivers ([rivers]{.style-db}) and the roads ([roads]{.style-db})in Europe. Import these layers in GRASS.
+First, download the Geopackage [sdm_base_layers.gpkg](https://ecodiv.earth/share/sdm_in_grassgis/sdm_base_layers.gpkg) and copy the file to your working directory. A GeoPackage (GPKG) is an open, standards-based geospatial data format that can contain one data layer or multiple layers. This GPKG contains three vector layers with respectively the boundries of European countries ([countries]{.style-data}), the main rivers ([rivers]{.style-data}) and the roads ([roads]{.style-data}) in Europe. Import these layers in GRASS.
 
 ::: {#exm-XmMn498Mh .hiddendiv}
 :::
@@ -128,19 +128,19 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.in.ogr]]{.style-function} from the [File]{.style-menu} menu or from the [Toolbox]{.style-menu} and on the first tab [Required]{.style-function} find the GeoPackage you just downloaded. Or, if you copied the file to your working directory, you can simply fill in the name of the file under the [Source input]{.style-function}
+Open  [File → v.in.ogr]{.style-menu} menu or [Toolbox → v.in.ogr]{.style-menu} and on the first tab [Required]{.style-menu} find the GeoPackage you just downloaded. Or, if you copied the file to your working directory, you can simply fill in the name of the file under the [Source input]{.style-menu}.
 
 ![Name of the GeoPackage](images/baselayers_countries_step1.png){#fig-bcs1 fig-align="left" width=500}
 
-Next, under the [Input]{.style-function} tab, select the layer [countries]{.style-parameter}. Leave the others unselected.
+Next, under the [Input]{.style-menu} tab, select the layer [countries]{.style-parameter}. Leave the others unselected.
 
 ![Layer to import](images/baselayers_countries_step2.png){#fig-bcs1 fig-align="left" width=500}
 
-And as last step, under the [Output]{.style-function} tab, give the output layer the name [countries]{.style-parameter}
+And as last step, under the [Output]{.style-menu} tab, give the output layer the name [countries]{.style-parameter}
 
 ![Layer to import](images/baselayers_countries_step3.png){#fig-bcs1 fig-align="left" width=500}
 
-Now, repeat these steps for the other two layers. Make sure to give the [roads]{.style-data} layer the name [roads]{.style-parameter} and the [rivers]{.style-data} layer the name [rivers]{.style-parameter}.
+Now, repeat these steps for the other two layers, naming them [roads]{.style-parameter} and the [rivers]{.style-parameter}, respectively.
 
 
 ## {{< fa question >}}
@@ -151,7 +151,7 @@ When using `v.in.ogr`, a GeoPackage is treated as a container of separate layers
 
 :::
 
-Next, download the Copernicus 90m DEM [(cop90.tif)](https://ecodiv.earth/share/sdm_in_grassgis/cop90.tif), the shaded relief map ([shaded_relief.tif](https://ecodiv.earth/share/sdm_in_grassgis/shaded_relief_NE.tif)) and the Urban areas map ([urban_areas.tif](https://ecodiv.earth/share/sdm_in_grassgis/urban_areas.tif)) and copy the files to your working directory. Next, import these layers in GRASS with the [r.in.gdal]{.style-function} function.
+Next, download the Copernicus 90m DEM [(cop90.tif)](https://ecodiv.earth/share/sdm_in_grassgis/cop90.tif), the shaded relief map ([shaded_relief.tif](https://ecodiv.earth/share/sdm_in_grassgis/shaded_relief_NE.tif)) and the Urban areas map ([urban_areas.tif](https://ecodiv.earth/share/sdm_in_grassgis/urban_areas.tif)) and copy the files to your working directory. Next, import these layers in GRASS with the `r.in.gdal` function.
 
 
 ::: {#exm-Xm99Mh .hiddendiv}
@@ -199,23 +199,23 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.in.gdal]{.style-function} from the [File]{.style-menu} menu or from the [Toolbox]{.style-menu} and on the first tab [Required]{.style-function} 
+Open the `r.in.gdal` from the [File]{.style-menu} menu or from the [Toolbox]{.style-menu} and on the first tab [Required]{.style-menu} 
 
-- Select as input the GeoTiff file [urban_areas.tif]{.style-db}
+- Select as input the GeoTiff file [urban_areas.tif]{.style-data}
 - Set the name of the output raster layer as [urban_areas]{.style-parameter}.
-- Click on [Run]{.style-function}
+- Click on [Run]{.style-menu}
 
 Repeat for the shaded relief map:
 
-- Select as input the GeoTiff file [shaded_relief_NE.tif]{.style-db}
+- Select as input the GeoTiff file [shaded_relief_NE.tif]{.style-data}
 - Set the name of the output raster layer as [shaded_relief_NE]{.style-parameter}.
-- Click on [Run]{.style-function}
+- Click on [Run]{.style-menu}
 
 Repeat for the digital elevation model (eudem) map:
 
-- Select as input the GeoTiff file [eudem.tif]{.style-db}
+- Select as input the GeoTiff file [eudem.tif]{.style-data}
 - Set the name of the output raster layer as [eudem]{.style-parameter}.
-- Click on [Run]{.style-function}
+- Click on [Run]{.style-menu}
 
 :::
 
@@ -233,7 +233,7 @@ The IUCN Red List uses a different scientific name for this species, namely _Ere
 
 Download the range data and unzip the files into your working directory. If you plan to use these data in a report or publication, note the citation information provided on the webpage (below the Abstract). Recording this information now will save time later and helps ensure proper data attribution.
 
-Next, create a new mapset called [Erebia_alberganus]{.style-db}. This mapset will be used to store the distribution data of our species. Import the downloaded range map into this mapset. Because the mapset itself already identifies the species, the names of the layer is kept generic, for example rangemap and occurrences.
+Next, create a new mapset called [Erebia_alberganus]{.style-data}. This mapset will be used to store the distribution data of our species. Import the downloaded range map into this mapset. Because the mapset itself already identifies the species, the names of the layer is kept generic, for example rangemap and occurrences.
 
 This naming strategy only works if a mapset is dedicated to a single species. If you store data for multiple species in the same mapset, layer names would need to include the species name or another clear identifier to avoid confusion.
 
@@ -261,7 +261,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Type in [g.mapset]{.style-function} in the console to open the dialog, and use the following parameter settings.
+Type in `g.mapset` in the console to open the dialog, and use the following parameter settings.
 
 | Parameter                             | Value             |
 |---------------------------------------|-------------------|
@@ -270,7 +270,7 @@ Type in [g.mapset]{.style-function} in the console to open the dialog, and use t
 
 : {tbl-colwidths="\[50,50\]"}
 
-Run [v.in.ogr]{.style-function} with the following parameter settings:
+Run `v.in.ogr with the following parameter settings:
 
 | Parameter | Value                      |
 |-----------|----------------------------|
@@ -332,7 +332,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.in.gbif]{.style-function} dialog, and run it with the following parameter settings:
+Open the `v.in.gbif` dialog, and run it with the following parameter settings:
 
 | Parameter | Value                       |
 |-----------|-----------------------------|
@@ -357,7 +357,7 @@ You can remove these points using the [v.db.droprow](https://grass.osgeo.org/gra
 v.db.droprow input=occurrences where="g_decimallatitude=0" output=temp
 ```
 
-Because [v.db.droprow]{.style-function} does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.
+Because `v.db.droprow` does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.
 
 ``` bash
 # Replace previous layer with current version, using the original name
@@ -366,7 +366,7 @@ g.rename vector=temp,occurrences --overwrite
 
 ## {{< fa brands python >}}
 
-You can remove these points using the [v.edit](https://grass.osgeo.org/grass-stable/manuals/v.edit.html) module. Alternatively, open the occurrences attribute table, sort by g_decimallatitude, select rows with g_decimallatitude = 0, right‑click and choose "Delete selected features" to remove them.
+You can remove these points using the [v.db.droprow](https://grass.osgeo.org/grass-stable/manuals/v.db.droprow.html) module, which creates a new vector map containing only the features that do not match the selection criteria. 
 
 ``` python
 gs.run_command(
@@ -377,7 +377,7 @@ gs.run_command(
 )
 ```
 
-Because [v.db.droprow]{.style-function} does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.
+Because `v.db.droprow` does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.
 
 ``` python
 # Replace previous layer with current version, using the original name
@@ -387,7 +387,7 @@ gs.run_command("g.rename", vector="temp,occurrences", overwrite=True)
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.db.droprow]{.style-function} dialog, and run it with the following parameter settings:
+Open the `v.db.droprow` dialog, and run it with the following parameter settings:
 
 | Parameter | Value                           |
 |-----------|---------------------------------|
@@ -395,7 +395,7 @@ Open the [v.db.droprow]{.style-function} dialog, and run it with the following p
 | where       | g_decimallatitude=0           |
 | output      | temp                          |
 
-Because [v.db.droprow]{.style-function} does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map. Run it with the following parameter settings:
+Because `v.db.droprow` does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map. Run it with the following parameter settings:
 
 | Parameter | Value                |
 |-----------|----------------------|
@@ -458,7 +458,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.db.droprow]{.style-function} dialog, and run it with the following parameter settings:
+Open the `v.db.droprow` dialog, and run it with the following parameter settings:
 
 | Parameter | Value                           |
 |-----------|---------------------------------|
@@ -466,7 +466,7 @@ Open the [v.db.droprow]{.style-function} dialog, and run it with the following p
 | where       | g_decimallatitude>=50           |
 | output      | temp                          |
 
-Run [g.rename]{.style-function} with the following parameter settings:
+Run `g.rename` with the following parameter settings:
 
 | Parameter | Value                |
 |-----------|----------------------|
@@ -516,14 +516,14 @@ Both historical and future data sets are available in raster format at different
 
 ![The Worldclim download page for the version 2.1 historical climate data, with the download link for the 2.5 arc-minutes bioclim variables. You can download the data at another resolution as well. If you do, make sure to to adapt the relevant code examples accordingly.](images/worldclim_historic_bioclim.png){#fig-worldclimhistoricbioclim fig-align="left"}
 
-We'll create a new mapset [climate]{.style-db} to store the climate data, using the [g.mapset](https://grass.osgeo.org/grass-stable/manuals/g.mapset.html) module with the [-c]{.style-parameter} flag. Next, we use the [g.region](https://grass.osgeo.org/grass-stable/manuals/g.region.html) module to set the boundaries of the region for which we want to import the data. 
+We'll create a new mapset [climate]{.style-data} to store the climate data, using the [g.mapset](https://grass.osgeo.org/grass-stable/manuals/g.mapset.html) module with the [-c]{.style-parameter} flag. Next, we use the [g.region](https://grass.osgeo.org/grass-stable/manuals/g.region.html) module to set the boundaries of the region for which we want to import the data. 
 
 ::: {.callout-note appearance="simple"}
 
-Be aware that a new mapset starts with default settings for the computational region. This means that the region set earlier for the [Parameter]{.style-db} mapset does not apply to the new [climate]{.style-db} mapset. Each mapset has its own computational region settings
+Be aware that a new mapset starts with default settings for the computational region. This means that the region set earlier for the [Parameter]{.style-data} mapset does not apply to the new [climate]{.style-data} mapset. Each mapset has its own computational region settings
 :::
 
-One option is to use the region extent we defined earlier. Or, now that we know more precisely where our species has been observed, we can defined new bounds using the module with the [n]{.style-parameter}, [s]{.style-parameter}, [e]{.style-parameter}, and [w]{.style-parameter} parameters. We'll do the latter, and set the extent of the computational region to *54N*, *36S*, *-10w* and *32E*.
+One option is to use the region extent we defined earlier. Or, now that we know more precisely where our species has been observed, we can defined new bounds using the `g.region` module with the [n]{.style-parameter}, [s]{.style-parameter}, [e]{.style-parameter}, and [w]{.style-parameter} parameters (see below). We set the resolution to match that of the climate layers. This is 2.5 arc minutes, which is equal to 2.5 / 60 = 0.041666666666667. 
 
 ::: {#exm-OgizA6dRXy .hiddendiv}
 :::
@@ -532,29 +532,31 @@ One option is to use the region extent we defined earlier. Or, now that we know 
 ## {{< fa solid terminal >}}
 
 ``` bash
-g.mapset -c mapset=climate_current
+g.mapset -c mapset=climate
 g.region n=54 s=36 w=-10 e=32 res=0.041666666666667
 ```
 
 ## {{< fa brands python >}}
 
+First, we create a new mapset.
+
 ``` python
-gs.run_command("g.mapset", flags="c", mapset="climate_current")
+gs.run_command("g.mapset", flags="c", mapset="climate")
 gs.run_command("g.region", n=54, s=36, w=-10, e=32, res=0.041666666666667)
 ```
 
 ## {{< fa regular window-restore >}}
 
-Type in [g.mapset]{.style-function} in the console to open the dialog, and use the following parameter settings.
+Type in `g.mapset` in the console to open the dialog, and use the following parameter settings.
 
 | Parameter                             | Value           |
 |---------------------------------------|-----------------|
-| Name of mapset (mapset)               | climate_current |
+| Name of mapset (mapset)               | climate |
 | Create mapset if it doesn't exist (c) | ✅              |
 
 : {tbl-colwidths="\[50,50\]"}
 
-Next, run the [g.region]{.style-function} module with the following settings below. Alternatively, you can define the region's bounds manually in the [Map display]{.style-menu}, as explained in @sec-computationalregion.
+Next, we define the computational region for the new mapset. Open the `g.region` dialog, and use the following parameter settings.
 
 | Parameter                       | Value   |
 |---------------------------------|---------|
@@ -566,14 +568,15 @@ Next, run the [g.region]{.style-function} module with the following settings bel
 
 : {tbl-colwidths="\[50,50\]"}
 
+Alternatively, you can define the region's bounds manually in the [Map display]{.style-menu}, as explained in @sec-computationalregion.
+
 ## {{< fa question >}}
 
 Note that, if the region and the raster layer are not perfectly aligned, the area that is imported will be slightly larger than the computational region. How much larger depends on the resolution of the computational region, as explained in (@sec-computationalregion). We therefore use the [res]{.style-parameter} parameter to set the resolution to match the resolution of the layers we want to import.
 
-The resolution of the bioclim layers is 2.5 arc minutes, which is approximately equal to 0.041666666666667 degrees (2.5 / 60 = 0.041666666666667). 
+Remember to calculate the resolution in decimal degrees. For 2.5 arc minutes, this is 2.5 / 60 = 0.041666666666667. If you work at another resolution, make sure to adapt this value accordingly. For example, when working with 30 arc seconds data, the resolution would be 30 / 3600 = 0.00833333333333333 degrees.
 
 :::
-
 
 To import the bioclim data, we use [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) with the [-r]{.style-parameter} flag to tell GRASS to limit the import of the data to the area defined by the computational region that we defined in the previous step. To speed up the import, we use the [memory]{.style-parameter} parameter to set the maximum memory to be used (in MB) to be equal to the size of the input file (or otherwise to the maximum amount available on your system).
 
@@ -656,7 +659,7 @@ gs.run_command("r.info", map="bio_1")
 
 ## {{< fa regular window-restore >}}
 
-Type in in the console to open the [g.region]{.style-function} dialog, and use the following parameter settings.
+Type in in the console to open the `g.region` dialog, and use the following parameter settings.
 
 | Parameter                    | Value |
 |------------------------------|-------|
@@ -664,7 +667,7 @@ Type in in the console to open the [g.region]{.style-function} dialog, and use t
 
 : {tbl-colwidths="\[50,50\]"}
 
-Open the [r.info]{.style-function} dialog, and run it with the following parameter settings:
+Open the `r.info` dialog, and run it with the following parameter settings:
 
 | Parameter | Value |
 |-----------|-------|
@@ -675,7 +678,7 @@ Open the [r.info]{.style-function} dialog, and run it with the following paramet
 
 If the extent differs, we use the [g.region](https://grass.osgeo.org/grass-stable/manuals/.html) module again, but this time with the [raster]{.style-parameter} parameter to set the region extent and resolution to match that of one of the imported bioclim layers[^2_obtaining_data-10]. We use the [save]{.style-parameter} parameter to save the current region settings as [region_aoi]{.style-data} for future use.
 
-[^2_obtaining_data-10]: The different options of the [g.region]{.style-function} function provide a lot of flexibility in to how to define the region. You are encouraged to carefully consider the different options each time you use this module.
+[^2_obtaining_data-10]: The different options of the `g.region` function provide a lot of flexibility in to how to define the region. You are encouraged to carefully consider the different options each time you use this module.
 
 ::: {#exm-V0FK31454 .hiddendiv}
 :::
@@ -695,7 +698,7 @@ gs.run_command("g.region", raster="bio_1", save="region_aoi")
 
 ## {{< fa regular window-restore >}}
 
-Open the dialog of the [g.region]{.style-function} module, and run it with the following parameter settings:
+Open the dialog of the `g.region` module, and run it with the following parameter settings:
 
 | Parameter | Value      |
 |-----------|------------|
@@ -762,61 +765,12 @@ Bioclimatic variable 1 to 19 from [Worldclim version 2.0](https://www.worldclim.
 
 ## Future climates {#sec-obtainfutureclimatelayers}
 
-To model the potential distribution of our species under future climate conditions, we use downscaled [future climate projections](https://www.worldclim.org/data/cmip6/cmip6climate.html) from Worldclim. There are bioclim data from 14 different general circulation models (GCMs) available for download. For each GCM, you can choose between data representing projected conditions in the periods (2021–2040, 241–2060, 2061–2080, and 2081-2100). You can furthermore choose between data based on the Shared Socio-economic Pathways ([SSPs](https://www.carbonbrief.org/cmip6-the-next-generation-of-climate-models-explained)) 126, 245, 370 and 585. We'll use the 2.5 arc-minute bioclim variables for the period 2081-2100 based on the SSP585 from the GCM [EC-Earth3-Veg]{.style-data}. Download the data and save it to your working directory.
+To model the potential distribution of our species under future climate conditions, we use downscaled [future climate projections](https://www.worldclim.org/data/cmip6/cmip6climate.html) from Worldclim. There are bioclim data from 14 different general circulation models (GCMs) available for download. For each GCM, you can choose between data representing projected conditions in the periods (2021–2040, 241–2060, 2061–2080, and 2081-2100). You can furthermore choose between data based on the Shared Socio-economic Pathways ([SSPs](https://www.carbonbrief.org/cmip6-the-next-generation-of-climate-models-explained)) 126, 245, 370 and 585. We'll use the *2.5 arc-minute* bioclim variables for the period *2081-2100* based on the *SSP585* from the GCM [EC-Earth3-Veg]{.style-data}. Download the data and save it to your working directory.
 
-::: {.callout-tip appearance="simple"}
-Note that the future climate layers come as one multi-band GeoTiff file, unlike the current climate data where each bioclim variable is stored as a separate GeoTiff file.
-:::
+Note that the future climate layers come as one multi-band GeoTiff file, unlike the current climate data where each bioclim variable is stored as a separate GeoTiff file. The file has 19 bands, representing the 19 bioclimatic variables. To verify this, you can use the [gdalinfo](https://gdal.org/en/latest/programs/gdalinfo.html) function from the command line.
 
-We'll create a new mapset [EC_Earth3_Veg]{.style-db} to store the climate data using the [g.mapset](https://grass.osgeo.org/grass-stable/manuals/g.mapset.html) module. We use the [region]{.style-parameter} parameter to define the computational region. As input, we use the region file [region_aoi\@climate_current]{.style-db} that we created in @exm-V0FK31454.
+We'll store the data in the [climate]{.style-data} mapset. To keep track of the different layers, we assign it the same name as the GCM: *EC_Earth3_Veg*.
 
-
-::: {#exm-5XQmiajE7Z .hiddendiv}
-:::
-
-::: {.panel-tabset}
-## {{< fa solid terminal >}}
-
-``` bash
-g.mapset -c mapset=EC_Earth3_Veg
-g.region region=region_aoi@climate_current 
-```
-
-## {{< fa brands python >}}
-
-``` python
-gs.run_command("g.mapset", flags="c", mapset="EC_Earth3_Veg")
-gs.run_command("g.region", region="region_aoi@climate_current")
-```
-
-## {{< fa regular window-restore >}}
-
-Type in [g.mapset]{.style-function} in the console to open the dialog, and use the following parameter settings.
-
-| Parameter                             | Value                 |
-|---------------------------------------|-----------------------|
-| Name of mapset (mapset)               | EC_Earth3_Veg |
-| Create mapset if it doesn't exist (c) | ✅                    |
-
-: {tbl-colwidths="\[50,50\]"}
-
-Next, run the [g.region]{.style-function} module with the following settings:
-
-| Parameter | Value                |
-|-----------|----------------------|
-| region    | region_aoi\@climate_current |
-
-: {tbl-colwidths="\[50,50\]"}
-
-## {{< fa question >}}
-
-The [region_aoi]{.style-data} region file is not stored in the current mapset but in the [climate_current]{.style-db} mapset. We can refer to objects (raster and vector maps and region files) stored in another mapset by appending a [\@]{.style-parameter} to the name of the object, followed by the name of the mapset. 
-
-Strictly speaking, this is not always needed (see the [manual page](https://grass.osgeo.org/grass83/manuals/grass_database.html) for details), but it is good practice as it avoids possible confusion if there are layers with the same name in multiple mapsets.
-
-:::
-
-Note that the future climate layers come as one multi-band GeoTiff file. The file has 19 bands, representing the 19 bioclimatic variables. To verify this, you can use the [gdalinfo](https://gdal.org/en/latest/programs/gdalinfo.html) function from the command line.
 
 ::: panel-tabset
 ## {{< fa solid terminal >}}
@@ -825,7 +779,7 @@ Note that the future climate layers come as one multi-band GeoTiff file. The fil
 gdalinfo wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif 
 ```
 
-![[gdalinfo]{.style-function} prints the names and some basic information about each of the bands in the GeoTiff file. The names of the first two bands are marked with a red outline.](images/gdalinfo_futclim.png){#fig-gdalinfofutclim}
+![`gdalinfo` prints the names and some basic information about each of the bands in the GeoTiff file. The names of the first two bands are marked with a red outline.](images/gdalinfo_futclim.png){#fig-gdalinfofutclim}
 :::
 
 The [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) module conveniently imports each band as a separate layer. The value of the [output]{.style-parameter} parameter will be used as prefix for the name of the imported raster layers, followed by the band number. If possible, use the [memory]{.style-parameter} parameter to increase the memory to be used by the module as this can speed up the import considerably.
@@ -837,7 +791,7 @@ The [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) mod
 ## {{< fa solid terminal >}}
 
 ``` bash
-r.in.gdal -r input=wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=bio memory=1000
+r.in.gdal input=/home/paulo/Downloads/wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=EC-Earth3-Veg_ssp585_2081-2100 memory=1000 -r
 ```
 
 ## {{< fa brands python >}}
@@ -847,19 +801,19 @@ gs.run_command(
     "r.in.gdal",
     flags="r",
     input="wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif",
-    output="bio",
+    output="EC-Earth3-Veg_ssp585_2081-2100",
     memory=1000,
 )
 ```
 
 ## {{< fa regular window-restore >}}
 
-Type in [r.in.gdal]{.style-function} in the console to open the dialog, and use the following parameter settings.
+Type in `r.in.gdal` in the console to open the dialog, and use the following parameter settings.
 
 | Parameter | Value |
 |----|----|
 | input | wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif |
-| output | bio |
+| output | EC-Earth3-Veg_ssp585_2081-2100 |
 | memory | 1000 |
 | Limit import to current region (r) | ✅ |
 
@@ -872,7 +826,7 @@ Remember that we set the computational region in the previous step so that:
 - it matches the resolution of the current climate data
 - it is aligned with the current climate data
 
-As the future climate layers are derived from the same source as the current climate data, they have the same alignment and resolution as the current climate layers. By setting the computational region as we did, and by using the [-r]{.style-parameter} flag of the [r.in.gdal]{.style-function}, we ensure that the future climate layers are imported for the same geographic area and at the same resolution as the current climate layers.
+As the future climate layers are derived from the same source as the current climate data, they have the same alignment and resolution as the current climate layers. By setting the computational region as we did, and by using the [-r]{.style-parameter} flag of the `r.in.gdal`, we ensure that the future climate layers are imported for the same geographic area and at the same resolution as the current climate layers.
 
 :::
 

@@ -8,7 +8,7 @@ Another important consideration is the context in which predictions are made. Fo
 
 ## Cross-validation {#sec-crossvalidation}
 
-A common way to assess the ability of a model to generalize beyond the data on which it was trained is to split presence data into two parts: one for training the model and another for testing its performance. This approach is available in [r.maxent.train]{.style-function} through the [randomtestpoints]{.style-parameter} parameter. For example, we can instruct [r.maxent.train]{.style-function} to use 80% of the presence points to train the model, and the remaining 20% to test the model's performance.
+A common way to assess the ability of a model to generalize beyond the data on which it was trained is to split presence data into two parts: one for training the model and another for testing its performance. This approach is available in `r.maxent.train` through the [randomtestpoints]{.style-parameter} parameter. For example, we can instruct `r.maxent.train` to use 80% of the presence points to train the model, and the remaining 20% to test the model's performance.
 
 While this approach is straightforward, it has one drawback: the results can vary depending on which 20% of the points are selected for testing. A more robust and commonly used technique for estimating the accuracy of a predictive model is [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)). There are different types of cross-validation, but we'll focus on k-fold cross-validation here. In k-fold cross-validation, the original sample is randomly partitioned into **k** subsamples with an approximately equal number of records, as further explained in @fig-vkgSx6qmBy.
 
@@ -18,7 +18,7 @@ By employing k-fold cross-validation, you can obtain a more reliable estimate of
 
 ### Model training {#sec-611}
 
-For this tutorial, we carry out a 4-fold cross-validation. To perform the cross-validation, we run [r.maxent.train]{.style-function} with the [replicatetype]{.style-parameter} and the [replicates]{.style-parameter} parameter to tell Maxent to run a 4-fold cross-validation. This means that Maxent will train four models in the background, calculate validation statistics for each model, and compute average statistics across the four sub-models.
+For this tutorial, we carry out a 4-fold cross-validation. To perform the cross-validation, we run `r.maxent.train` with the [replicatetype]{.style-parameter} and the [replicates]{.style-parameter} parameter to tell Maxent to run a 4-fold cross-validation. This means that Maxent will train four models in the background, calculate validation statistics for each model, and compute average statistics across the four sub-models.
 
 ::: {.callout-note appearance="simple"}
 In cross-validation, multiple models are created, each trained on slightly different subsets of the data. Technically, these are separate models because they are trained on different data splits and may produce slightly different predictions. This variation reflects the inherent variability in the data.
@@ -40,7 +40,7 @@ We furthermore specify the location of the folder with the input environmental r
 # Setup
 mkdir model_03
 g.mapset -c mapset=model_03
-g.region raster=bio_1@climate_current
+g.region raster=bio_1@climate
 
 # Train
 r.maxent.train \
@@ -59,7 +59,7 @@ replicates=4 threads=4 memory=1000 -ygb
 os.chdir("replace-for-path-to-working-directory")
 os.makedirs("model_03", exist_ok=True)
 gs.run_command("g.mapset", flags="c", mapset="model_03")
-gs.run_command("g.region", raster="bio_1@climate_current")  
+gs.run_command("g.region", raster="bio_1@climate")  
 
 # Train
 gs.run_command(
@@ -78,7 +78,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Create the folder [model_03]{.style-db} in your working directory using your favorite file manager/explorer. Next, create a new mapset and switch to this mapset using the Data panel. Alternatively, open the [g.mapsets]{.style-function} dialog and run it with the following parameter settings:
+Create the folder [model_03]{.style-data} in your working directory using your favorite file manager/explorer. Next, create a new mapset and switch to this mapset using the Data panel. Alternatively, open the `g.mapsets` dialog and run it with the following parameter settings:
 
 | Parameter                             | Value    |
 |---------------------------------------|----------|
@@ -87,15 +87,15 @@ Create the folder [model_03]{.style-db} in your working directory using your fav
 
 : {tbl-colwidths="\[60,40\]"}
 
-<br>Next, use the [g.region]{.style-function} module to set the computational region style parameter, based on the [bio_1]{.style-data} raster layer in the [climate_current]{.style-db} mapset.
+<br>Next, use the `g.region` module to set the computational region style parameter, based on the [bio_1]{.style-data} raster layer in the [climate]{.style-data} mapset.
 
 | Parameter | Value                  |
 |-----------|------------------------|
-| raster    | bio_1\@climate_current |
+| raster    | bio_1\@climate |
 
 : {tbl-colwidths="\[60,40\]"}
 
-<br>Open the [r.maxent.train]{.style-function} dialog and run the module with the following parameter settings:
+<br>Open the `r.maxent.train` dialog and run the module with the following parameter settings:
 
 | Parameter | Value |
 |----|----|
@@ -118,7 +118,7 @@ Note that unlike in @exm-g8jUY2JKvW, we did not specify the names of the various
 
 ### Evaluation statistics
 
-To examine how well the model performed, we take a look at the model statistics. We can find these statistics in the HTML file [Erebia_alberganus_obs.html]{.style-file} located in the [model_03]{.style-db} output folder. The page provides a summary of the results from the 4-fold cross-validation and includes links to the results of the individual sub-models in the top right corner. The average test AUC across the replicate runs is 0.889, with a standard deviation of 0.003.
+To examine how well the model performed, we take a look at the model statistics. We can find these statistics in the HTML file [Erebia_alberganus_obs.html]{.style-file} located in the [model_03]{.style-data} output folder. The page provides a summary of the results from the 4-fold cross-validation and includes links to the results of the individual sub-models in the top right corner. The average test AUC across the replicate runs is 0.889, with a standard deviation of 0.003.
 
 ::: {.panel-tabset .exercise}
 ## AUC-ROC
@@ -246,7 +246,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Run the [v.scatterplot]{.style-function} module with the following parameters:
+Run the `v.scatterplot` module with the following parameters:
 
 | Parameter | Value                                   |
 |-----------|-----------------------------------------|
@@ -385,7 +385,7 @@ Predictions from a species distribution model can be less reliable when applied 
 
 The Multivariate Environmental Similarity (MES), as described by Elith et al. [@elith2010], can be used to evaluate if and where future conditions are outside the range of conditions observed during model training, and thus where model predictions might be less reliable. In GRASS, we can use the [r.mess](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) addon to calculate the MESS.
 
-We use the [r.mess]{.style-function} module to examine how different the climatic conditions in 2081 are to present conditions. For the present climate conditions, we use the same data and bioclimatic variables as we used to create our first model in [paragraph -@sec-4trainthemodel]. We only consider the conditions in the presence and background locations, as this is what we used to train the model. To do so, we combine and convert presence and background points into a new raster layer [referencelayer]{.style-data}, and use this as input for the [ref_rast]{.style-parameter} parameter.
+We use the `r.mess` module to examine how different the climatic conditions in 2081 are to present conditions. For the present climate conditions, we use the same data and bioclimatic variables as we used to create our first model in [paragraph -@sec-4trainthemodel]. We only consider the conditions in the presence and background locations, as this is what we used to train the model. To do so, we combine and convert presence and background points into a new raster layer [referencelayer]{.style-data}, and use this as input for the [ref_rast]{.style-parameter} parameter.
 
 ::: {#exm-dCCiaw6IUX .hiddendiv}
 :::
@@ -396,7 +396,7 @@ We use the [r.mess]{.style-function} module to examine how different the climati
 ``` bash
 # Go to mapset 'model_01' and set the region 
 g.mapset mapset=model_01 
-g.region raster=bio_1@climate_current # <1>
+g.region raster=bio_1@climate # <1>
 
 # Combine the occurrence and background points
 v.patch input=E_alberganus_samplepred,E_alberganus_bgrdpred \
@@ -407,14 +407,14 @@ v.to.rast input=referencepoints output=referencepoints use=value
 ```
 
 1.  The region should already be defined correctly, but just to be sure.
-2.  In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The [r.mess]{.style-function} module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
+2.  In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The `r.mess` module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
 
 ## {{< fa brands python >}}
 
 ``` python
 # Go to mapset 'model_01' and set the region 
 gs.run_command("g.mapset", mapset="model_01") 
-gs.run_command("g.region", raster="bio_1@climate_current") # <1>
+gs.run_command("g.region", raster="bio_1@climate") # <1>
 
 # Combine the occurrence and background points
 gs.run_command(
@@ -430,11 +430,11 @@ gs.run_command(
 ```
 
 1.  The region should already be defined correctly, but just to be sure.
-2.  In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The [r.mess]{.style-function} module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
+2.  In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The `r.mess` module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
 
 ## {{< fa regular window-restore >}}
 
-Open the [g.mapset]{.style-function} dialog and run it with:
+Open the `g.mapset` dialog and run it with:
 
 | Parameter | Value    |
 |-----------|----------|
@@ -442,15 +442,15 @@ Open the [g.mapset]{.style-function} dialog and run it with:
 
 : {tbl-colwidths="\[40,60\]"}
 
-Open the [g.region]{.style-function} dialog and run it with:
+Open the `g.region` dialog and run it with:
 
 | Parameter | Value                  |
 |-----------|------------------------|
-| raster    | bio_1\@climate_current |
+| raster    | bio_1\@climate |
 
 : {tbl-colwidths="\[40,60\]"}
 
-To combine the occurrence and background points, open the [v.patch]{.style-function} dialog, and run it with:
+To combine the occurrence and background points, open the `v.patch` dialog, and run it with:
 
 | Parameter | Value                                         |
 |-----------|-----------------------------------------------|
@@ -459,7 +459,7 @@ To combine the occurrence and background points, open the [v.patch]{.style-funct
 
 : {tbl-colwidths="\[40,60\]"}
 
-Convert the point layer to a raster with the [v.to.rast]{.style-function} module[^6_modelvalidation-1]. Open it and run it with the following parameters:
+Convert the point layer to a raster with the `v.to.rast` module[^6_modelvalidation-1]. Open it and run it with the following parameters:
 
 | Parameter | Value           |
 |-----------|-----------------|
@@ -469,7 +469,7 @@ Convert the point layer to a raster with the [v.to.rast]{.style-function} module
 : {tbl-colwidths="\[40,60\]"}
 :::
 
-[^6_modelvalidation-1]: In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The [r.mess]{.style-function} module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
+[^6_modelvalidation-1]: In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The `r.mess` module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
 
 To assess if and where future conditions are outside the range of conditions observed during model training, we use the same future climate data that we used as input to our model prediction in [paragraph -@sec-e8039LmOdu]. These are the projected bioclimatic data for the period 2081-2100, based on the SSP585 climate scenario from the EC-Earth3-Veg general circulation model.
 
@@ -506,7 +506,7 @@ gs.run_command("r.mess", flags="mnkci", # <1>
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.mess]{.style-function} dialog and run it with:
+Open the `r.mess` dialog and run it with:
 
 | Parameter | Value |
 |----|----|

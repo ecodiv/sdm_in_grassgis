@@ -12,9 +12,9 @@ If model training takes an unusually long time, use the [-v]{.style-parameter} f
 
 A large number of presence points may result in slow performance. When this becomes problematic depends on factors such as hardware specifications and model complexity. On reasonably modern hardware, up to 5,000 presence points should not cause significant issues. However, with 20,000 or more, training is likely to slow down considerably.
 
-You can reduce the number of presence points using the [v.extract]{.style-function} module. If you also use the spatial thinning option ([paragraph -@sec-spatialthinning]), it is advisable to first carry out spatial thinning mannually (instead of doing this when running [v.maxent.swd]{.style-function}), as this will already reduce the number of points. If the number of points are still too many, use the [v.extract]{.style-function} module.
+You can reduce the number of presence points using the `v.extract` module. If you also use the spatial thinning option ([paragraph -@sec-spatialthinning]), it is advisable to first carry out spatial thinning mannually (instead of doing this when running `v.maxent.swd`), as this will already reduce the number of points. If the number of points are still too many, use the `v.extract` module.
 
-The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using [g.region]{.style-function}. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
+The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using `g.region`. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
 
 ::: {#exm-FhtMdyrrbX .hiddendiv}
 :::
@@ -30,7 +30,7 @@ r.to.vect input=Erebia_alberganus_obs output=Erebia_alberganus_tmp type=point
 
 ## {{< fa brands python >}}
 
-The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using [g.region]{.style-function}. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
+The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using `g.region`. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
 
 ``` python
 # Thin the points
@@ -100,7 +100,7 @@ gs.run_command("g.remove", flags="f", type="vector", name="Erebia_alberganus_tmp
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.extract]{.style-function} and run it with the following settings:
+Open the `v.extract` and run it with the following settings:
 
 | Parameter | Value                  |
 |-----------|------------------------|
@@ -108,7 +108,7 @@ Open the [v.extract]{.style-function} and run it with the following settings:
 | output    | Erebia_alberganus_obs2 |
 | random    | 5000                   |
 
-Use the [g.remove]{.style-function} module to remove the intermediate layer.
+Use the `g.remove` module to remove the intermediate layer.
 
 | Parameter | Value                 |
 |-----------|-----------------------|
@@ -166,7 +166,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.maxent.train]{.style-function} dialog and run the module with the following parameter settings:
+Open the `r.maxent.train` dialog and run the module with the following parameter settings:
 
 | Parameter | Value |
 |----|----|

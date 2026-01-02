@@ -178,7 +178,7 @@ import grass.script as gs
 os.chdir(working_directory)
 
 # Create new mapset for current climate data and set the region
-gs.run_command("g.mapset", flags="c", mapset="climate_current")
+gs.run_command("g.mapset", flags="c", mapset="climate")
 gs.run_command("g.region", n=54, s=36, w=-10, e=32, res=0.0083)
 
 # Import bioclim layers
@@ -198,12 +198,12 @@ gs.run_command("g.region raster=bio_1", save=aoi_layer)
 
 # Update aoi vector layer in PERMANENT mapset
 gs.run_command("g.mapset", mapset="PERMANENT")
-gs.run_command("g.region", region=f"{aoi_layer}@climate_current")
+gs.run_command("g.region", region=f"{aoi_layer}@climate")
 gs.run_command("v.in.region", output=aoi_layer, overwrite=True)
 
 # Create new mapset for future climate data and set region
 gs.run_command("g.mapset", flags="c", mapset="climate_EC_Earth3_Veg")
-gs.run_command("g.region", region=f"{aoi_layer}@climate_current")
+gs.run_command("g.region", region=f"{aoi_layer}@climate")
 
 # Import future bioclim layers
 gs.run_command(
@@ -218,7 +218,7 @@ gs.run_command(
 
 ## Data preparation
 
-The Python code blocks below combines all steps from @sec-dataprep. It mostly is a copy-paste of the code on this page, but note that @exm-udfds5Bwdr and @exm-ddddddwdr are combined, so the whole code can be ran without intermediate user input. And instead of creating a random background point layer in a separate step (@exm-25nmhfEEDF), we let the [v.maxent.swd]{.style-function} do this for us by setting the [nbgp]{.style-parameter} parameter. Input and output layer names are now defined as variables at the beginning, allowing users to easily customize them.
+The Python code blocks below combines all steps from @sec-dataprep. It mostly is a copy-paste of the code on this page, but note that @exm-udfds5Bwdr and @exm-ddddddwdr are combined, so the whole code can be ran without intermediate user input. And instead of creating a random background point layer in a separate step (@exm-25nmhfEEDF), we let the `v.maxent.swd` do this for us by setting the [nbgp]{.style-parameter} parameter. Input and output layer names are now defined as variables at the beginning, allowing users to easily customize them.
 
 ::: panel-tabset
 ## {{< fa brands python >}} Examine the data
@@ -274,7 +274,7 @@ working_directory = "replace-with-path-to-working-directory"
 species_mapset = "species_data"
 species_vector = "Erebia_alberganus_obs"
 aoi_mapset = "dataset01"
-climate_mapset = "climate_current"
+climate_mapset = "climate"
 country_vector = "countries"
 selected_layers_pattern = "bio*"
 resolution = 0.008333
@@ -336,7 +336,7 @@ gs.run_command(
 ```
 
 1.  The [-v]{.style-parameter} results in an list of the finally selected layers.
-2.  The output of the [r.vif]{.style-function} function call is a string that ends with a newline character. The [.strip()]{.style-function} function removes that new line character.
+2.  The output of the `r.vif function call is a string that ends with a newline character. The `.strip()` function removes that new line character.
 3.  Instead of creating a random background point layer and using this as input, we use the [nbgp]{.style-parameter}, so the module will create the set of background points within the region's bounds and MASK.
 :::
 

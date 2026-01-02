@@ -1,14 +1,16 @@
 # Prepare the data {#sec-dataprep}
 
-Species distribution models (SDMs) rely on two main types of data; location data, which shows where the species is found, and environmental data, which describes the conditions in those areas. However, working with such data can present challenges, such as bias, multicollinearity (overlap between predictor variables), changes in collinearity between training and testing datasets, and the presence of unfamiliar environmental conditions. In this chapter we'll go into a few simple strategies to address some of these challenges. These are not exhaustive solutions, and you are encouraged to explore and test different approaches to tackle the different assumptions and potential caveats @jarnevich2015.
+Species distribution models (SDMs) are built using two main types of data. Location data show where a species has been observed, while environmental data describe the conditions in those places. Working with these data is an essential part of SDM, but it can also be challenging. Common issues include uneven sampling of observations, overlap between environmental variables, changes in relationships between variables across datasets, and environmental conditions in the prediction area that were not present in the training data @jarnevich2015.
+
+In this chapter, you will learn a number of simple and practical strategies to recognise and address some of these issues. The methods presented here are not exhaustive, and there is rarely a single “correct” solution. Instead, the goal is to help you develop a critical and thoughtful approach to modelling, and to encourage you to explore, test, and compare different choices as you build and interpret your own SDMs.
 
 ## Species occurrences {#sec-specoc}
 
 ::::: grid
 ::: {.g-col-md-6 .g-col-12}
-One fundamental assumption of SDMs is that the entire area of interest has been systematically or randomly sampled [@phillips2009a; @kramerSampling2013]. In practice, species occurrence datasets are often biased due to uneven sampling across the study area. For example, some areas may be more accessible (@fig-examplesofbias) or more popular with visitors, resulting in more data from those locations.
+One fundamental assumption of SDMs is that the entire area of interest has been systematically or randomly sampled [@phillips2009a; @kramerSampling2013]. In reality, this assumption is rarely met. Species occurrence data are often affected by sampling bias, meaning that some parts of the study area are sampled more intensively than others. For example, some areas may be more accessible (@fig-examplesofbias) or more popular with visitors, resulting in more data from those locations. Another source of bias comes from intensive monitoring in certain areas. 
 
-Another source of bias comes from intensive monitoring in certain areas, resulting in repeated observations in the same space. If you check the attribute table, you'll see that there are repeated observations by the same observers at certain locations within a few months or years.
+This can lead to **oversampling** in some areas, making the conditions in these areas appear to be more suitable for the species, even though the higher number of observations mainly reflects where people are more likely to collect data.
 
 There are several ways to deal with oversampling, focusing on the presence points (this paragraph) or the background points (next paragraph) [@kramerSampling2013; @fourcade2014].
 :::
@@ -18,28 +20,32 @@ There are several ways to deal with oversampling, focusing on the presence point
 :::
 :::::
 
-Undersampling, on the other hand, is more difficult to address, especially when significant portions of a species' range are not adequately sampled. Although it does not resolve the issue, comparing GBIF occurrence data with other sources, such as Red List range maps (@fig-rangemapoccurrences), can provide useful insights into the extent of potential undersampling.
+Another important issue is **undersampling**, which occurs when parts of the study area are rarely or never visited, for example because they are difficult to access. In undersampled areas, environmental conditions may appear to be less suitable for the species simply because no observations are available. This does not necessarily mean that the species is absent. In many cases, we cannot distinguish between true absence and lack of sampling.
+
+Undersampling is particularly difficult to address when large parts of a species’ potential range have not been sampled adequately. This uncertainty directly affects how confidently model predictions can be interpreted for those areas.
+
+Although it does not solve the problem, comparing GBIF occurrence data with other information sources, such as Red List range maps (@fig-rangemapoccurrences), can help you assess where undersampling is likely to occur and how it is distributed across the study area.
 
 ### Point densities {#sec-pointdensities}
 
-Before proceeding, let's check whether our GBIF occurrence dataset shows any signs of bias by analyzing how the density of occurrences varies across the study area. We can do this by counting the number of observations within each grid cell. To accomplish this, we will use the [r.vect.stats](https://grass.osgeo.org/grass-stable/manuals/addons/r.vect.stats.html) module, which allows us to perform statistical analysis on raster-vector combinations. It is one of the addons installed in @sec-addons.
+Before proceeding, let's check whether our GBIF occurrence dataset shows any signs of bias by analyzing how the density of occurrences varies across the study area. We can do this by counting the number of observations within each grid cell. To accomplish this, we will use the [r.vect.stats](https://grass.osgeo.org/grass-stable/manuals/addons/r.vect.stats.html) module. It is one of the addons installed in @sec-addons. With the module we can create a raster layer with per raster cell the number of points from a vector point layer that fall within that cell.
 
-We want to create the layer in the [species_data]{.style-db} mapset, so we need to switch to that mapset first.
+We want to create the layer in the [Erebia_alberganus]{.style-data} mapset, so we switch to that mapset first. 
 
 ::: {#exm-3Tw6fEB0hg .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
-g.mapset mapset=species_data
+g.mapset mapset=Erebia_alberganus
 ```
 
 ## {{< fa brands python >}}
 
 ``` python
-gs.run_command("g.mapset", mapset="species_data")
+gs.run_command("g.mapset", mapset="Erebia_alberganus")
 ```
 
 ## {{< fa regular window-restore >}}
@@ -47,58 +53,61 @@ gs.run_command("g.mapset", mapset="species_data")
 ![To change the mapset, right click on the name of the mapset in the [Data]{.style-menu} panel. In the context menu, select [Switch mapset]{.style-menu}.](images/switchmapset.png){#fig-switchmapset fig-align="left"}
 :::
 
-The extent and resolution of the resulting raster is determined by the bounding box of the mapset. In this case, we want the region's *extent* to match the extent of the occurrence point layer. In addition, we want the region's *resolution* to match that of the bioclim layers, which is 0.008333 arc degrees.
+The raster layer that will be created with `v.vect.stats` should cover the same spatial extent as the point data and use the same spatial resolution as the bioclimatic layers, which is 2.5 arc degrees. To ensure this, we need to set the computational region accordingly (remember, the computational region defines the extent and resolution for raster operations in GRASS GIS).
+
+We use the [g.region](https://grass.osgeo.org/grass-stable/manuals/g.region.html) module for this. The spatial extent of the region is defined using the [vector]{.style-parameter} parameter, which is set to the [occurrences]{.style-data} layer. The spatial resolution is taken from the [bio_1@climate]{.style-data} layer by setting the [raster]{.style-parameter} parameter. Finally, the [align]{.style-parameter} parameter ensures that the computational region is aligned with the grid of the [bio_1@climate]{.style-data} raster.
+
 
 ::: {#exm-DzyEuYlZum .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
-g.region -a res=0.008333 vector=Erebia_alberganus_obs # <1>
+g.region raster=bio_1@climate vector=occurrences align=bio_1@climate
 ```
-
-1.  Setting the -a flag means that the function will adjust the boundaries of the extent if necessary to ensure that the region is perfectly aligned with the resolution.
 
 ## {{< fa brands python >}}
 
 ``` python
 gs.run_command(
     "g.region",
-    flags="a",  # <1>
-    res=0.008333,
-    vector="Erebia_alberganus_obs",
+    raster="bio_1@climate",
+    vector="occurrences",
+    align="bio_1@climate",
 )
 ```
 
-1.  Setting the -a flag means that the function will adjust the boundaries of the extent if necessary to ensure that the region is perfectly aligned with the resolution.
-
 ## {{< fa regular window-restore >}}
 
-To change the region settings, open the [g.region]{.style-function} dialog, and fill in the following parameters:
+To change the region settings, open the `g.region` dialog, and fill in the following parameters:
 
 | Parameter                      | Value                 |
 |--------------------------------|-----------------------|
-| res                            | 0.008333              |
-| vector                         | Erebia_alberganus_obs |
-| Align region to resolution (a) | ✅                    |
+| raster                            | bio_1@climate              |
+| align                            | bio_1@climate              |
+| vector                         | occurrences |
 
 : {tbl-colwidths="\[40,60\]"}
 
-<br>Note that we use [-a]{.style-parameter} flag to tell [g.region]{.style-function} to ensure that the region is perfectly aligned with the resolution. To this end, the [g.region]{.style-function} function will adjust the region's bound, if needed.
+
+## {{< fa question >}}
+
+We set the [vector]{.style-parameter} parameter to the [occurrences]{.style-data} layer to define the spatial extent of the region. The [raster]{.style-parameter} parameter is set to the [bio_1@climate]{.style-data} layer, which determines the spatial resolution of the region. Finally, the [align]{.style-parameter} parameter ensures that the region is aligned with the grid of the [bio_1@climate]{.style-data} raster layer.
+
 :::
 
-We can now run the [r.vect.stats]{.style-function} module. With the [method]{.style-parameter} parameter, we can tell the module what statistic to compute based on vector points over a raster grid. We use [method=n]{.style-parameter} to calculate the number of points per grid cell. The [n]{.style-parameter} stands for count.
+We can now run the `r.vect.stats` module. The [method]{.style-parameter} parameter specifies which statistic is calculated from the vector points for each raster grid cell. Here, we use [method=n]{.style-parameter} to count the number of points per cell, where [n]{.style-parameter} indicates a point count.
 
 ::: {#exm-Xj32c2jubU .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
-r.vect.stats input=Erebia_alberganus_obs output=pointdensities method=n
+r.vect.stats input=occurrences output=pointdensities method=n
 ```
 
 ## {{< fa brands python >}}
@@ -106,7 +115,7 @@ r.vect.stats input=Erebia_alberganus_obs output=pointdensities method=n
 ``` python
 gs.run_command(
     "r.vect.stats",
-    input="Erebia_alberganus_obs",
+    input="occurrences",
     output="pointdensities",
     method="n",
 )
@@ -114,11 +123,11 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-To calculate the point densities per grid cell, open the [r.vect.stats]{.style-function} dialog, and use the following parameter settings.
+To calculate the point densities per grid cell, open the `r.vect.stats` dialog, and use the following parameter settings.
 
 | Parameter | Value                 |
 |-----------|-----------------------|
-| input     | Erebia_alberganus_obs |
+| input     | occurrences |
 | output    | pointdensities        |
 | method    | n                     |
 
@@ -130,7 +139,7 @@ After completing these steps, we have a raster layer ([pointdensities]{.style-da
 ::: {#exm-J7MoS70p6m .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -145,7 +154,7 @@ gs.run_command("r.null", map="pointdensities", setnull=0)
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.null]{.style-function} dialog, and use the following parameter settings.
+Open the `r.null` dialog, and use the following parameter settings.
 
 | Parameter | Value          |
 |-----------|----------------|
@@ -160,34 +169,30 @@ We use [r.univar](https://grass.osgeo.org/grass-stable/manuals/r.univar.html) to
 ::: {#exm-WtuDMbpLQo .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
 # Compute raster statistics
-r.univar -e map=pointdensities # <1>
+r.univar -e map=pointdensities
 
 # Run r.boxplot
 r.boxplot -o -h map=pointdensities
 ```
 
-1.  The [-e]{.style-parameter} flag tells [r.univar]{.style-function} to calculate extended statistics, like the median.
-
 ## {{< fa brands python >}}
 
 ``` python
 # Compute raster statistics
-gs.run_command("r.univar", flags="e", map="pointdensities")  # <1>
+gs.run_command("r.univar", flags="e", map="pointdensities")
 
 # Run r.boxplot
 gs.run_command("r.boxplot", flags="o", map="pointdensities")
 ```
 
-1.  The [-e]{.style-parameter} flag tells [r.univar]{.style-function} to calculate extended statistics, like the median.
-
 ## {{< fa regular window-restore >}}
 
-Open the [r.univar]{.style-function} dialog, and use the following parameter settings. The [-e]{.style-parameter} flag tells [r.univar]{.style-function} to calculate extended statistics, like the median.
+Open the `r.univar` dialog, and use the following parameter settings. 
 
 | Parameter                         | Value          |
 |-----------------------------------|----------------|
@@ -196,7 +201,7 @@ Open the [r.univar]{.style-function} dialog, and use the following parameter set
 
 : {tbl-colwidths="\[40,60\]"}
 
-<br>Install the [r.boxplot]{.style-function} and run it with the following parameter settings.
+<br>Install the `r.boxplot` and run it with the following parameter settings.
 
 | Parameter            | Value          |
 |----------------------|----------------|
@@ -205,10 +210,17 @@ Open the [r.univar]{.style-function} dialog, and use the following parameter set
 
 : {tbl-colwidths="\[40,60\]"}
 
-<br>Note that the [r.boxplot]{.style-function} offers various options to format the plot.
+## {{< fa question >}}
+
+The [-e]{.style-parameter} flag tells `r.univar` to calculate extended statistics, like the median.
+
 :::
 
-The results of [r.univar]{.style-function} show that the number of observations per raster cell range from 1 to 240, with a median of 1, and an average of 4.7. These results and the boxplot in @fig-pointdensitiesboxplot show that even though within the majority of non-NULL raster cells there is only one observation, there are also raster cells with many more observations, up to 240 point observations.
+The results of `r.univar` show that the number of observations per raster cell range from 1 to 346, with a median of 3, and an average of 10. These results and the boxplot in @fig-pointdensitiesboxplot show that even though within the majority of non-NULL raster cells there is only one observation, there are also raster cells with many more observations, up to 240 point observations.
+
+<!---
+r.boxplot -o -h map=pointdensities@Erebia_alberganus output=/home/paulo/Nextcloud/Projects/Readers/Ecodiv/sdm_in_grassgis/images/pointdensityboxplot.png plot_dimensions=7,1 --overwrite dpi=100 fontsize=6 median_color="#008021" flier_color="#008021"
+-->
 
 ![The boxplot shows the range, quartiles, outliers of the point densities.](images/pointdensityboxplot.png){#fig-pointdensitiesboxplot fig-align="left"}
 
@@ -216,19 +228,55 @@ If we look at the attribute table, we'll see that where there are many observati
 
 ### Spatially thinning {#sec-spatialthinning}
 
-As mentioned earlier, we wanted to check whether our GBIF occurrence dataset shows any signs of bias. The results suggest that bias may be present. A simple way to reduce the risk of spatial autocorrelation caused by oversampling is through spatial thinning or sub-sampling the data [@beck2014a]. This method involves removing observation points from the training dataset to ensure a specified minimum distance between points or to limit the maximum density of points at each location.
+The results above show that in some areas many observations are clustered close together. This indicates sampling bias and may cause the model to place too much weight on these locations.
 
-There are different approaches to spatially thin a point layers. One way is to convert the vector point layer with occurrences to a raster layer using [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html). Next, the raster layer is converted back to a vector point layer using [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html). The result is a point layer with a point in the center of each raster cell with occurrences, as illustrated in @fig-spatialthinning. The density and number of points in the output layer depend on the region's resolution. This means that we can vary the point density by changing the region's resolution first [^3_data_preparation-1].
+A common way to reduce this effect is spatial thinning, also called subsampling [@beck2014a; @steen2021]. Spatial thinning reduces clustering by removing observations that are very close to each other. One implementation is to remove points that occur within a specified minimum distance. This approach is available in the [v.decimate](https://grass.osgeo.org/grass-stable/manuals/v.decimate.html) module.
 
-[^3_data_preparation-1]: For other options to spatially thin a point layer, check out the module [v.decimate](https://grass.osgeo.org/grass-stable/manuals/v.decimate.html).
+Another approach is to retain only one occurrence point per raster cell at a chosen resolution, as illustrated in @fig-spatialthinning. This approach is implemented in the `v.maxent.swd` module. 
 
 ![Reduce number of sample points to a maximum of 1 point per raster cell.](images/spatialthinning.png){#fig-spatialthinning fig-align="left" width="450"}
 
-For this tutorial, we'll use the thinning option in the module [v.maxent.swd](https://grass.osgeo.org/grass-stable/manuals/addons/v.maxent.swd.html). The module follows the same approach as described above. We'll use this module later in this tutorial (@sec-maxentswd) to prepare the input data for the Maxent analysis, so at this point, we don't need to do anything.
+For this tutorial, we’ll use the thinning option in the `v.maxent.swd` module. This module will be used later ([@sec-maxentswd]) to prepare the input data for the Maxent analysis, so no action is required at this stage.
+
+::: {.callout-tip collapse="true" title="If you need more control over thinning"}
+
+**Thinning in a separte step**
+
+If you want more control over the thinning process, you can implement a raster-based thinning workflow yourself. This approach separates thinning from background point generation and allows you to inspect the results before modelling. The workflow consists of five steps (example code is provided for illustration; you do not need to run this now).
+
+1. Set the computational region resolution to the desired thinning distance. The spatial resolution controls thinning strength; a coarser resolution results in fewer retained points.
+2. Convert the vector point layer to a raster layer using [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html). 
+3. Converted the raster layer back to a vector point layer with [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html). 
+4. Restore the original region settings
+5. Remove the intermediate raster layer to save space.
+
+``` bash
+g.region res=0.025  # example for 0.025 degrees (~2.5 km)
+v.to.rast input=occurrences output=occurrences use=value type=point
+r.to.vect input=occurrences output=occurrences2 type=point
+g.region res=region_aoi@climate # restore original region
+g.remove type=raster name=occurrences # remove intermediate raster
+```
+
+**When and why to use this approach**
+
+One reason to use this workflow is to experiment with different thinning distances and evaluate their effect on model results. For example, setting the region resolution to 0.05 degrees (~5 km) instead of 0.025 degrees (~2.5 km) results in stronger thinning.
+
+A second reason is that it allows you to inspect the thinned occurrence data before continuing with the modelling. This makes it possible to assess whether the remaining points still represent the species’ distribution adequately and to make a more informed decision about how many background points to generate in @sec-createbgrdpoints.
+
+This step is important because having many more presence points than background points can lead to unstable model estimation and a poor characterisation of the environmental background. For this reason, it is good practice to first check how many presence points are available and, if necessary, determine the number of background points. This is particularly relevant for well-sampled species, where the number of raw presence records may exceed commonly used defaults such as 10,000 background points. In our example, the number of presence points is indeed much larger than 10,000. However, spatial thinning can substantially reduce the number of presence points. In such cases, a background sample of around 10,000 points may be entirely sufficient. 
+
+In other words, the limitation of letting `v.maxent.swd` handle thinning is that in the same step, you need to provide the background points (or tell `v.maxent.swd` how many background points to create), before the final number of retained presence points is known. So you cannot be sure whether the number of background points will be adequate.
+
+In this case, you can assume that the number of points after thinning is considerably less than 10,000. For your own project, you may prefer to perform thinning as a separate step, so that the number of background points can be adjusted once the final number of presence points is known.
+
+:::
 
 ## Background points {#sec-studyarea}
 
-Maxent uses *background* points to characterize the environmental conditions of the study area. This is done by first selecting a large number of locations within the study area (green dots in @fig-conceptbackgroundpoints). The environmental conditions for these locations are then determined. These values represent the "environmental space" of the study area. Maxent compares these with the environmental conditions under which the species was observed (grey dots in @fig-conceptbackgroundpoints).
+Maxent uses *background* points to describe the range of environmental conditions available within the study area. This is done by selecting a large number of locations across the region of interest (shown as green dots in @fig-conceptbackgroundpoints). For each of these locations, the environmental conditions are extracted. Together, these values represent the environmental space of the study area.
+
+Maxent then compares this environmental space with the conditions at the locations where the species was observed (shown as grey dots in @fig-conceptbackgroundpoints). By contrasting these two sets of conditions, the model estimates which environments are more or less suitable for the species.
 
 ![Left: A study area with species observations marked by dark gray dots and randomly selected background points marked in green. Right: Scatter and density plots depict how rainfall and temperature are distributed across both the background points (green) and species observations (dark gray). The species prefers areas with higher rainfall, while there is no apparent preference for temperature.](images/study_vs_species-domain.png){#fig-conceptbackgroundpoints fig-align="left"}
 
@@ -239,87 +287,63 @@ One of the decisions we need to make is about the boundaries of our study area. 
 ::: {.callout-note collapse="true"}
 ## Importance of the size and shape of the study area
 
-An important decision in species distribution modeling is the size and shape of the study area [@acevedo2012]. The environmental gradients will be larger in a larger study area. If the study area is very large, the background points may capture environmental conditions that are mostly far outside the possible range of suitable conditions. This can lead to an underestimation of the influence of variables operating at smaller spatial scales. It also artificially inflates performance metrics (such as AUC) by making the prediction of unsuitable areas appear easier than it is.
+An important decision in species distribution modelling is the size and shape of the study area [@acevedo2012]. The choice of study area determines which environmental conditions are considered available to the species and therefore strongly influences model results.
 
-On the other hand, if the study area is largely limited to the areas where the species is observed, the model is likely to discriminate between presence and background points based on subtle differences that may not be ecologically meaningful. And if the study area does not include all areas where the species occurs, important environmental gradients may be missed, potentially underestimating the full range of suitable conditions for the species.
+In a very large study area, environmental gradients tend to be broad. Background points may then include conditions that are far outside the range that the species could realistically tolerate. As a result, the influence of environmental variables operating at smaller spatial scales can be underestimated. Large study areas can also inflate evaluation metrics, such as AUC, by making it easier for the model to distinguish suitable from clearly unsuitable environments.
 
-The size of the study area can also affect how well model evaluation metrics (e.g., AUC) reflect true model performance. In a large study area with many unsuitable environments, the model may appear to perform well because the contrast between suitable and unsuitable areas is greater. In smaller areas with less contrast, the predictive power of the model may be harder to detect.
+If the study area is defined too narrowly, for example by focusing mainly on locations where the species has been observed, the model may rely on subtle differences between presence and background points that are not ecologically meaningful. In addition, excluding parts of the species’ true range may cause important environmental gradients to be missed, leading to an incomplete picture of suitable conditions.
 
-An important consideration is the area that has been accessible to the species of interest over relevant time periods. This is the ideal area for model development, testing and comparison [@barveCrucialRoleAccessible2011]. In general, this will not be easy to determine as it will depend on, for example, time, type of environment, and presence of barriers.
+A useful guiding concept is the area that has been accessible to the species over relevant time periods. This area is generally the most appropriate extent for model calibration, testing, and comparison [@barveCrucialRoleAccessible2011]. Defining this area is often challenging, as it depends on factors such as dispersal ability, historical processes, environmental continuity, and the presence of barriers.
 
 ------------------------------------------------------------------------
 
-**How to**: Depending on how we want to select the background points, we can delimit our study area using the computational region, a MASK or using polygons. See below.
+**How to**: Depending on how we want to select the background points, we can delimit our study area using the computational region, a MASK or using polygons. These options are described below.
 :::
 
 <!----------------------------------------------------------------------------->
 
-We'll create background points within the boundaries of the area of interest (aoi) that we defined in @sec-climatedata. To store the vector layer with background points for this particular *aoi* in a separate mapset, we first use the [g.mapset](https://grass.osgeo.org/grass-stable/manuals/g.mapset.html) module to create a new mapset [dataset01]{.style-db}. Next, we use the [g.region](https://grass.osgeo.org/grass-stable/manuals/g.region.html) module to set the computational region, based on the region file we created earlier (@exm-V0FK31454), and the [r.mask](https://grass.osgeo.org/grass-stable/manuals/r.mask.html) module with the [vector]{.style-parameter} parameter to further restrict our study area to land areas. Finally, to avoid having to append the name of that mapset to a layers name, each time we need a layer from a different mapset, we give access to the other relevant mapsets using the [g.mapsets](https://grass.osgeo.org/grass-stable/manuals/g.mapsets.html) command [^3_data_preparation-2].
+We continue working in the mapset [Erebia_alberganus]{.style-data}. The computational region is set using the [region_aoi@climate]{.style-data} region file. This ensures that the background points generated in the next step are restricted to the area of interest defined earlier in @sec-climatedata as [region_aoi]{.style-data}.
 
-[^3_data_preparation-2]: To state the obvious, be careful when using the same layer names across different mapsets.
+Next, we further restrict the study area to land only by applying a MASK based on the [countries@PERMANENT]{.style-data} layer. In GRASS, a MASK is a special raster that limits analyses to selected areas. When a MASK is active, only cells with non-NULL values are included in calculations; all other cells are ignored.
 
 ::: {#exm-3XFvGCjQ7i .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
-# Create a new mapset
-g.mapset -c mapset=dataset01
-
 # Define the region
-g.region region=aoi@climate_current
+g.region region=region_aoi@climate
 
 # Create a MASK
 r.mask vector=countries@PERMANENT
-
-# Give access to layers in other mapsets
-g.mapsets mapset=climate_current,species_data operation=add
 ```
 
 ## {{< fa brands python >}}
 
 ``` python
-# Create a new mapset and make it the active mapset
-gs.run_command("g.mapset", flags="c", mapset="dataset01")
-
 # Set the region to match the region settings in the aoi region file
-gs.run_command("g.region", region="aoi@climate_current")
+gs.run_command("g.region", region="region_aoi@climate")
 
 # Create a MASK
 gs.run_command("r.mask", vector="countries@PERMANENT")
 
-# Give access to layers in other mapsets
-gs.run_command(
-    "g.mapsets", mapset=["climate_current", "species_data"], operation="add"
-)
 ```
 
 ## {{< fa regular window-restore >}}
 
-(A) Type in [g.mapset]{.style-function} in the console to open the dialog, and use the following parameter settings.
-
-| Parameter                             | Value     |
-|---------------------------------------|-----------|
-| Name of mapset (mapset)               | dataset01 |
-| Create mapset if it doesn't exist (c) | ✅        |
-
-: {tbl-colwidths="\[40,60\]"}
-
-<br>
-
-(B) Next, run the [g.region]{.style-function} module with the following settings:
+Run the `g.region` module with the following settings:
 
 | Parameter | Value                |
 |-----------|----------------------|
-| region    | aoi\@climate_current |
+| region    | region_aoi\@climate |
 
 : {tbl-colwidths="\[40,60\]"}
 
 <br>
 
-(C) Create a MASK of the European land areas using [r.mask]{.style-function}:
+Create a MASK of the European land areas using `r.mask`:
 
 | Parameter | Value                |
 |-----------|----------------------|
@@ -327,18 +351,13 @@ gs.run_command(
 
 : {tbl-colwidths="\[40,60\]"}
 
-<br>
-
-(D) Give access to layers in the other mapsets.
-
-In the menu, go to [Settings → GRASS working environment → Mapset access]{.style-menu} and select the mapsets [climate_current]{.style-db} and [species_data]{.style-db}.
 :::
 
-We have now a new raster layer named [MASK]{.style-data} in the mapset [dataset01]{.style-db}. We can use [r.info](https://grass.osgeo.org/grass-stable/manuals/r.info.html) to check that it has the same extent and resolution as the computational region ([@fig-studyareas]). The raster cells falling outside the MASK are not included in operations like raster algebra, statistics, or interpolation.
+We have now a new raster layer named [MASK]{.style-data}. The raster cells falling outside the MASK are not included in operations like raster algebra, statistics, or interpolation. In our case, this prevents background points from being generated over sea areas.
 
 ![Red outline: the bounds of the computational region. Green: the MASK, which covers the study area.](images/studyarea.png){#fig-studyareas fig-align="left"}
 
-### Background points
+### Background points {#sec-createbgrdpoints}
 
 Now that we have defined the study area, we need to create a vector layer with background points. These will be used to characterize environmental conditions across the study area. The model will compare them with the conditions where the species is present.
 
@@ -370,12 +389,12 @@ For more flexibility, we can create random points in a separate step using for e
 -   With the [r.random.weight](https://grass.osgeo.org/grass-stable/manuals/addons/r.random.weight.html) module, you can vary the point density across the region, based on the values of a bias layer. This makes it possible to correct for the effect of sampling bias by creating a background point layer with the same bias as the presence locations [@phillips2009a; @moua2020; @beck2014a].
 :::
 
-We'll use the [r.random](https://grass.osgeo.org/grass-stable/manuals/r.random.html) function to generate a point layer [background_points]{.style-data} with random points within the region's bounds and MASK. The main choice we have to make is the number of sample points. The number of sample points often used is on the order of 10,000, which is what we will use. Note, however, that for larger, more heterogeneous areas, you may need more background points to ensure that all important environmental conditions are well represented [@whitford2024].
+We'll use the [r.random](https://grass.osgeo.org/grass-stable/manuals/r.random.html) function to generate a point layer named [background_points]{.style-data} with random points within the region's bounds and MASK. The main choice we have to make is the number of sample points. The number of sample points often used is on the order of 10,000, which is what we will use. Note, however, that for larger, more heterogeneous areas, you may need more background points to ensure that all important environmental conditions are well represented [@whitford2024]. Furthermore, if you have a very large number of presence points, you may also want to increase the number of background points accordingly.
 
 ::: {#exm-25nmhfEEDF .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -392,7 +411,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [r.random]{.style-function}, and use the following parameter settings.
+Open the `r.random`, and use the following parameter settings.
 
 | Parameter | Value             |
 |-----------|-------------------|
@@ -409,7 +428,7 @@ Open the [r.random]{.style-function}, and use the following parameter settings.
 Multicollinearity occurs when two or more explanatory variables are highly correlated. This can make it difficult to determine the individual effect of each variable on the species distribution, and redundant variables may add noise to the model without improving its predictive power.
 
 ::: {.callout-tip appearance="simple"}
-When building a species distribution model using highly correlated explanatory variables, the model has multiple ways to achieve a similar fit within the training area. Consequently, two models based on these variables are likely to perform comparably in the training area. However, when these models are projected to a new geographic region or applied under different climate conditions, their predictions can diverge drastically if the correlation between the explanatory variables in the new region differ from those observed during training.
+When a species distribution model is built using strongly correlated variables, there are often multiple combinations of variables that produce a similarly good fit to the training data. As a result, different models may perform equally well within the training area. However, when these models are projected to a new geographic region or applied under different climate conditions, their predictions can diverge drastically if the correlation between the explanatory variables in the new region differ from those observed during training.
 :::
 
 Maxent, a commonly used SDM tool, is relatively insensitive to multicollinearity because it selects the most informative variables during model training. Yet, excluding highly redundant variables might still help to get a more parsimonious, robust and interpretable model. And on a practical note, it will reduce the time it takes to train the model.
@@ -418,38 +437,41 @@ Maxent, a commonly used SDM tool, is relatively insensitive to multicollinearity
 
 The variance inflation factor (VIF) is a commonly used method to test for collinearity between predictor variables [@graham2003]. In GRASS, the VIF can be calculated for a set of variables using the add-on [r.vif](https://grass.osgeo.org/grass-stable/manuals/addons/r.vif.html). This addon also allows you to select a subset of variables using a stepwise variable selection procedure. In this procedure, the VIF is computed repeatedly. Each time, the variable with the highest VIF is removed until the highest VIF values are less than a user-defined threshold [@craney2002].
 
-We'll use the stepwise VIF procedure to select the minimum set of bioclimatic variables with a VIF \< 10. We use [n=100,000]{.style-parameter} so that the VIF is performed based on the values of 100,000 random locations. This speeds up the calculation and avoids memory problems.
+We'll use the stepwise VIF procedure to select the minimum set of bioclimatic variables with a VIF \< 10. We use [n=100,000]{.style-parameter} so that the VIF is performed based on the values of 100,000 random locations. This speeds up the calculation and avoids memory problems. 
 
 ::: {#exm-udfds5Bwdr .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
+
+Running the command below gives you a comma separated list of raster layers starting with 'bio' in the mapset 'climate'. Copy that so you can use it as input in `r.vif`. 
 
 ``` bash
 # Select the input variable
-layers=`g.list -m type=raster pattern=bio* sep="," mapset=climate_current`  # <1>
-r.vif maps=$layers seed=5 n=100000 maxvif=10 # <2>
+g.list -m type=raster pattern=bio* sep="," mapset=climate
 ```
 
-1.  This line creates a comma separated list of raster layers in the mapset 'climate_current' whose names start with 'bio'. The resulting list is stored in the variable 'layers'. With the *-m* flag, the mapset is included in the layers names.
-2.  **maps=\$layers**: Uses the list of raster layers stored in the 'layers' variable as input for the VIF analysis. You can, alternatively, skip the previous line, and type in the names of each of the layers. The [seed]{.style-parameter} parameter ensures that the random processes are reproducible. You can set any number. If next time you run this with the same seed value, the function will use the same set of random points.
+Use the output from the previous command to run `r.vif` by replacing [maps=bioclim-layers]{.style-parameter} with the list of raster layers. Alternatively, you can type in the names of the 19 bioclim layers manually.
+
+``` bash
+r.vif maps=bioclim-layers seed=5 n=100000 maxvif=10 
+```
 
 ## {{< fa brands python >}}
 
 ``` python
 # Select the input variable
-layers = gs.list_strings(pattern="bio*", mapset="climate_current",
-                         type="raster")  # <1>
-gs.run_command("r.vif", maps=layers, n=100000, maxvif=10, seed=5) # <2>
+layers = gs.list_strings(pattern="bio*", mapset="climate", type="raster")
+gs.run_command("r.vif", maps=layers, n=100000, maxvif=10, seed=5)
 ```
 
-1.  The [list_strings]{.style-function} module provides a convenient wrapper to the [g.list]{.style-function}. The parameters are the same as for the [g.list]{.style-function}.
-2.  The [seed]{.style-parameter} parameter ensures that the random processes are reproducible. You can set any number. If next time you run this with the same seed value, the function will use the same set of random points.
+The `list_strings` module provides a convenient wrapper to the `g.list`. The parameters are the same as for the `g.list`. The outcome is a list with the names of all bioclim layers in the climate mapset. These are stored in the variable [layers]{.style-data}, which is then used as input for the `r.vif` module.
+
 
 ## {{< fa regular window-restore >}}
 
-We run the [r.vif]{.style-function}. Make sure to fill in the names of all 19 bioclim variables under the [maps]{.style-parameter} parameter. The module selects 10,000 points at random. To make the results reproducible, use the [seed]{.style-parameter} parameter. Repeating this step with the same seed value will yield identical results. If you prefer the function to select a different set of random points, use the [-s]{.style-parameter} flag instead of specifying the [seed]{.style-parameter} parameter.
+We run the `r.vif`. Make sure to fill in the names of all 19 bioclim variables under the [maps]{.style-parameter} parameter. 
 
 | Parameter | Value                                      |
 |-----------|--------------------------------------------|
@@ -459,104 +481,103 @@ We run the [r.vif]{.style-function}. Make sure to fill in the names of all 19 bi
 | seed      | 5                                          |
 
 : {tbl-colwidths="\[20,80\]"}
+
+## {{< fa question >}}
+
+To make the results reproducible, use the [seed]{.style-parameter} parameter. You can set any number. Running a function again with the same seed value will yield identical results. 
+
+The VIF is calculated based on the values of raster cells within the current computational region. Therefore, it is important to ensure that the region is set correctly before running `r.vif`. We are interested in the multicollinearity among all 19 bioclimatic variables within the study area, which is already set correctly by the region and MASK in the current mapset [Erebia_alberganus]{.style-data}.
 :::
 
 The selected bioclimatic variables in my case are [bio_1]{.style-data}, [bio_2]{.style-data}, [bio_4]{.style-data}, [bio_8]{.style-data}, [bio_9]{.style-data}, [bio_13]{.style-data}, [bio_14]{.style-data}, [bio_15]{.style-data} and [bio_19]{.style-data}. Note that there is a (small) change that your result will show a different combination of variables. This is because the VIF was calculated based on the values of 100,000 randomly selected point locations. Be sure to write down the names of the variables. We'll need them later.
 
 ::: {.callout-note appearance="simple"}
-The VIF algorithm offers a data-driven method for selecting variables. However, it's important to also consider ecological significance when making selections. For instance, if a species is known to be sensitive to temperatures during the coldest quarter, this variable should be kept regardless of its VIF score. The [r.vif]{.style-function} module includes a [retain]{.style-parameter} parameter that allows you to specify one or more variables to retain during the stepwise selection process. If a retained variable has the highest VIF, the variable with the next highest VIF will be removed instead.
+The VIF algorithm offers a data-driven method for selecting variables. However, it's important to also consider ecological significance when making selections. For instance, if a species is known to be sensitive to temperatures during the coldest quarter, this variable should be kept regardless of its VIF score. The `r.vif` module includes a [retain]{.style-parameter} parameter that allows you to specify one or more variables to retain during the stepwise selection process. If a retained variable has the highest VIF, the variable with the next highest VIF will be removed instead.
 :::
 
 ## Export data {#sec-maxentswd}
 
 The last step before we, finally, can start with the actual modeling, is to prepare and export the input dataset for the Maxent model. We'll use the module [v.maxent.swd](https://grass.osgeo.org/grass-stable/manuals/addons/v.maxent.swd.html) for this. The module exports the different layers in the right format for Maxent. The presence and background point layers are exported as so-called [swd]{.style-data} files. Raster layers are exported as [ascii]{.style-data} files.
 
-First, we create a new folder in the working directory. Let's call it [dataset01]{.style-db}. And in that folder, we create a sub-folder called [envdat]{.style-db}. We'll export the [swd]{.style-data} files to the first folder, and the [ascii]{.style-data} raster files to the second folder using [v.maxent.swd]{.style-function}. Note, this make take some time, so be patient.
+We'll store the exported data in a new folder within our working directory, called [model_input]{.style-data}. Within this folder, we create a sub-folder [swd01]{.style-data} for the SWD files, and a sub-folder [ascii01]{.style-data} for the ascii files. 
+
+Note, running `v.maxent.swd` may make some time, so be patient.
 
 ::: {#exm-ddddddwdr .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
+# Set the working directory
+cd path/to/your/working/directory
+
 # Create a new folder in the working directory
-mkdir dataset01
-mkdir dataset01/envdat
+mkdir model_input
+mkdir model_input/swd01
+mkdir model_input/ascii01
 
 # Export the Maxent input data
-v.maxent.swd -t species=Erebia_alberganus_obs \# <1>
-bgp=background_points \# <2>
-evp_maps=bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9 \# <3>
-species_output=dataset01/species.swd \# <4>
-bgr_output=dataset01/background_points.swd \# <5>
-export_rasters=dataset01/envdat # <6>
+v.maxent.swd -t species=occurrences bgp=background_points evp_maps=bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9 species_output=model_input/swd01/species.swd bgr_output=model_input/swd01/background_points.swd export_rasters=model_input/ascii01 
 ```
-
-1.  [species]{.style-parameter}: point layer with occurrences
-2.  [bgp]{.style-parameter}: point layer with background points. If you don't have one, you can use the [nbgp]{.style-parameter} to generate a user-defined number of background points, respecting the computational region and MASK.
-3.  The environmental raster layers that you want to include in your model as explanatory variables. Importantly, these should be continuous variables. Use the [evp_cat]{.style-parameter} for categorical variables (e.g., land use map).
-4.  The location and file name of the [species swd]{.style-data} file. Note that if you save the file in a sub-folder of your working directory, you can use the relative path.
-5.  The location and file name of the [background swd]{.style-data} file. Note that if you save the file in a sub-folder of your working directory, you can use the relative path.
-6.  The location to which you want to export [environmental raster layers]{.style-data}. Note that if you save them to a sub-folder of your working directory, you can use the relative path. You can later on use these raster layers as input in Maxent to create prediction raster layers.
 
 ## {{< fa brands python >}}
 
 ``` python
+# Set the working directory
+os.chdir("path/to/your/working/directory")
+
 # Create a new folder in the working directory
-os.makedirs("dataset01/envdat", exist_ok=True)                      # <1>
+os.makedirs("model_input", exist_ok=True)
+os.makedirs("model_input/swd01", exist_ok=True)
+os.makedirs("model_input/ascii01", exist_ok=True)
 
 # Export the Maxent input data
 gs.run_command(
     "v.maxent.swd",
     flags="t",
-    species="Erebia_alberganus_obs",                                # <2>
-    bgp="background_points",                                        # <3>
-    evp_maps="bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9",  # <4>
-    species_output="dataset01/species.swd",                         # <5>
-    bgr_output="dataset01/background_points.swd",                   # <6>
-    export_rasters="dataset01/envdat",                              # <7>
+    species="occurrences",
+    bgp="background_points",
+    evp_maps="bio_1,bio_13,bio_14,bio_15,bio_19,bio_2,bio_4,bio_8,bio_9",
+    species_output="model_input/swd01/species.swd",
+    bgr_output="model_input/swd01/background_points.swd",
+    export_rasters="model_input/ascii01"
 )
 ```
 
-1.  The [os.makedirs](https://www.geeksforgeeks.org/python-os-makedirs-method/) creates directories recursively.
-2.  [species]{.style-parameter}: point layer with occurrences
-3.  [bgp]{.style-parameter}: point layer with background points. If you don't have one, you can use the [nbgp]{.style-parameter} to generate a user-defined number of background points, respecting the computational region and MASK.
-4.  The environmental raster layers that you want to include in your model as explanatory variables. Importantly, these should be continuous variables. Use the [evp_cat]{.style-parameter} for categorical variables (e.g., land use map).
-5.  The location and file name of the [species swd]{.style-data} file. Note that if you save the file in a sub-folder of your working directory, you can use the relative path.
-6.  The location and file name of the [backgroundpoints swd]{.style-data} file. Note that if you save the file in a sub-folder of your working directory, you can use the relative path.
-7.  The location to which you want to export [environmental raster layers]{.style-data}. Note that if you save them to a sub-folder of your working directory, you can use the relative path. You can later on use these raster layers as input in Maxent to create prediction raster layers.
-
 ## {{< fa regular window-restore >}}
 
-Create the folder [dataset01]{.style-db} and sub-folder [envdat]{.style-db} using your favorite file manager/explorer. Next, open the [v.maxent.swd]{.style-function} dialog and run it with the following parameter settings:
+Create the folder [model_input]{.style-data} and in that folder, create the sub-folders [swd01]{.style-data} and [ascii01]{.style-data} using your favorite file manager/explorer. Next, open the `v.maxent.swd` dialog and run it with the following parameter settings:
 
 | Parameter | Value |
 |----|----|
-| species [^3_data_preparation-3] | Erebia_alberganus_obs |
-| bgp [^3_data_preparation-4] | background_points |
-| evp_maps [^3_data_preparation-5] | bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15 |
-| species_output [^3_data_preparation-6] | dataset01/species.swd |
-| bgr_output [^3_data_preparation-7] | dataset01/background_points.swd |
-| export_rasters [^3_data_preparation-8] | dataset01/envdat |
-| Thin species and background points (t) [^3_data_preparation-9] | ✅ |
+| species | occurrences |
+| bgp  | background_points |
+| evp_maps  | bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15 |
+| species_output  | model_input/swd01/species.swd |
+| bgr_output  | model_input/swd01/background_points.swd |
+| export_rasters  | model_input/ascii01 |
+| Thin species and background points (t)  | ✅ |
 
 : {tbl-colwidths="\[50,50\]"}
+
+## {{< fa question >}}
+
+The parameters used in the `v.maxent.swd` module are described below. Note that if you save the file in a sub-folder of your working directory, you can use the relative path.
+
+- [species]{.style-parameter}: point layer with occurrences
+- [bgp]{.style-parameter}: point layer with background points. If you don't have one, you can use the [nbgp]{.style-parameter} to generate a user-defined number of background points, respecting the computational region and MASK.
+- [evp_maps]{.style-parameter}: The environmental raster layers that you want to include in your model as explanatory variables. Importantly, these should be continuous variables. Use the [evp_cat]{.style-parameter} for categorical variables (e.g., land use map).
+- [species_output]{.style-parameter}: The location and file name of the [species swd]{.style-data} file. 
+- [bgr_output]{.style-parameter}: The location and file name of the [background swd]{.style-data} file. 
+- [export_rasters]{.style-parameter}: The location to which you want to export [environmental raster layers]{.style-data}.You can later on use these raster layers as input in Maxent to create prediction raster layers.
+
+Check out the manual page of [v.maxent.swd](https://grass.osgeo.org/grass-stable/manuals/addons/v.maxent.swd.html) for more details on the parameters and options available.
+
 :::
 
-[^3_data_preparation-3]: [species]{.style-parameter}: point layer with occurrences
-
-[^3_data_preparation-4]: [bgp]{.style-parameter}: point layer with background points. If you don't have one, you can use the [nbgp]{.style-parameter} to generate a user-defined number of background points, respecting the computational region and MASK.
-
-[^3_data_preparation-5]: [evp_maps]{.style-parameter}: The environmental raster layers that you want to include in your model as explanatory variables. Importantly, these should be continuous variables. Use the [evp_cat]{.style-parameter} for categorical variables (e.g., land use map).
-
-[^3_data_preparation-6]: species_output\]{.style-parameter}: The location and file name of the [species swd]{.style-data} file. Note that if you save the file in a sub-folder of your working directory, you can use the relative path.
-
-[^3_data_preparation-7]: [bgr_output]{.style-parameter}: The location and file name of the [backgroundpoints swd]{.style-data} file. Note that if you save the file in a sub-folder of your working directory, you can use the relative path.
-
-[^3_data_preparation-8]: [export_rasters]{.style-parameter}: The location to which you want to export [environmental raster layers]{.style-data}. Note that if you save them to a sub-folder of your working directory, you can use the relative path. You can later on use these raster layers as input in Maxent to create prediction raster layers.
-
-[^3_data_preparation-9]: [-t]{.style-parameter}: Select this flag if you want to limit the species and background points to maximum one point per raster cell.
+Make sure to keep clear notes on which files are created, how they were generated, and where they are stored. This will save time and prevent confusion later on, especially when you build multiple models using different combinations of input data. Clear documentation is also essential for reproducibility, both for your own work and for others who may use or review your results.
 
 <br><br>
 

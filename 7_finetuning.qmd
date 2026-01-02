@@ -42,7 +42,7 @@ mkdir model_04
 g.mapset -c mapset=model_04
 
 # Define the region and set the MASK
-g.region raster=bio_1@climate_current 
+g.region raster=bio_1@climate 
 ```
 
 ## {{< fa brands python >}}
@@ -55,7 +55,7 @@ os.chdir("replace-for-path-to-working-directory")
 gs.run_command("g.mapset", flags="c", mapset="model_04")
 
 # Set the region and create a MASK
-gs.run_command("g.region", raster="bio_1@climate_current") 
+gs.run_command("g.region", raster="bio_1@climate") 
 ```
 :::
 
@@ -81,7 +81,7 @@ The svg file also includes an example for a model for relationships. The accompa
 
 ![Under- and overfitting illustrated for a classification model.](images/overfitting.png){#fig-overfitting fig-align="left"}
 
-To evaluate the impact of regularization on model outcomes, we need to create multiple models using different regularization values. The outputs from [r.maxent.train]{.style-function} can then be compared to assess the differences. In the example below, the model is run twice with two different regularization values.
+To evaluate the impact of regularization on model outcomes, we need to create multiple models using different regularization values. The outputs from `r.maxent.train` can then be compared to assess the differences. In the example below, the model is run twice with two different regularization values.
 
 ### Model training
 
@@ -273,17 +273,17 @@ What parameter setting did we use to create those standard deviation maps?
 
 ## {{< fa regular comment >}}
 
-The standard deviation map, along a number of other summary maps, are created when using the [projectionlayers]{.style-parameter} parameter in [r.maxent.train]{.style-function}. The process involves the following steps:
+The standard deviation map, along a number of other summary maps, are created when using the [projectionlayers]{.style-parameter} parameter in `r.maxent.train`. The process involves the following steps:
 
-The [r.maxent.train]{.style-function} module requires two [SWD]{.style-file} files as input: one containing environmental variable values for species observation points, and the other for a random set of background locations. These files were generated using the [v.maxent.swd]{.style-function} module.
+The `r.maxent.train` module requires two [SWD]{.style-file} files as input: one containing environmental variable values for species observation points, and the other for a random set of background locations. These files were generated using the `v.maxent.swd` module.
 
-The [projectionlayers]{.style-parameter} parameter specifies a folder with environmental raster layers in ASCII format. These layers must match the variables used in the [SWD]{.style-file} files, with corresponding names. The easiest way to create them is with [v.maxent.swd]{.style-function}, as described in @sec-maxentswd (@exm-ddddddwdr).
+The [projectionlayers]{.style-parameter} parameter specifies a folder with environmental raster layers in ASCII format. These layers must match the variables used in the [SWD]{.style-file} files, with corresponding names. The easiest way to create them is with `v.maxent.swd`, as described in @sec-maxentswd (@exm-ddddddwdr).
 
-Setting [projectionlayers]{.style-parameter} instructs [r.maxent.train]{.style-function} to not only train the model but also generate a species probability distribution map using the provided raster layers as input in the model.
+Setting [projectionlayers]{.style-parameter} instructs `r.maxent.train` to not only train the model but also generate a species probability distribution map using the provided raster layers as input in the model.
 
 ![The figure illustrates how summary layers are calculated for each cell based on input raster values. For details, see [r.univar](https://grass.osgeo.org/grass-stable/manuals/r.univar.html).](images/layeroverlay.png){#fig-layeroverlay3 fig-align="left" width="400"}
 
-Because we used the [replicatetype]{.style-parameter} and [replicates]{.style-parameter} parameters for 4-fold cross-validation, [r.maxent.train]{.style-function} produced four species probability distribution map (one per iteration). These raster layers were combined into new raster layers showing the mean, median, maximum, minimum and standard deviation across the four iterations (@fig-layeroverlay3). Their names end with \*\_avg*,* median*,* max*,* min*, and* stddev\*, followed by the suffix provided in the [suffix]{.style-parameter} parameter. Note that the original four layers are removed.
+Because we used the [replicatetype]{.style-parameter} and [replicates]{.style-parameter} parameters for 4-fold cross-validation, `r.maxent.train` produced four species probability distribution map (one per iteration). These raster layers were combined into new raster layers showing the mean, median, maximum, minimum and standard deviation across the four iterations (@fig-layeroverlay3). Their names end with \*\_avg*,* median*,* max*,* min*, and* stddev\*, followed by the suffix provided in the [suffix]{.style-parameter} parameter. Note that the original four layers are removed.
 ::::
 
 The standard deviation maps for models 3, 4a, and 4b are shown in @fig-stddevmodel4b — [-@fig-stddevmodel3]. Since their original color tables differ, comparing them requires applying the same color table to all three maps. This can be done using the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) module. Note that I adjusted the color table to enhance the visibility of patterns across all maps (see lines 8–26 in the code block of [Appendix -@sec-ws4FDpBcUr]).
@@ -313,7 +313,7 @@ What do the values in the column [Cloglog_range]{.style-data} of the attribute t
 
 ## {{< fa regular comment >}}
 
-Because we used the [replicatetype]{.style-parameter} and [replicates]{.style-parameter} parameters for 4-fold cross-validation, [r.maxent.train]{.style-function} created four point layers with the predicted probabilities for species observation locations (one per iteration). These layers were then combined into a new point layer ([Erealb_sp_m4a]{.style-data} in this case), with an attribute table containing columns for the average probability scores ([Cloglog_mean]{.style-data}) and the range ([Cloglog_range]{.style-data}: maximum - minimum probabilities) across the four iterations. The original four layers were removed.
+Because we used the [replicatetype]{.style-parameter} and [replicates]{.style-parameter} parameters for 4-fold cross-validation, `r.maxent.train` created four point layers with the predicted probabilities for species observation locations (one per iteration). These layers were then combined into a new point layer ([Erealb_sp_m4a]{.style-data} in this case), with an attribute table containing columns for the average probability scores ([Cloglog_mean]{.style-data}) and the range ([Cloglog_range]{.style-data}: maximum - minimum probabilities) across the four iterations. The original four layers were removed.
 
 Similarly, the [Erealb_bg_m4a]{.style-data} point layer was created using predictions for the background point locations.
 ::::
@@ -336,7 +336,7 @@ The results emphasize the need to balance regularization for predictions that ar
 
 ### Predicting
 
-Once the best parameter settings are selected, the final model can be trained using all available occurrence data. This approach ensures the model utilizes the full dataset, potentially improving its predictive power. The trained model can then serve as input for the [r.maxent.predict]{.style-function} module. Following the steps outlined in @sec-modelprediction, predictions can be generated under various environmental conditions or for new geographic areas.
+Once the best parameter settings are selected, the final model can be trained using all available occurrence data. This approach ensures the model utilizes the full dataset, potentially improving its predictive power. The trained model can then serve as input for the `r.maxent.train` module. Following the steps outlined in @sec-modelprediction, predictions can be generated under various environmental conditions or for new geographic areas.
 
 ## Feature selection {#sec-featureselection}
 

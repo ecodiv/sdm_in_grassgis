@@ -1,14 +1,3 @@
-The following typographical conventions are used in this reader:
-
--   [Names of databases, storage locations, file names]{.style-db}
--   [Names of GRASS data layers]{.style-data}
--   [Menu and toolbar items]{.style-menu}
--   [Name of programs, code libraries, addons]{.style-apps}
--   [Function names, parameters, variable names]{.style-function}
--   [Parameter settings, user-supplied values]{.style-parameter}
-
-
-
 ::: {#exm-2vSeGTk3HW .hiddendiv}
 :::
 

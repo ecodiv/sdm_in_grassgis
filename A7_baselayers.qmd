@@ -2,7 +2,7 @@
 
 This appendix provides a practical, hands-on introduction to how the base layers used in [paragraph -@sec-baselayers] were created. You can also use it as a practical, hands-on introduction to some basic and slightly less basic data processing within the GRASS environment for new comers.
 
-For an effective workflow, it is a good idea to organize your data well. For this tutorial, we'll keep the base layers in the [PERMANENT]{.style-db} mapset. We'll use separate mapsets for the input data for our modelling and the modelling results.
+For an effective workflow, it is a good idea to organize your data well. For this tutorial, we'll keep the base layers in the [PERMANENT]{.style-data} mapset. We'll use separate mapsets for the input data for our modelling and the modelling results.
 
 ### Boundaries {#sec-nationalboundaries}
 
@@ -30,7 +30,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.in.ogr]{.style-function} dialog and fill in:
+Open the `v.in.ogr` dialog and fill in:
 
 | Parameter | Value                        |
 |-----------|------------------------------|
@@ -83,7 +83,7 @@ gs.run_command("v.in.region", output="aoi")
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.in.region]{.style-function} dialog. Fill in:
+Open the `v.in.region` dialog. Fill in:
 
 | Parameter | Value |
 |-----------|-------|
@@ -114,7 +114,7 @@ gs.run_command("g.remove", flags="f", type="vector", name="admin0")
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.clip]{.style-function} dialog, and fill in:
+Open the `v.clip` dialog, and fill in:
 
 | Parameter | Value     |
 |-----------|-----------|
@@ -127,7 +127,7 @@ Open the [v.clip]{.style-function} dialog, and fill in:
 
 ### Roads {#sec-roads}
 
-We'll get the road data from Natural Earth as well. Download it from [here](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/roads/) and unzip it into your working directory. Similar to the previous step, we'll import the data as [tmp]{.style-data} using [v.in.ogr]{.style-function} with the [-r]{.style-parameter} flag.
+We'll get the road data from Natural Earth as well. Download it from [here](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/roads/) and unzip it into your working directory. Similar to the previous step, we'll import the data as [tmp]{.style-data} using `v.in.ogr` with the [-r]{.style-parameter} flag.
 
 The vector data includes line features representing roads and ferry routes. Whether a line feature is a road or ferry route is defined in the [featurecla]{.style-parameter} column of the attribute table. We only want to import the roads. We can do this using the [where]{.style-parameter} parameter. This parameter takes as SQL [Where](https://www.sqlitetutorial.net/sqlite-where/) query as an argument to select the features that match a particular condition.
 
@@ -155,7 +155,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.in.ogr]{.style-function} dialog, and fill in:
+Open the `v.in.ogr` dialog, and fill in:
 
 | Parameter                                  | Value               |
 |--------------------------------------------|---------------------|
@@ -203,7 +203,7 @@ gs.run_command("g.remove", flags="f", type="vector", name="tmp")
 
 ## {{< fa regular window-restore >}}
 
-Open the [v.db.dropcolumn]{.style-function} dialog.
+Open the `v.db.dropcolumn` dialog.
 
 | Parameter | Value |
 |-----------|-------|
@@ -212,7 +212,7 @@ Open the [v.db.dropcolumn]{.style-function} dialog.
 
 : {tbl-colwidths="\[50,50\]"}
 
-Open the [v.clip]{.style-function} dialog, and fill in:
+Open the `v.clip` dialog, and fill in:
 
 | Parameter | Value |
 |-----------|-------|
@@ -222,7 +222,7 @@ Open the [v.clip]{.style-function} dialog, and fill in:
 
 : {tbl-colwidths="\[50,50\]"}
 
-Open the [g.remove]{.style-function} dialog, and fill in:
+Open the `g.remove` dialog, and fill in:
 
 | Parameter         | Value  |
 |-------------------|--------|
@@ -235,7 +235,7 @@ Open the [g.remove]{.style-function} dialog, and fill in:
 
 ### Rivers {#sec-rivers}
 
-We get the river data from Natural Earth as well ([download link](https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-rivers-lake-centerlines/)). Download both the [rivers and lake centerlines]{.style-db} and [Europe supplement]{.style-db} Shapefiles and unzip them into your working directory. We'll use the same steps as above to import these layers.
+We get the river data from Natural Earth as well ([download link](https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-rivers-lake-centerlines/)). Download both the [rivers and lake centerlines]{.style-data} and [Europe supplement]{.style-data} Shapefiles and unzip them into your working directory. We'll use the same steps as above to import these layers.
 
 ::: {#exm-TpZKQ69XSJ .hiddendiv}
 :::
@@ -267,7 +267,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-To import [ne_10m_rivers_lake_centerlines.shp]{.style-data}, fill in the following parameters in [v.in.ogr]{.style-function}:
+To import [ne_10m_rivers_lake_centerlines.shp]{.style-data}, fill in the following parameters in `v.in.ogr`:
 
 | Parameter | Value |
 |----|----|
@@ -310,7 +310,7 @@ gs.run_command("v.clip", input="tmp2", clip="aoi", output="tmp4")
 
 ## {{< fa regular window-restore >}}
 
-To clip [tmp1]{.style-data}, open the [v.clip]{.style-function} dialog and fill in the following parameters:
+To clip [tmp1]{.style-data}, open the `v.clip` dialog and fill in the following parameters:
 
 | Parameter | Value |
 |-----------|-------|
@@ -361,7 +361,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-To rename the table [tmp3]{.style-data} to [tmp3old]{.style-data}, open the [db.execute]{.style-function} dialog and, and in the [sql]{.style-parameter} field, we use the SQL [ALTER TABLE](https://www.tutorialspoint.com/sqlite/sqlite_alter_command.htm) command to rename the attribute tables of [tmp3]{.style-data}.
+To rename the table [tmp3]{.style-data} to [tmp3old]{.style-data}, open the `db.execute` dialog and, and in the [sql]{.style-parameter} field, we use the SQL [ALTER TABLE](https://www.tutorialspoint.com/sqlite/sqlite_alter_command.htm) command to rename the attribute tables of [tmp3]{.style-data}.
 
 | Parameter | Value                                |
 |-----------|--------------------------------------|
@@ -421,7 +421,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-To create a new attribute tables [tmp3]{.style-data} with a subset of the columns from [tmp3old]{.style-data}, open the [db.execute]{.style-function} dialog, and run it with the following SQL code:
+To create a new attribute tables [tmp3]{.style-data} with a subset of the columns from [tmp3old]{.style-data}, open the `db.execute` dialog, and run it with the following SQL code:
 
 | Parameter | Value |
 |----|----|
@@ -463,7 +463,7 @@ gs.run_command("v.patch", input=["tmp3", "tmp4"], output="rivers")
 
 ## {{< fa regular window-restore >}}
 
-To patch the two vector layers [tmp3]{.style-data} and [tmp4]{.style-data}, open the [v.patch]{.style-function} dialog and run the function with the following parameters:
+To patch the two vector layers [tmp3]{.style-data} and [tmp4]{.style-data}, open the `v.patch` dialog and run the function with the following parameters:
 
 | Parameter | Value     |
 |-----------|-----------|
@@ -473,7 +473,7 @@ To patch the two vector layers [tmp3]{.style-data} and [tmp4]{.style-data}, open
 : {tbl-colwidths="\[30,70\]"}
 :::
 
-Last step is to remove the temporary layers. We use [db.droptable](https://grass.osgeo.org/grass-stable/manuals/db.droptable.html) to remove the 'stand-alone' tables, and [g.remove](https://grass.osgeo.org/grass-stable/manuals/g.remove.html) to remove the intermediate vector layers. We use the [pattern]{.style-parameter} parameter and a wildcard to remove all vector layers with a name that start with [tmp]{.style-parameter}. See the [g.remove]{.style-function} [manual page](https://grass.osgeo.org/grass-stable/manuals/g.remove.html) for more details.
+Last step is to remove the temporary layers. We use [db.droptable](https://grass.osgeo.org/grass-stable/manuals/db.droptable.html) to remove the 'stand-alone' tables, and [g.remove](https://grass.osgeo.org/grass-stable/manuals/g.remove.html) to remove the intermediate vector layers. We use the [pattern]{.style-parameter} parameter and a wildcard to remove all vector layers with a name that start with [tmp]{.style-parameter}. See the `g.remove` [manual page](https://grass.osgeo.org/grass-stable/manuals/g.remove.html) for more details.
 
 ::: {#exm-FlhdR7On5I .hiddendiv}
 :::
@@ -495,11 +495,11 @@ gs.run_command("db.droptable", flags="f", table="tmp4old")
 gs.run_command("g.remove", flags="f", type="vector", pattern="tmp*")
 ```
 
-1.  The [db.droptable]{.style-function} module runs the SQLite [DROP TABLE](https://www.tutorialspoint.com/sqlite/sqlite_drop_table.htm) function in the background to remove the old table.
+1.  The `db.droptable` module runs the SQLite [DROP TABLE](https://www.tutorialspoint.com/sqlite/sqlite_drop_table.htm) function in the background to remove the old table.
 
 ## {{< fa regular window-restore >}}
 
-Open the [db.droptable]{.style-function} dialog, and use the following parameter settings:
+Open the `db.droptable` dialog, and use the following parameter settings:
 
 | Parameter | Value   |
 |-----------|---------|
@@ -509,7 +509,7 @@ Open the [db.droptable]{.style-function} dialog, and use the following parameter
 
 Repeat this, but replace [tmp3old]{.style-parameter} with [tmp4old]{.style-parameter}.
 
-Run [g.remove]{.style-function} with the following parameter settings:
+Run `g.remove` with the following parameter settings:
 
 | Parameter         | Value  |
 |-------------------|--------|
@@ -521,7 +521,7 @@ Run [g.remove]{.style-function} with the following parameter settings:
 
 ## {{< fa question >}}
 
-The [db.droptable]{.style-function} module runs the SQLite [DROP TABLE](https://www.tutorialspoint.com/sqlite/sqlite_drop_table.htm) function in the background to remove the old table.
+The `db.droptable` module runs the SQLite [DROP TABLE](https://www.tutorialspoint.com/sqlite/sqlite_drop_table.htm) function in the background to remove the old table.
 
 :::
 
@@ -560,7 +560,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Run the module [r.import]{.style-function} with the following parameters.
+Run the module `r.import` with the following parameters.
 
 | Parameter  | Value                        |
 |------------|------------------------------|
@@ -601,7 +601,7 @@ gs.run_command(
 
 ## {{< fa regular window-restore >}}
 
-Run [r.category]{.style-function} with the following parameters:
+Run `r.category` with the following parameters:
 
 | Parameter | Value                     |
 |-----------|---------------------------|
@@ -612,7 +612,7 @@ Run [r.category]{.style-function} with the following parameters:
 : {tbl-colwidths="\[50,50\]"}
 :::
 
-To assign a color table to the map, we use the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) module. Color rules can be created using values from columns 1, 4, 5, and 6 of the same [.dbf]{.style-file} file. The [r.colors]{.style-function} manual page provides information about the required format. Or you can follow the example in the [accompanying spreadsheet](share/corina_reclass_color_rules.ods) to create the color rules file. Save it as [corina_clc_colorrules.txt]{.style-file} and apply it using:
+To assign a color table to the map, we use the [r.colors](https://grass.osgeo.org/grass-stable/manuals/r.colors.html) module. Color rules can be created using values from columns 1, 4, 5, and 6 of the same [.dbf]{.style-file} file. The `r.colors` manual page provides information about the required format. Or you can follow the example in the [accompanying spreadsheet](share/corina_reclass_color_rules.ods) to create the color rules file. Save it as [corina_clc_colorrules.txt]{.style-file} and apply it using:
 
 ::: {#exm-BcEwmgX1sG .hiddendiv}
 :::
