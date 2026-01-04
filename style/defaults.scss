@@ -278,6 +278,34 @@ a:hover {
   text-decoration-color: $ecodivgreen-hover !important;
 }
 
+// ------------- Lists ----------------------------------
+
+.content ul,
+.content ol {
+  list-style-position: outside;
+  padding-left: 1.1rem !important;
+  /* distance to left margin */
+  margin-left: 0 !important;
+}
+
+.content ul li,
+.content ol li {
+  padding-inline-start: 0.5rem;
+  /* marker–text gap */
+}
+
+.content ul.nav.nav-tabs {
+  list-style-position: outside;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+ul.nav.nav-tabs li.nav-item {
+  padding-inline-start: 0 !important;
+}
+
+
+
 // ------------- Code & Special Text Styles ----------------------------------
 
 .style-data {
@@ -541,7 +569,7 @@ div.callout-note.callout-style-default>.callout-header {
 .panel-tabset .style-apps,
 .panel-tabset .style-folder,
 .panel-tabset .style-menu {
-  font-size: 1rem !important;
+  font-size: 0.95rem !important;
 }
 
 // ------------- Tabsets: Exercise Tabs ----------------------------------------

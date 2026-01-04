@@ -438,9 +438,11 @@ import os
 
 os.chdir("path_to_working_directory")
 
+gs.run_command("g.mapset", mapset="Erebia_alberganus")
+
 # Variable
-variable = "Erebia_albergana_obs_envdat@model_01"
-name = "Erebia_albergana_probability_distribution_model_01"
+variable = "model01_suitability"
+name = "model01_suitability_model_01"
 
 # Set region
 gs.run_command("g.region", raster=variable)
@@ -502,15 +504,16 @@ gs.run_command(
 import grass.script as gs
 import os
 
-os.chdir("path_to_working_directory")
+os.chdir("path-to-your-working-directory")
+gs.run_command("g.mapset", mapset="Erebia_alberganus")
 
 # Variable
-variable = "E_albergana_samplepred"
+variable = "model01_suitability_samplepoints" # point layer
 names = "Erebia albergana probability distribution"
-legend = "E_albergana_probability"
+legend = "model01_suitability" # raster layer, to create legend
 
 # Set region
-gs.run_command("g.region", region="aoi")
+gs.run_command("g.region", region="region_aoi@climate")
 
 # Output settings
 width_image = 1200
@@ -643,6 +646,74 @@ gs.run_command(
     digits=1,
     label_values="0.1,0.3,0.5,0.7,0.9",
 )
+```
+
+## @fig-thr2 {#sec-thr2}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+gs.run_command("g.mapset", mapset="Erebia_alberganus")
+
+# Variable
+variable = "bin2"
+name = "bin2_model_01"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+try:
+    os.remove(outputfile)
+except FileNotFoundError:
+    pass
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Render image
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="none",
+    width=0.5,
+)
+
+gs.run_command(
+    "d.vect",
+    map="rangemap",
+    type="area",
+    color="red",
+    fill_color="none",
+    width=0.5,
+)
+
 ```
 
 ## @fig-futdistr01 {#sec-futdistr01}
