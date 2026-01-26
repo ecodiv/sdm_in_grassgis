@@ -2,33 +2,39 @@
 
 So far, we have discussed how to build a model and use it to predict the distribution of a species. However, understanding how to interpret and evaluate the results of the model is equally important. A critical step in this process, known as *model validation*, is assessing the accuracy of the model’s predictions.
 
-In @sec-4evalstats, we introduced the AUC-ROC, a statistic that provides a measure of model performance. However, evaluating a model on the same data it was trained on often leads to overly optimistic assessments, as models tend to perform worse on new, unseen data. To truly assess a model's predictive power under new conditions or in untested areas, it must be tested on a separate dataset that wasn't used during training (paragraph [-@sec-crossvalidation]).
+In @sec-4evalstats, we introduced the AUC-ROC, a statistic that provides a measure of model performance. However, evaluating a model on the same data it was trained on often leads to overly optimistic assessments, as models tend to perform worse on new, unseen data. To truly assess a model's predictive power under new conditions or in untested areas, it must be tested on a separate dataset that wasn't used during training. This is the subject of paragraph [-@sec-crossvalidation].
 
-Another important consideration is the context in which predictions are made. For example, predictions under climate conditions that deviate strongly from those represented in the training data (novel climates) introduce uncertainty. In such cases, the model's assumptions and extrapolations may no longer hold, potentially compromising the reliability of its predictions (paragraph [-@sec-novelclimates]).
+Another important consideration is the context in which predictions are made. For example, predictions under climate conditions that deviate strongly from those represented in the training data (novel climates) introduce uncertainty. In such cases, the model's assumptions and extrapolations may no longer hold, potentially compromising the reliability of its predictions. This is the subject of  paragraph -@sec-novelclimates].
 
 ## Cross-validation {#sec-crossvalidation}
 
 A common way to assess the ability of a model to generalize beyond the data on which it was trained is to split presence data into two parts: one for training the model and another for testing its performance. This approach is available in `r.maxent.train` through the [randomtestpoints]{.style-parameter} parameter. For example, we can instruct `r.maxent.train` to use 80% of the presence points to train the model, and the remaining 20% to test the model's performance.
 
-While this approach is straightforward, it has one drawback: the results can vary depending on which 20% of the points are selected for testing. A more robust and commonly used technique for estimating the accuracy of a predictive model is [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)). There are different types of cross-validation, but we'll focus on k-fold cross-validation here. In k-fold cross-validation, the original sample is randomly partitioned into **k** subsamples with an approximately equal number of records, as further explained in @fig-vkgSx6qmBy.
+While this approach is straightforward, the drawback is that the results can vary depending on which 20% of the points are selected for testing. A more robust and commonly used technique for estimating the accuracy of a predictive model is [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)). There are different types of cross-validation, but we'll focus on k-fold cross-validation here. In k-fold cross-validation, the original sample is randomly partitioned into **k** subsamples with an approximately equal number of records, as further explained in @fig-vkgSx6qmBy.
 
-![Schematic explanation of a 4-fold cross-validation. The presence data is randomly partitioned into 4 groups with an approximately equal number of records. One group is set aside as the validation data for testing the model, while the remaining subsamples are combined to train the model. The model is then used to predict the presence of the locations of the validation subset. The results of the prediction are then compared with the known presence and background designations in the validation subset. This process is repeated as many times as there are subsamples, whereby each of the subsamples is used exactly once as the validation data.](images/4-fold_cross-validation.svg){#fig-vkgSx6qmBy fig-align="left" width="600"}
+![Schematic explanation of a 4-fold cross-validation. The presence data is randomly partitioned into 4 groups with an approximately equal number of records. One group is set aside as the validation data for testing the model, while the remaining subsamples are combined to train the model. The model is then used to predict the presence of the locations of the validation subset. The results of the prediction are then compared with the known presence and background designations in the validation subset. This process is repeated as many times as there are subsamples, whereby each of the subsamples is used once as the validation data.](images/4-fold_cross-validation.svg){#fig-vkgSx6qmBy fig-align="left" width="600"}
 
-By employing k-fold cross-validation, you can obtain a more reliable estimate of model accuracy, as it reduces the variability associated with a single random data split and leverages the entire dataset for both training and validation.
+Using k-fold cross-validation will give you a more reliable estimate of model accuracy, as it reduces the variability associated with a single random data split and leverages the entire dataset for both training and validation.
 
 ### Model training {#sec-611}
 
-For this tutorial, we carry out a 4-fold cross-validation. To perform the cross-validation, we run `r.maxent.train` with the [replicatetype]{.style-parameter} and the [replicates]{.style-parameter} parameter to tell Maxent to run a 4-fold cross-validation. This means that Maxent will train four models in the background, calculate validation statistics for each model, and compute average statistics across the four sub-models.
+For this tutorial, we carry out a 4-fold cross-validation. To perform the cross-validation, we run `r.maxent.train` with the parameter [replicatetype]{.style-parameter} = [crossvalidate]{.style-value} and the parameter [replicates]{.style-parameter} = [4]{.style-value}. This instructs Maxent to perform a 4-fold cross-validation. As a result, Maxent trains four sub-models in the background, computes validation statistics for each model, and then derives average statistics across the four sub-models.
 
 ::: {.callout-note appearance="simple"}
-In cross-validation, multiple models are created, each trained on slightly different subsets of the data. Technically, these are separate models because they are trained on different data splits and may produce slightly different predictions. This variation reflects the inherent variability in the data.
+In cross-validation, multiple models are trained on slightly different subsets of the data. Technically, these are separate models because each one is fitted to a different data split and may therefore produce slightly different predictions. This variation reflects the inherent variability in the data.
 
-However, conceptually, these models are not entirely independent in the same way models trained with different algorithms are. Instead, they represent iterations of the same underlying model, designed to evaluate its robustness and generalizability. To simplify, we will therefore refer to these as "sub-models".
+Conceptually, however, these models are not independent in the same way as models trained with different algorithms. Instead, they represent repeated iterations of the same underlying model, used to assess robustness and generalizability. For simplicity, we therefore refer to these as "sub-models".
 :::
 
-If both the option to create a sample prediction ([-y]{.style-parameter} flag) and k-fold cross-validation are selected, the sample prediction point layer's attribute table will include for each point the average predicted probabilities and the range of predicted probabilities across the four sub-models. Note that the [v.db.pyupdate](https://grass.osgeo.org/grass-stable/manuals/v.db.update.html) addon needs to be installed to do this.
+Combining the cross-validation option with the [-y]{.style-parameter} will produce two new point layers: a sample prediction point layer and a background prediction point layer. In contrast to a single run (like in @exm-g8jUY2JKvW), both attribute tables are extended with two additional columns: the average predicted probability and the range of predicted probabilities across the four sub-models[^aophgf]. 
 
-We furthermore specify the location of the folder with the input environmental raster layers using the [projectionlayers]{.style-parameter} parameter. This instructs Maxent to generate a raster prediction layer. When the k-fold cross-validation option is enabled, this raster shows the average predicted probability of species presence, calculated across all four model iterations. Additionally, three extra layers will be produced, showing the minimum, maximum, and standard deviation of the predictions across the four models.
+[^aophgf]: This functionality requires the [v.db.pyupdate](https://grass.osgeo.org/grass-stable/manuals/v.db.update.html) addon to be installed.
+
+To keep the outputs clearly identifiable, we use the [samplepredictions]{.style-parameter} and [backgroundprediction]{.style-parameter} parameters to explicitly name the point layers containing predicted suitability scores. The sample prediction points are saved as [model02_suitability_samplepoints]{.style-value}, and the background prediction points as [model02_suitability_backgroundpoints]{.style-value}[^vpa]. 
+
+[^vpa]: If these parameters are not provided, default names are assigned.
+
+We use the [projectionlayers]{.style-parameter} parameter to specify the folder containing the environmental raster layers previously exported with `r.maxent.swd`. This will result in the creation of several raster prediction layers. These rasters summarize predictions across the four sub-models and represent the average, minimum, maximum, median, and standard deviation of predicted suitability. Using the [predictionlayer]{.style-parameter} parameter, we define [model02_suitability]{.style-value} as the root name for these outputs. The resulting raster layers share this base name and are distinguished by the suffixes [_av]{.style-output}, [_min]{.style-output}, [_max]{.style-output}, [_median]{.style-output}, and [_stddev]{.style-output}.
 
 ::: {#exm-fb4bZ2MIs0 .hiddendiv}
 :::
@@ -36,19 +42,23 @@ We furthermore specify the location of the folder with the input environmental r
 ::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
+We want to store the result in the [Erebia_alberganus]{.style-data} mapset. Make sure you are working in that mapset, and that the region settings are correct. 
+
 ``` bash
-# Setup
-mkdir model_03
-g.mapset -c mapset=model_03
-g.region raster=bio_1@climate
+# Setup working directory and folder to store outputs
+cd replace-for-path-to-working-directory
+mkdir model_02
 
 # Train
 r.maxent.train \
-samplesfile=dataset01/species.swd \
-environmentallayersfile=dataset01/background_points.swd \
-projectionlayers=dataset01/envdat \
-outputdirectory=model_03 \
+samplesfile=model_input/swd01/species.swd \
+environmentallayersfile=model_input/swd01/background_points.swd \
+projectionlayers=model_input/ascii01 \
+outputdirectory=model_02 \
 replicatetype=crossvalidate \
+samplepredictions=model02_suitability_samplepoints \
+backgroundpredictions=model02_suitability_backgroundpoints \
+predictionlayer=model02_suitability \
 replicates=4 threads=4 memory=1000 -ygb
 ```
 
@@ -57,18 +67,19 @@ replicates=4 threads=4 memory=1000 -ygb
 ``` python
 # Setup
 os.chdir("replace-for-path-to-working-directory")
-os.makedirs("model_03", exist_ok=True)
-gs.run_command("g.mapset", flags="c", mapset="model_03")
-gs.run_command("g.region", raster="bio_1@climate")  
+os.makedirs("model_02", exist_ok=True)
 
 # Train
 gs.run_command(
     "r.maxent.train",
-    samplesfile="dataset01/species.swd",  
-    environmentallayersfile="dataset01/background_points.swd",
-    projectionlayers="dataset01/envdat",
-    outputdirectory="model_03", 
+    samplesfile="model_input/swd01/species.swd",  
+    environmentallayersfile="model_input/swd01/background_points.swd",
+    projectionlayers="model_input/ascii01",
+    outputdirectory="model_02", 
     replicatetype="crossvalidate",
+    samplepredictions="model02_suitability_samplepoints",
+    backgroundpredictions="model02_suitability_backgroundpoints",
+    predictionlayer="model02_suitability",
     replicates=4,
     threads=4,
     memory=1000,
@@ -76,34 +87,22 @@ gs.run_command(
 )  
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
-Create the folder [model_03]{.style-data} in your working directory using your favorite file manager/explorer. Next, create a new mapset and switch to this mapset using the Data panel. Alternatively, open the `g.mapsets` dialog and run it with the following parameter settings:
+Create the folder [model_02]{.style-data} in your working directory using your favorite file manager/explorer. Next, create a new mapset and switch to this mapset using the Data panel. Alternatively, open the `g.mapsets` dialog and run it with the following parameter settings:
 
-| Parameter                             | Value    |
-|---------------------------------------|----------|
-| Name of mapset (mapset)               | model_03 |
-| Create mapset if it doesn't exist (c) | ✅       |
-
-: {tbl-colwidths="\[60,40\]"}
-
-<br>Next, use the `g.region` module to set the computational region style parameter, based on the [bio_1]{.style-data} raster layer in the [climate]{.style-data} mapset.
-
-| Parameter | Value                  |
-|-----------|------------------------|
-| raster    | bio_1\@climate |
-
-: {tbl-colwidths="\[60,40\]"}
-
-<br>Open the `r.maxent.train` dialog and run the module with the following parameter settings:
+Next, open the `r.maxent.train` dialog and run the module with the following parameter settings:
 
 | Parameter | Value |
 |----|----|
-| samplesfile | dataset01/species.swd |
-| environmentallayersfile | dataset01/background.swd |
-| projectionlayers | dataset01/envdat |
-| outputdirectory | model_03 |
+| samplesfile | model_input/swd01/species.swd |
+| environmentallayersfile | model_input/swd01/background_points.swd |
+| projectionlayers | model_input/ascii01 |
+| outputdirectory | model_02 |
 | replicatetype | crossvalidate |
+| samplepredictions | model02_suitability_samplepoints |
+| backgroundpredictions | model02_suitability_backgroundpoints |
+| predictionlayer | model02_suitability |
 | replicates | 4 |
 | threads | 4 |
 | memory | 1000 |
@@ -114,11 +113,9 @@ Create the folder [model_03]{.style-data} in your working directory using your f
 : {tbl-colwidths="\[60,40\]"}
 :::
 
-Note that unlike in @exm-g8jUY2JKvW, we did not specify the names of the various output layers. This means that Maxent assigned default names to these layers. See the [r.maxent.train](https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.train.html) help page for more information.
-
 ### Evaluation statistics
 
-To examine how well the model performed, we take a look at the model statistics. We can find these statistics in the HTML file [Erebia_alberganus_obs.html]{.style-file} located in the [model_03]{.style-data} output folder. The page provides a summary of the results from the 4-fold cross-validation and includes links to the results of the individual sub-models in the top right corner. The average test AUC across the replicate runs is 0.889, with a standard deviation of 0.003.
+To examine how well the model performed, we take a look at the model statistics. We can find these statistics in the HTML file [Erebia_alberganus_obs.html]{.style-file} located in the [model_02]{.style-data} output folder. The page provides a summary of the results from the 4-fold cross-validation and includes links to the results of the individual sub-models in the top right corner. The average test AUC across the replicate runs is 0.9250, with a standard deviation of 0.0036.
 
 ::: {.panel-tabset .exercise}
 ## AUC-ROC
@@ -140,7 +137,7 @@ The validation diagnostics from each individual sub-model help indicate how the 
 ## {{< fa regular circle-question >}}
 
 ::: {#exr-SErwbZwytm}
-If you compare the training and test AUC, you'll notice that for some of the sub-models, the test AUC is higher than training AUC. Can you give a possible explanation?
+You would expect the training AUC to be higher than the test AUC. In some cases, however, the test AUC can higher than training AUC. Can you give a possible explanation?
 :::
 
 ## {{< fa regular comment >}}
@@ -185,7 +182,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the [v.colors]() dialog and run it with:
 
@@ -244,7 +241,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Run the `v.scatterplot` module with the following parameters:
 
@@ -286,7 +283,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Extract outliers to new map using [v.extract](.style-function) with the following parameters:
 
@@ -432,7 +429,7 @@ gs.run_command(
 1.  The region should already be defined correctly, but just to be sure.
 2.  In the next step, we use the [ref_rast]{.style-parameter} parameter to set the reference raster layer, which we create here, as the reference layer. Alternatively, we could use the [ref_vect]{.style-parameter} parameter with the [referencepoints]{.style-data} vector layer. However, the vector layer contains multiple point within some raster cells. The `r.mess` module will ignore all but one with a warning message. To avoid such message, we convert the point layer to a raster, effectively resolving the issue by eliminating duplicate points.
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `g.mapset` dialog and run it with:
 
@@ -504,7 +501,7 @@ gs.run_command("r.mess", flags="mnkci", # <1>
 
 1.  Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) about the meaning of these flags.
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.mess` dialog and run it with:
 

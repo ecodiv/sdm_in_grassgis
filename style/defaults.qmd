@@ -8,7 +8,7 @@
 ```
 
 ::: panel-tabset
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 
 
@@ -56,7 +56,7 @@ Explanations or tips
 ``` python
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Type in [g.mapset]{.style-function} in the console to open the dialog, and use the following parameter settings.
 

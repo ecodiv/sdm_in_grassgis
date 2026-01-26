@@ -2,7 +2,7 @@
 
 Visualizing the results is a key challenge in species distribution modeling. GRASS GIS provides excellent tools for the interactive exploration of spatial data. While it may not offer the advanced cartographic features of software like QGIS, it excels at automating the creation of simple maps. Each section below includes the code used to generate a specific figure in this tutorial. Hover over the paragraph titles to preview the corresponding images.
 
-## @fig-baselayers {#sec-baselayers}
+## @fig-baselayers {#sec-A4baselayers}
 
 ``` python
 # Import libraries
@@ -724,10 +724,11 @@ import grass.script as gs
 import os
 
 os.chdir("path_to_working_directory")
+gs.run_command("g.mapset", mapset="Erebia_alberganus")
 
 # Variable
-variable = "E_albergana_futprob"
-name = "Erebia_albergana_probability_futdist_model_01"
+variable = "model01_ECE3V_585_81002"
+name = "E_alberganus_futprob.png"
 
 # Set region
 gs.run_command("g.region", raster=variable)
@@ -781,6 +782,75 @@ gs.run_command(
     label_step=0.1
 )
 ```
+
+## @fig-probdistmodel01b {#sec-currdistr01}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+gs.run_command("g.mapset", mapset="Erebia_alberganus")
+
+# Variable
+variable = "model01_suitability"
+name = "E_alberganus_probability.png"
+
+# Set region
+gs.run_command("g.region", raster=variable)
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+try:
+    os.remove(outputfile)
+except FileNotFoundError:
+    pass
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+# Render image
+gs.run_command(
+    "d.rast",
+    map=variable,
+)
+gs.run_command(
+    "d.vect",
+    map="countries",
+    type="area",
+    color="white",
+    fill_color="none",
+    width=0.5,
+)
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    at=[6,94,92,94],
+    digits=1,
+    label_step=0.1
+)
+```
+
+
 
 ## @fig-changemap01 {#sec-changemap01}
 
@@ -856,7 +926,7 @@ gs.run_command(
 )
 ```
 
-## @fig-changemap02 {#sec-changemap02}
+## @fig-rcross01 {#sec-rcross01}
 
 ``` python
 # Import libraries
@@ -866,8 +936,8 @@ import os
 os.chdir("path_to_working_directory")
 
 # Variable
-variable = "E_alberganus_presabschange"
-name = "E_alberganus_presabschange"
+variable = "model01_presabschange"
+name = "model01_presabschange"
 
 # Set region
 gs.run_command("g.region", raster=variable)
@@ -909,6 +979,72 @@ gs.run_command(
     font="Arial:Regular",
     fontsize=16,
     at=[75, 94, 80, 84],
+)
+```
+
+
+## @fig-changemap02 {#sec-changemap02}
+
+``` python
+# Import libraries
+import grass.script as gs
+import os
+
+os.chdir("path_to_working_directory")
+
+# Variable
+variable = "model01_presabschange"
+name = "model01_presabschange"
+
+# Set region
+gs.run_command("g.region", raster=variable, n="n+5")
+
+# Output settings
+width_image = 1200
+title = "-"
+
+# Get width/height ratio of image
+region_settings = gs.region()
+height = float(region_settings["n"]) - float(region_settings["s"])
+width = float(region_settings["e"]) - float(region_settings["w"])
+height_image = width_image / (width / height)
+
+# Set environmental variables
+os.environ["GRASS_RENDER_IMMEDIATE"] = "cairo"
+os.environ["GRASS_RENDER_HEIGHT"] = str(height_image)
+os.environ["GRASS_RENDER_WIDTH"] = str(width_image)
+os.environ["GRASS_RENDER_BACKGROUNDCOLOR"] = "#e7f7fe"
+os.environ["GRASS_RENDER_FRAME"] = f"0,{height_image},0,{width_image}"
+os.environ["GRASS_RENDER_FILE_READ"] = "TRUE"
+os.environ["GRASS_FONT"] = "DejaVuSansCondensed"
+
+outputfile = f"{name}.png"
+try:
+    os.remove(outputfile)
+except FileNotFoundError:
+    pass
+os.environ["GRASS_RENDER_FILE"] = outputfile
+
+gs.run_command("d.rast", map=variable)
+gs.run_command(
+    "d.vect", map="map_inset", type="area", color="red", fill_color="none", width=2
+)
+
+gs.run_command(
+    "d.legend",
+    flags="bt",
+    raster=variable,
+    font="Arial:Regular",
+    fontsize=16,
+    at=[75, 94, 80, 84],
+)
+
+os.environ["GRASS_RENDER_FRAME"] = f"0,{height_image/2},20,{width_image/2}"
+
+gs.run_command("g.region", vector="map_inset")
+gs.run_command("d.rast", map=variable)
+gs.run_command(
+    "d.vect", map="map_inset", type="area", color="red", fill_color="none", width=4
 )
 ```
 

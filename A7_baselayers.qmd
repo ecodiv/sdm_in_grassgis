@@ -28,7 +28,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.in.ogr` dialog and fill in:
 
@@ -58,7 +58,7 @@ g.region n=55 s=35 w=-10 e=33
 gs.run_command("g.region", n=55, s=35, w=-10, e=33)
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/set_region_extent_interactively.mp4" >}}
 :::
@@ -81,7 +81,7 @@ v.in.region output=aoi
 gs.run_command("v.in.region", output="aoi")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.in.region` dialog. Fill in:
 
@@ -112,7 +112,7 @@ gs.run_command("v.clip", input="admin0", clip="aoi", output="countries")
 gs.run_command("g.remove", flags="f", type="vector", name="admin0")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.clip` dialog, and fill in:
 
@@ -153,7 +153,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.in.ogr` dialog, and fill in:
 
@@ -201,7 +201,7 @@ gs.run_command("v.clip", input="tmp", clip="aoi", output="roads")
 gs.run_command("g.remove", flags="f", type="vector", name="tmp")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.db.dropcolumn` dialog.
 
@@ -265,7 +265,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 To import [ne_10m_rivers_lake_centerlines.shp]{.style-data}, fill in the following parameters in `v.in.ogr`:
 
@@ -308,7 +308,7 @@ gs.run_command("v.clip", input="tmp1", clip="aoi", output="tmp3")
 gs.run_command("v.clip", input="tmp2", clip="aoi", output="tmp4")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 To clip [tmp1]{.style-data}, open the `v.clip` dialog and fill in the following parameters:
 
@@ -359,7 +359,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 To rename the table [tmp3]{.style-data} to [tmp3old]{.style-data}, open the `db.execute` dialog and, and in the [sql]{.style-parameter} field, we use the SQL [ALTER TABLE](https://www.tutorialspoint.com/sqlite/sqlite_alter_command.htm) command to rename the attribute tables of [tmp3]{.style-data}.
 
@@ -419,7 +419,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 To create a new attribute tables [tmp3]{.style-data} with a subset of the columns from [tmp3old]{.style-data}, open the `db.execute` dialog, and run it with the following SQL code:
 
@@ -461,7 +461,7 @@ v.patch input=tmp3,tmp4 output=rivers
 gs.run_command("v.patch", input=["tmp3", "tmp4"], output="rivers")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 To patch the two vector layers [tmp3]{.style-data} and [tmp4]{.style-data}, open the `v.patch` dialog and run the function with the following parameters:
 
@@ -497,7 +497,7 @@ gs.run_command("g.remove", flags="f", type="vector", pattern="tmp*")
 
 1.  The `db.droptable` module runs the SQLite [DROP TABLE](https://www.tutorialspoint.com/sqlite/sqlite_drop_table.htm) function in the background to remove the old table.
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `db.droptable` dialog, and use the following parameter settings:
 
@@ -558,7 +558,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Run the module `r.import` with the following parameters.
 
@@ -599,7 +599,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Run `r.category` with the following parameters:
 
@@ -632,7 +632,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 | Parameter | Value                     |
 |-----------|---------------------------|

@@ -48,7 +48,7 @@ g.mapset mapset=Erebia_alberganus
 gs.run_command("g.mapset", mapset="Erebia_alberganus")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 ![To change the mapset, right click on the name of the mapset in the [Data]{.style-menu} panel. In the context menu, select [Switch mapset]{.style-menu}.](images/switchmapset.png){#fig-switchmapset fig-align="left"}
 :::
@@ -79,7 +79,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 To change the region settings, open the `g.region` dialog, and fill in the following parameters:
 
@@ -121,7 +121,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 To calculate the point densities per grid cell, open the `r.vect.stats` dialog, and use the following parameter settings.
 
@@ -152,7 +152,7 @@ r.null map=pointdensities setnull=0
 gs.run_command("r.null", map="pointdensities", setnull=0)
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.null` dialog, and use the following parameter settings.
 
@@ -190,7 +190,7 @@ gs.run_command("r.univar", flags="e", map="pointdensities")
 gs.run_command("r.boxplot", flags="o", map="pointdensities")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.univar` dialog, and use the following parameter settings. 
 
@@ -331,7 +331,7 @@ gs.run_command("r.mask", vector="countries@PERMANENT")
 
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Run the `g.region` module with the following settings:
 
@@ -409,7 +409,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.random`, and use the following parameter settings.
 
@@ -469,7 +469,7 @@ gs.run_command("r.vif", maps=layers, n=100000, maxvif=10, seed=5)
 The `list_strings` module provides a convenient wrapper to the `g.list`. The parameters are the same as for the `g.list`. The outcome is a list with the names of all bioclim layers in the climate mapset. These are stored in the variable [layers]{.style-data}, which is then used as input for the `r.vif` module.
 
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 We run the `r.vif`. Make sure to fill in the names of all 19 bioclim variables under the [maps]{.style-parameter} parameter. 
 
@@ -546,7 +546,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Create the folder [model_input]{.style-data} and in that folder, create the sub-folders [swd01]{.style-data} and [ascii01]{.style-data} using your favorite file manager/explorer. Next, open the `v.maxent.swd` dialog and run it with the following parameter settings:
 

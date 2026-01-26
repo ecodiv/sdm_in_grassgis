@@ -46,7 +46,7 @@ gs.run_command("g.mapset", mapset="Erebia_alberganus")
 gs.run_command("g.region", raster="bio_1@climate")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open your file explorer, go to your working directory, and create a new folder in your working directory. Give it the name [model_01]{.style-data}.
 
@@ -106,7 +106,7 @@ gs.run_command(
 )  
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.maxent.train` dialog and run the module with the following parameter settings:
 
@@ -316,7 +316,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 One option is to use `r.recode`. Check out the function's [help page](https://grass.osgeo.org/grass-stable/manuals/r.recode.html) for an explanation of the recode rules.
 
@@ -350,15 +350,15 @@ The best threshold depends on your priorities: whether it's more important to ma
 
 ## 0.254
 
-![Binary map based on a Maximum training sensitivity plus specificity threshold. The red oulines show the boundaries of the species rangemap.](images/E_alberganus_bin4.png){#fig-thr2 fig-align="left" group="presabs"}
+![Binary map based on a Maximum training sensitivity plus specificity threshold. The red oulines show the boundaries of the species rangemap.](images/bin4_model_01.png){#fig-thr2 fig-align="left" group="presabs"}
 
 ## 0.296
 
-![Binary map based on a Fixed cumulative value 10 threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap.](images/E_alberganus_bin2.png){#fig-thr3 fig-align="left" group="presabs"}
+![Binary map based on a Fixed cumulative value 10 threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap.](images/bin2_model_01.png){#fig-thr3 fig-align="left" group="presabs"}
 
 ## 0.512
 
-![Binary map based on a Equal training sensitivity and specificity threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap.](images/E_alberganus_bin3.png){#fig-thr4 fig-align="left" group="presabs"}
+![Binary map based on a Equal training sensitivity and specificity threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap.](images/bin3_model_01.png){#fig-thr4 fig-align="left" group="presabs"}
 :::
 
 Comparing the predicted distribution with the IUCN Red List range map highlights several discrepancies. In some areas, the range map boundaries appear slightly shifted, while in others they seem overly optimistic. The question is whether this is due to unaccounted for variables or indicates a decline of the species' presence in these areas. Notably, there are the extensive areas with similar climate conditions where the species has not been recorded according to GBIF data. This suggests that factors other than those used in the model may play a critical role in determining the distribution of the species.
@@ -382,7 +382,7 @@ The *omission and predicted area* graph (@fig-commissiongraph) illustrates how t
 
 ![The omission/commission graph shows how omission rate and predicted area vary with the choice of cumulative threshold. The pink arrows show two of the threshold values and corresponding omission rate in @tbl-tresholdvalues_model01.](images/omission_predicted_area.png){#fig-commissiongraph fig-align="left" group="qmXR1UJHFa"}
 
-## {{< iconify ic outline-tips-and-updates size=lg >}}
+## {{< fa question >}}
 
 Note that Maxent uses random background points rather than true absence points. Since the background points don't exclusively represent areas where the species is absent but rather a sample of the entire study area, there's a degree of overlap between conditions at presence and background points. This overlap limits the model's ability to perfectly separate the two classes, meaning that the AUC will typically be less than 1. In contrast, if true absences were available and clearly distinct from presences, a higher maximum AUC could theoretically be achieved.
 :::
@@ -399,15 +399,15 @@ While the Maxent model is being trained, it keeps track of which environmental v
 
 | Variable | Percent contribution | Permutation importance |
 |:---------|----------------------|------------------------|
-| bio_1    | 43.8                 | 32.5                   |
-| bio_8    | 23.4                 | 0.8                    |
-| bio_4    | 23.3                 | 39.2                   |
-| bio_13   | 4.9                  | 15.2                   |
-| bio_2    | 1.3                  | 0.6                    |
-| bio_19   | 1.1                  | 4.4                    |
-| bio_9    | 0.8                  | 1.3                    |
-| bio_14   | 0.7                  | 0.4                    |
-| bio_15   | 0.6                  | 5.5                    |
+| bio_1    | 51.8                 | 33.6                   |
+| bio_4    | 24.8                 | 32.8                   |
+| bio_8    | 13.3                 | 0.5                   |
+| bio_13   | 3.5                  | 14.9                   |
+| bio_14    | 2.4                  | 0.9                    |
+| bio_9   | 1.6                  | 1.6                    |
+| bio_19    | 1.2                  | 4.6                    |
+| bio_15   | 0.9                  | 10.6                    |
+| bio_2   | 0.5                  | 0.5                   |
 
 : Relative importance of the explanatory variables. The table is presented in the section 'Analysis of variable contributions' of the file [occurrences.html]{.style-data} in the output folder {#tbl-relativeimportance tbl-colwidths="\[33,33,33\]"}
 
@@ -471,7 +471,9 @@ Response curves created by running a model based on only the specific variable a
 
 These two types of curves can sometimes yield conflicting insights. Click between the tabs to compare them. For instance, the marginal response curve for precipitation of the driest month ([bio_14]{.style-variable}) suggests a negative relationship between this variable and the predicted probability of presence. In other words, when all other variables are held constant, an increase in precipitation during the driest month reduces the predicted probability of presence.
 
-In contrast, the single-variable response curve for [bio_14]{.style-variable} shows the opposite trend: as precipitation increases, the predicted probability of presence also rises. This discrepancy likely arises because [bio_14]{.style-variable} is correlated with other precipitation-based variables[^4_model_training-19]. Consequently, when environmental variables are correlated, marginal response curves can sometimes be misleading. Another example of this occurs when two closely correlated variables have nearly opposite response curves, producing a combined effect that remains minimal across most areas.
+In contrast, the single-variable response curve for [bio_14]{.style-variable} shows the opposite trend: as precipitation increases, the predicted probability of presence also rises. This discrepancy likely arises because [bio_14]{.style-variable} is correlated with other precipitation-based variables[^4_model_training-19]. Consequently, when environmental variables are correlated, marginal response curves can sometimes be misleading. 
+
+A similar situation can occur when two strongly correlated variables have nearly opposite response curves. Their combined effect may then be close to zero across most of the study area, even though each variable appears influential when considered in isolation.
 
 [^4_model_training-19]: We have attempted to reduce the issue of multi-collinearity using the stepwise VIF procedure (@sec-multicollinearity). But the results suggest that this did not solve all problems.
 

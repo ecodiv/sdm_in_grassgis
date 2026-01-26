@@ -48,7 +48,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and run it with the following parameters:
 
@@ -98,7 +98,7 @@ gs.run_command(
 gs.run_command("g.remove", flags="f", type="vector", name="Erebia_alberganus_tmp")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.extract` and run it with the following settings:
 
@@ -164,7 +164,7 @@ gs.run_command(
 
 1.  We add the [-a]{.style-parameter}, [-p]{.style-parameter}, and [-h]{.style-parameter} parameters. Check the manual page to see what these flags are for.
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.maxent.train` dialog and run the module with the following parameter settings:
 

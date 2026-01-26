@@ -60,25 +60,25 @@ The way the data is stored is not something the casual user should be concerned 
 Creating a new database is rather straightforwards using the database [database wizard]{.style-menu} ![](images/grassdb-add.png). It guides the user through a number of simple dialogs. In the example below a new GRASS database called [GRASSdb]{.style-data} is created with a project called [SDM]{.style-data} with the coordinate reference system (CRS) WGS84 lat/lon ([EPSG 4326](https://epsg.io/4326)). Note that if you want to create a new project in an existing GRASS database, use the [project Wizard]{.style-menu} ![](images/location-add.png) instead, and go straight to step 3.
 
 ::: panel-tabset
-## {{< fa regular window-restore >}} 1
+## {{< iconify carbon gui size=lg >}} 1
 
 In the [Data catalog]{.style-menu}, click the [ ](images/grassdb-add.png) icon to create a new database. Next, select the folder in which you want to create the database. Create a new sub-folder (the GRASS data directory) with the name of your GRASS database and select it. After you have created the database, it will appear in the list of databases in the [Data panel]{.style-menu}.
 
 ![](images/createnewdatabase.png){group="createdb"}
 
-## {{< fa regular window-restore >}} 2
+## {{< iconify carbon gui size=lg >}} 2
 
 After selecting the folder for your database, you are asked if you want to create a new [project]{.style-data}. Select [Yes]{.style-parameter}
 
 ![](images/createnewdatabase2.png){group="createdb"}
 
-## {{< fa regular window-restore >}} 3
+## {{< iconify carbon gui size=lg >}} 3
 
 Provide the name of the new [project]{.style-data}, for example [SDM]{.style-parameter}, optionally add a description, and hit [Next]{.style-parameter}.
 
 ![](images/createnewdatabase3.png){group="createdb"}
 
-## {{< fa regular window-restore >}} 4
+## {{< iconify carbon gui size=lg >}} 4
 
 If you know the CRS of your data or study area, you can fill EPSG code or description. In this example, use keep the default choice to select the CRS from a list by EPSG in the next step.
 
@@ -86,13 +86,13 @@ If you know the CRS of your data or study area, you can fill EPSG code or descri
 
 If you do not know CRS of you data, you can read it from your georeferenced data file (e.g. GeoPackage or GeoTiff file with the related metadata properly included). If you use this option, you are asked whether the data itself should be imported into the new project. The default region is then set to match imported map.
 
-## {{< fa regular window-restore >}} 5/6
+## {{< iconify carbon gui size=lg >}} 5/6
 
 Type in [4326]{.style-parameter} in the search box of the 'Select coordinate reference system (CRS) window', hit [Next]{.style-parameter} and in the subsequent 'Data transformation' window keep the default and hit [Next]{.style-parameter} again.
 
 ![](images/createnewdatabase5.png){group="createdb"}
 
-## {{< fa regular window-restore >}} 7
+## {{< iconify carbon gui size=lg >}} 7
 
 Review the information in the 'Summary' window, and if everything is OK, hiet [Enter]{.style-parameter}.
 
@@ -108,15 +108,15 @@ When processing spatial data in GRASS, the first step is to import the datasets 
 [^a1_grassbasics-5]: Read [this page](https://grasswiki.osgeo.org/wiki/Map_Reprojection) about map reprojection in GRASS.
 
 ::: panel-tabset
-## {{< fa regular window-restore >}} Import raster data
+## {{< iconify carbon gui size=lg >}} Import raster data
 
 ![Import raster data using the GUI or command line/console. Make sure to check the options under [import settings]{.style-menu} tab.](images/import_rasterdata.png){#fig-importrasterdata fig-align="left" group="importdata"}
 
-## {{< fa regular window-restore >}} Import vector data
+## {{< iconify carbon gui size=lg >}} Import vector data
 
 ![Import vector data using the GUI or command line/console. Make sure to check the options under [import settings]{.style-menu} tab.](images/import_vectordata.png){#fig-importvectordata fig-align="left" group="importdata"}
 
-## {{< fa regular window-restore >}} Import other data
+## {{< iconify carbon gui size=lg >}} Import other data
 
 ![GRASS can handle many different data types. Most types of raster can be imported using `r.in.gdal`, but you'll find more options in the [Raster import]{.style-menu} menu. Similarly, you'll find more options for the import of vector, 3D and tabular data under the [File]{.style-menu} menu.](images/import_otherdata.png){#fig-importotherdata fig-align="left" group="importdata"}
 :::
@@ -130,27 +130,27 @@ The GUI interface allows you to find, explore, manage and display raster and vec
 [^a1_grassbasics-6]: A context menu (also know as a contextual menu, shortcut menu or pop-up menu) is the menu that appears when you right-click on an item in the menu. It offers a set of choices that are available for, or in context of, whatever it was you clicked.
 
 ::: panel-tabset
-## {{< fa regular window-restore >}} Data catalog
+## {{< iconify carbon gui size=lg >}} Data catalog
 
 ![To have a better overview of our raster and vector data, we can use the [Data catalog](https://grass.osgeo.org/grass-stable/manuals/wxGUI.datacatalog.html). You can search for data by name and when you right click at the item. In the context menu, you'll find options to e.g., easily copy or remove data, add them to display, or switch between mapsets. Note that by for safety reasons you can modify data only in current location and mapset. However, you can unlock the other mapsets for editing by clicking on the pencil.](images/datapanel.png){#fig-datapanel fig-align="left" group="guiinterface"}
 
-## {{< fa regular window-restore >}} Adding layers
+## {{< iconify carbon gui size=lg >}} Adding layers
 
 ![Different ways to add raster data to the map display. The same goes for vector and 3D data.](images/addrasterdata.png){#fig-addrasterdata fig-align="left" group="guiinterface"}
 
 ![Add overlay elements to the map and zoom, pan and query maps.](images/mapdisplay.png){#fig-mapdisplay fig-align="left" group="guiinterface"}
 
-## {{< fa regular window-restore >}} Layer properties
+## {{< iconify carbon gui size=lg >}} Layer properties
 
 ![To change layer properties, right click on the layer name in the [Layers]{.style-menu} panel. This will give you a context menu with various options, like the 'Set color interactively' option.](images/datalayercontextmenu.png){#fig-datalayercontextmenu fig-align="left" group="guiinterface"}
 
-## {{< fa regular window-restore >}} Attribute data
+## {{< iconify carbon gui size=lg >}} Attribute data
 
 ![View the attribute table of a vector layer and highlight selected records on the map.](images/attributetable.png){#fig-attributetable fig-align="left" group="guiinterface"}
 
 ![Query attributes using the simple or advanced query builder](images/attributetable2.png){#fig-attributetable2 fig-align="left" group="guiinterface"} ![To get the raster value at a location, use the Query raster/vector map button and click on the map at the location for which you want to location. Selecting multiple layers will give you the values of all selected layers. This can be raster or vector layers.](images/queryraster.png){#fig-queryraster fig-align="left" group="guiinterface"}
 
-## {{< fa regular window-restore >}} Metadata
+## {{< iconify carbon gui size=lg >}} Metadata
 
 ![Get the metadata using the context menu by right clicking on the layer in the [Layer manager](https://grass.osgeo.org/grass-stable/manuals/wxGUI.html#layer-manager) or [Data catalog](https://grass.osgeo.org/grass84/manuals/wxGUI.datacatalog.html). Alternatively, use the `r.info` or `v.info` to get the metadata of raster and vector layer respectively.](images/metadata.png){#fig-metadata fig-align="left" group="guiinterface"}
 :::
@@ -172,7 +172,7 @@ From the three options, Python arguably offers the most flexibility and power, a
 
 ![The python console offers a convenient interface to quickly run Python commands. The python editor allows you to write and run Python scripts. See also @sec-workinginpython.](images/interface_pythonconsole.png){#fig-pythonconsole group="interface"}
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 ![Find functions through the menu or use the search box of the toolbox. Note that that after installation, addons are available in the toolbox under 'addons'.](images/interface_toolbox.png){#fig-toolbox group="interface"}
 
@@ -196,7 +196,7 @@ Keeping record of the functions you use in your analysis is good practice. GRASS
 There is a [large list of GRASS addons](https://grass.osgeo.org/grass8/manuals/addons/) available. These offer functions that are not (yet) part of the core software package. They can be easily installed using the `wxGUI Extension Manager` to install Addons or using the command line.
 
 ::: panel-tabset
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 ![Install and manage addons](images/installaddons.png){#fig-installaddons}
 
@@ -222,11 +222,11 @@ The region is one of the fundamental concepts of GRASS. Any computation and rast
 Importantly, the geographic region is defined per mapset. It is therefore the current region in the mapset you are working in that defines the geographic area and resolution in which raster analyses will be done. See [this GRASS wiki page](https://grasswiki.osgeo.org/wiki/Computational_region) for a more detailed explanation of this concept.
 
 ::: panel-tabset
-## {{< fa regular window-restore >}} Set the region
+## {{< iconify carbon gui size=lg >}} Set the region
 
 ![Different ways to set the computational region, and to view the current settings. The red outline in the Map display shows the extent of the current computation region.](images/computationalregion.png){#fig-computationalregion1 fig-align="left" group="comutationalregion"}
 
-## {{< fa regular window-restore >}} Using the region
+## {{< iconify carbon gui size=lg >}} Using the region
 
 By changing the computational region, the user can run raster analyses on a subset of a larger extent data for quicker testing or analysis of specific regions, without having to create a new dataset first (avoid clipping). The video below demonstrates this by repeating the same raster calculation using two different region settings.
 

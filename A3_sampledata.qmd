@@ -7,7 +7,7 @@ The table below provides an overview of the raster and vector data used in this 
 The table below provides an overview of the data used in this tutorial. In the linked sections, you'll find the download links for the layers.
 
 | Section | Name + link | Type |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | @sec-nationalboundaries | [1:10m Admin 0 - Countries](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) | vector |
 | @sec-roads | [roads](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/roads/) | vector |
 | @sec-rivers | [rivers and lake centerlines](https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-rivers-lake-centerlines/) | vector |
@@ -25,19 +25,21 @@ The table below provides an overview of the data used in this tutorial. In the l
 The list below provide a few potentially useful data sources.
 
 | Variable | Name + link |
-|----|----|
+|------------------------------------|------------------------------------|
 | Altitude | [Copernicus DEM](https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM) |
 | Climate data | [ClimateEU: historical and projected climate data for Europe](https://sites.ualberta.ca/~ahamann/data/climateeu.html) |
-| Climate data | [Statistical Downscaling (Climgen)](https://www.ccafs-climate.org/statistical_downscaling_climgen/) |
 | Climate data | [The ECLIPS-2.0 dataset, High-resolution gridded climate data for Europe](https://zenodo.org/records/3952159) |
-| Climate data | [Are there better climate data than Worldclim for Europe?](https://gis.stackexchange.com/questions/82186/are-there-better-climate-data-than-worldclim-for-europe) |
 | Climate data | [Climate Data Store](https://cds.climate.copernicus.eu/datasets) |
+| Climate data | [CHELSA high resolution climate data](https://www.chelsa-climate.org/) |
+| Climate data | [TerraClimate, monthly climate and climatic water balance](https://www.climatologylab.org/terraclimate.html) |
+| Climate data | [CliMond, global climatologies for bioclimatic modelling](https://www.climond.info/) |
+| Land cover and use | [Sentinel-2 10-Meter Land Cover](https://livingatlas.arcgis.com/landcover/) |
+| Land cover and use | [LUCAS Land use and land cover survey](https://ec.europa.eu/statistical-atlas/viewer/?config=LUCAS-2015.json) |
+| Land cover and use | [Land Cover Map of Europe 2017](https://s2glc.cbk.waw.pl/extension) |
+| Land cover and use | [ESA Worldwide land cover mapping](https://esa-worldcover.org/) |
 | Land cover and use | [Landelijk grondgebruik Nederland](https://lgn.nl/) |
+| Ecosystems | [Ecosystem types of Europe](https://www.eea.europa.eu/en/datahub/datahubitem-view/573ff9d5-6889-407f-b3fc-cfe3f9e23941) |
 
 : {tbl-colwidths="\[30,70\]"}
 
 <br>
-
-## GRASS project {.unnumbered}
-
-You can download a GRASS project with the base layers (roads, rivers, country boundaries, EUDEM and CLC). [Download from here](https://nx66306.your-storageshare.de/s/7R3Eewybi6zfSyw), and extract the file into your GRASS database directory. This will replace the SDM directory you created earlier in @sec-creatingadatabase.

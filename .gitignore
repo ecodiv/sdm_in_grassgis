@@ -11,3 +11,5 @@ share
 _draft
 
 /.quarto/
+
+**/*.quarto_ipynb

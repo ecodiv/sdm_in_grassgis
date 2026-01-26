@@ -109,7 +109,7 @@ gs.run_command("g.extension", extension="r.boxplot")
 gs.run_command("g.extension", extension="v.scatterplot")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Follow the steps shown in the video below to install the r.maxent.train addon. Repeat the same procedure for the remaining addons. Once installed, the addons are immediately available for use; however, a restart of GRASS GIS may be required for them to appear in the toolbox.
 
@@ -144,7 +144,7 @@ Make sure you know where you have extracted the *Maxent.jar* file. You need to p
 gs.run_command("r.maxent.setup", maxent="path-to-file/maxent.jar")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.maxent.setup` module dialog and run it with the following parameter settings.
 
@@ -209,7 +209,7 @@ r.maxent.setup -j
 gs.run_command("r.maxent.setup", flags="j")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.maxent.setup` module dialog and run it with the following parameter settings.
 
@@ -273,7 +273,7 @@ r.maxent.setup java=path-to-java/java.exe
 gs.run_command("r.maxent.setup", java="path-to-java/java.exe")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.maxent.setup` module dialog and run it with the following parameter settings.
 

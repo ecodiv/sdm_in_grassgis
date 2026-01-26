@@ -50,7 +50,6 @@ book:
       chapters:
       - 6_modelvalidation.qmd
       - 7_finetuning.qmd
-      - 8_automatization.qmd
     - references.qmd
   appendices:
     - A1_grassbasics.qmd

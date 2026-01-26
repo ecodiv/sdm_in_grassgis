@@ -17,7 +17,7 @@ Once you have started GRASS, the first thing you normally do is to open the GRAS
 :::
 
 ::: panel-tabset
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/create_project.mp4" >}}
 
@@ -74,7 +74,7 @@ import os
 os.chdir("replace-for-path-to-working-directory")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 The working directory can also be changed in wxGUI menu [Settings → GRASS working environment → Change working directory]{.style-menu}
 
@@ -93,7 +93,7 @@ Now, whenever you have to refer to an external file, such as text files or GeoTi
 
 We'll import a few base layers, including maps of the national boundaries, roads, rivers, and land use. They will serve as reference layers[^2_obtaining_data-2]. 
 
-![This is the study area, which includes the national boundaries, main roads, and shaded relief (source: [Natural Earth](https://www.naturalearthdata.com/)) and the urban areas (source: [GLC](https://land.copernicus.eu/en/products/corine-land-cover)). See [@sec-appbaselayers] for information on how these layers were created.](images/reference_layers.png){#fig-baselayers}
+![This is the study area, which includes the national boundaries, main roads, and shaded relief (source: [Natural Earth](https://www.naturalearthdata.com/)) and the urban areas (source: [GLC](https://land.copernicus.eu/en/products/corine-land-cover)).](images/reference_layers.png){#fig-baselayers}
 
 [^2_obtaining_data-2]: *Reference layers* are datasets that provide context and help you to visually navigate the map and understand the geographic setting of the area being analyzed. One of the key advantages of modeling in a GIS environment is the ability to seamlessly integrate and compare model outcomes with these reference layers, and thus to explore and interpret results in their geographic context.
 
@@ -126,7 +126,7 @@ gs.run_command(
 
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open  [File → v.in.ogr]{.style-menu} menu or [Toolbox → v.in.ogr]{.style-menu} and on the first tab [Required]{.style-menu} find the GeoPackage you just downloaded. Or, if you copied the file to your working directory, you can simply fill in the name of the file under the [Source input]{.style-menu}.
 
@@ -197,7 +197,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `r.in.gdal` from the [File]{.style-menu} menu or from the [Toolbox]{.style-menu} and on the first tab [Required]{.style-menu} 
 
@@ -259,7 +259,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Type in `g.mapset` in the console to open the dialog, and use the following parameter settings.
 
@@ -330,7 +330,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.in.gbif` dialog, and run it with the following parameter settings:
 
@@ -385,7 +385,7 @@ gs.run_command("g.rename", vector="temp,occurrences", overwrite=True)
 ```
 
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.db.droprow` dialog, and run it with the following parameter settings:
 
@@ -456,7 +456,7 @@ gs.run_command(
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the `v.db.droprow` dialog, and run it with the following parameter settings:
 
@@ -545,7 +545,7 @@ gs.run_command("g.mapset", flags="c", mapset="climate")
 gs.run_command("g.region", n=54, s=36, w=-10, e=32, res=0.041666666666667)
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Type in `g.mapset` in the console to open the dialog, and use the following parameter settings.
 
@@ -613,7 +613,7 @@ for n in range(1, 20):
     )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/import_climate_data.mp4" >}}
 
@@ -657,7 +657,7 @@ gs.run_command("g.region", flags="p")
 gs.run_command("r.info", map="bio_1")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Type in in the console to open the `g.region` dialog, and use the following parameter settings.
 
@@ -696,7 +696,7 @@ g.region raster=bio_1 save=region_aoi
 gs.run_command("g.region", raster="bio_1", save="region_aoi")
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Open the dialog of the `g.region` module, and run it with the following parameter settings:
 
@@ -767,10 +767,7 @@ Bioclimatic variable 1 to 19 from [Worldclim version 2.0](https://www.worldclim.
 
 To model the potential distribution of our species under future climate conditions, we use downscaled [future climate projections](https://www.worldclim.org/data/cmip6/cmip6climate.html) from Worldclim. There are bioclim data from 14 different general circulation models (GCMs) available for download. For each GCM, you can choose between data representing projected conditions in the periods (2021–2040, 241–2060, 2061–2080, and 2081-2100). You can furthermore choose between data based on the Shared Socio-economic Pathways ([SSPs](https://www.carbonbrief.org/cmip6-the-next-generation-of-climate-models-explained)) 126, 245, 370 and 585. We'll use the *2.5 arc-minute* bioclim variables for the period *2081-2100* based on the *SSP585* from the GCM [EC-Earth3-Veg]{.style-data}. Download the data and save it to your working directory.
 
-Note that the future climate layers come as one multi-band GeoTiff file, unlike the current climate data where each bioclim variable is stored as a separate GeoTiff file. The file has 19 bands, representing the 19 bioclimatic variables. To verify this, you can use the [gdalinfo](https://gdal.org/en/latest/programs/gdalinfo.html) function from the command line.
-
-We'll store the data in the [climate]{.style-data} mapset. To keep track of the different layers, we assign it the same name as the GCM: *EC_Earth3_Veg*.
-
+Note that the future climate layers come as one multi-band GeoTiff file, unlike the current climate data where each bioclim variable is stored as a separate GeoTiff file. The file has 19 bands, representing the 19 bioclimatic variables (band 1 represents bioclim 1, band 2 bioclim 2, etc.). To verify this, you can use the [gdalinfo](https://gdal.org/en/latest/programs/gdalinfo.html) function from the command line. 
 
 ::: panel-tabset
 ## {{< fa solid terminal >}}
@@ -782,7 +779,14 @@ gdalinfo wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif
 ![`gdalinfo` prints the names and some basic information about each of the bands in the GeoTiff file. The names of the first two bands are marked with a red outline.](images/gdalinfo_futclim.png){#fig-gdalinfofutclim}
 :::
 
-The [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) module conveniently imports each band as a separate layer. The value of the [output]{.style-parameter} parameter will be used as prefix for the name of the imported raster layers, followed by the band number. If possible, use the [memory]{.style-parameter} parameter to increase the memory to be used by the module as this can speed up the import considerably.
+We will store the data in the [climate]{.style-data} mapset. The `r.in.gdal` module conveniently imports each band of the input file as a separate raster layer.
+
+Using the [output]{.style-parameter} parameter, we assign the imported layers a common name that includes, in abbreviated form, the model name, the SSP, and the time period, for example ECE3V_585_8100. The module then appends the band number to this prefix.
+
+When choosing a naming pattern, aim to keep the name short while ensuring that the key information can still be reconstructed from it. This makes it easier to manage and compare layers, especially if you later work with multiple future climate scenarios. In addition, always keep a clear record of which names correspond to which datasets.
+
+When possible, increase the value of the [memory]{.style-parameter} parameter, as this can considerably speed up the import process.
+
 
 ::: {#exm-1a5tTJ1LeP .hiddendiv}
 :::
@@ -791,7 +795,7 @@ The [r.in.gdal](https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html) mod
 ## {{< fa solid terminal >}}
 
 ``` bash
-r.in.gdal input=/home/paulo/Downloads/wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=EC-Earth3-Veg_ssp585_2081-2100 memory=1000 -r
+r.in.gdal input=/home/paulo/Downloads/wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=ECE3V_585_8100 memory=1000 -r
 ```
 
 ## {{< fa brands python >}}
@@ -801,19 +805,19 @@ gs.run_command(
     "r.in.gdal",
     flags="r",
     input="wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif",
-    output="EC-Earth3-Veg_ssp585_2081-2100",
+    output="ECE3V_585_8100",
     memory=1000,
 )
 ```
 
-## {{< fa regular window-restore >}}
+## {{< iconify carbon gui size=lg >}}
 
 Type in `r.in.gdal` in the console to open the dialog, and use the following parameter settings.
 
 | Parameter | Value |
 |----|----|
 | input | wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif |
-| output | EC-Earth3-Veg_ssp585_2081-2100 |
+| output | ECE3V_585_8100 |
 | memory | 1000 |
 | Limit import to current region (r) | ✅ |
 

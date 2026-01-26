@@ -322,16 +322,16 @@ ul.nav.nav-tabs li.nav-item {
   color: #2a4b8d;
   font-weight: 600;
   white-space: nowrap;
-  font-size: 1.1em !important;
+  font-size: 1.05em !important;
 }
 
-style-value {
+.style-value {
   font-family: "Source Code Pro", "Courier New", Courier, monospace;
   background-color: #eef3fa;
-  padding: 0.1em 0.25em;
+  padding: 0.1em 0.2em;
   border-radius: 3px;
   white-space: nowrap;
-  font-size: 1em;
+  font-size: 0.95em;
 }
 
 .style-menu {
@@ -552,6 +552,11 @@ div.callout-note.callout-style-default>.callout-header {
   margin-bottom: 0.1em;
   border: 1px solid $grass-color-light-borders !important;
   border-top: none !important;
+}
+
+
+.tab-content .table > :not(caption) > * > * {
+  word-wrap: anywhere;
 }
 
 .tab-pane>p {
