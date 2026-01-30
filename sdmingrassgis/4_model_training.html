@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paulo van Breugel">
+
+<title>Ecodiv.earth | sdm in grass – Species distribution modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./5_model_prediction.html" rel="next">
+<link href="./3_data_preparation.html" rel="prev">
+<link href="./images/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a2d81309921060cb4eca094a98445b7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-7583084869af5459983b8eb5a0e13933.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-a2d81309921060cb4eca094a98445b7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<meta property="og:title" content="Ecodiv.earth | sdm in grass">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://ecodiv.earth/images/Flowchart_model_predict1.png">
+<meta property="og:site_name" content="Species distribution modeling">
+<meta property="og:image:height" content="604">
+<meta property="og:image:width" content="915">
+<meta name="twitter:title" content="Ecodiv.earth | sdm in grass">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://ecodiv.earth/images/Flowchart_model_predict1.png">
+<meta name="twitter:site" content="@ecodiv">
+<meta name="twitter:image-height" content="604">
+<meta name="twitter:image-width" content="915">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title"><span id="sec-modeltraining" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model training</span></span></h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./images/logo_SDM2.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo_SDM2.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SDM in GRASS<br><span class="modifieddate">1st publication date: 2025-2-12</span></a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/ecodiv/sdm_in_grassgis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The basic steps</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_obtaining_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Acquire the data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_data_preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Prepare the data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4_model_training.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model training</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./5_model_prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6_modelvalidation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Model evaluation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./7_finetuning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model fine-tuning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A1_grassbasics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">GRASS basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A3_sampledata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data sources</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A4_scriptmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Scripting a map</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A6_troubleshooting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Trouble shooting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A7_baselayers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Base layers</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-4organizeoutputs" id="toc-sec-4organizeoutputs" class="nav-link active" data-scroll-target="#sec-4organizeoutputs"><span class="header-section-number">4.1</span> Organize outputs</a></li>
+  <li><a href="#sec-4trainthemodel" id="toc-sec-4trainthemodel" class="nav-link" data-scroll-target="#sec-4trainthemodel"><span class="header-section-number">4.2</span> Train the model</a></li>
+  <li><a href="#sec-4examinetheresults" id="toc-sec-4examinetheresults" class="nav-link" data-scroll-target="#sec-4examinetheresults"><span class="header-section-number">4.3</span> Examine the results</a>
+  <ul class="collapse">
+  <li><a href="#sec-4probabilitymaps" id="toc-sec-4probabilitymaps" class="nav-link" data-scroll-target="#sec-4probabilitymaps"><span class="header-section-number">4.3.1</span> Probability maps</a></li>
+  <li><a href="#sec-4presenceabsence" id="toc-sec-4presenceabsence" class="nav-link" data-scroll-target="#sec-4presenceabsence"><span class="header-section-number">4.3.2</span> Presence-absence</a></li>
+  <li><a href="#sec-4evalstats" id="toc-sec-4evalstats" class="nav-link" data-scroll-target="#sec-4evalstats"><span class="header-section-number">4.3.3</span> Evaluation statistics</a></li>
+  <li><a href="#sec-4variableimportance" id="toc-sec-4variableimportance" class="nav-link" data-scroll-target="#sec-4variableimportance"><span class="header-section-number">4.3.4</span> Variable importance</a></li>
+  <li><a href="#sec-4responsecurves" id="toc-sec-4responsecurves" class="nav-link" data-scroll-target="#sec-4responsecurves"><span class="header-section-number">4.3.5</span> Response curves</a></li>
+  <li><a href="#raw-data" id="toc-raw-data" class="nav-link" data-scroll-target="#raw-data"><span class="header-section-number">4.3.6</span> Raw data</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ecodiv/sdm_in_grassgis/edit/main/4_model_training.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ecodiv/sdm_in_grassgis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span id="sec-modeltraining" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model training</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This chapter introduces the essential modules and workflows involved in building a species distribution model. To keep the workflow transparent and accessible, we primarily use default parameter settings. More advanced topics are addressed in later chapters, including methods for validating model results (paragraph <a href="6_modelvalidation.html" class="quarto-xref"><span>6</span></a>) and approaches for fine-tuning model options (paragraph <a href="7_finetuning.html" class="quarto-xref"><span>7</span></a>).</p>
+<div id="fig-Flowchartmodelpredict" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Flowchartmodelpredict-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/Flowchart_model_predict1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;4.1: This chapter focuses on developing a species distribution model (A). In the next chapter, we’ll use this model to predict the potential distribution of a species under future climate conditions (B). Note that while we will generate some prediction layers in pararaph sec-4probabilitymaps. These are intended primarily for evaluating the model’s performance."><img src="images/Flowchart_model_predict1.png" class="img-fluid quarto-figure quarto-figure-left figure-img" width="450"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Flowchartmodelpredict-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: This chapter focuses on developing a species distribution model (A). In the next chapter, we’ll use this model to predict the potential distribution of a species under future climate conditions (B). Note that while we will generate some prediction layers in pararaph <a href="#sec-4probabilitymaps" class="quarto-xref"><span>4.3.1</span></a>. These are intended primarily for evaluating the model’s performance.
+</figcaption>
+</figure>
+</div>
+<p>In this chapter, we use the <a href="https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.train.html">r.maxent.train</a> addon to create several species distribution models based on different input data and parameter settings. It is good to reiterate that <code>r.maxent.train</code> runs the <em>Maxent</em> application in the background. In this tutorial, we cover some of the results, but for a deeper understanding, refer to the tutorial and other essential resources available on the <a href="https://biodiversityinformatics.amnh.org/open_source/maxent/">Maxent website</a>.</p>
+<section id="sec-4organizeoutputs" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="sec-4organizeoutputs"><span class="header-section-number">4.1</span> Organize outputs</h2>
+<p>Each time we train a model, the module creates several output files and GRASS layers. To keep our work organised, we will create a separate subfolder in the working directory to store the model results. We call this folder <span class="style-data">model_01</span>.</p>
+<p>All GRASS layers produced by the model are stored in the mapset <span class="style-data">Erebia_alberganus</span>. So, switch to that mapset if needed.</p>
+<div id="exm-qvd5XNQcBw" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 4.1</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="interface">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page"><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li></ul>
+<div class="tab-content" data-group="interface">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Set working directory</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="bu">cd</span> replace-for-path-to-working-directory</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Create a new sub-folder to store the model output</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">mkdir</span> model_01</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># We switch to the mapset in which we want to store the results</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="ex">g.mapset</span> mapset=Erebia_alberganus</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># Set the region</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="ex">g.region</span> raster=bio_1@climate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Set working directory and create a new folder in the working directory</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>os.chdir(<span class="st">"replace-for-path-to-working-directory"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>os.makedirs(<span class="st">"model_01"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># Create a new mapset and switch to it</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>gs.run_command(<span class="st">"g.mapset"</span>, mapset<span class="op">=</span><span class="st">"Erebia_alberganus"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># Set the region and create a MASK</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>gs.run_command(<span class="st">"g.region"</span>, raster<span class="op">=</span><span class="st">"bio_1@climate"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Open your file explorer, go to your working directory, and create a new folder in your working directory. Give it the name <span class="style-data">model_01</span>.</p>
+<p>In GRASS, go to the menu <span class="style-menu">Settings → GRASS working environment → Change working directory</span> and select the working directory.</p>
+<p>In case you are not in the mapset <span class="style-data">Erebia_alberganus</span>, switch to it using the menu. Alternatively, open the <code>g.mapsets</code> dialog and run it with the following parameter settings:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Name of mapset (mapset)</td>
+<td>Erebia_alberganus</td>
+</tr>
+</tbody>
+</table>
+<p><br>Next, use the <code>g.region</code> module to set the computational region style parameter, based on the <span class="style-data">bio_1</span> raster layer in the <span class="style-data">climate</span> mapset.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>raster</td>
+<td>bio_1@climate</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-4trainthemodel" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-4trainthemodel"><span class="header-section-number">4.2</span> Train the model</h2>
+<p>MaxEnt offers a variety of training, validation, and output options. For now, we can rely on the default settings for most of these parameters. The parameters that we will define ourselves are listed below.</p>
+<ul>
+<li>The names of the files containing the species location data and background points. These are the SWD files created in <a href="3_data_preparation.html#exm-ddddddwdr" class="quarto-xref">Step&nbsp;<span>3.9</span></a>.</li>
+<li>The path to the folder where MaxEnt will save the results. This is the folder <span class="style-data">model_01</span> that we created im <a href="#exm-qvd5XNQcBw" class="quarto-xref">Step&nbsp;<span>4.1</span></a>.</li>
+<li>Name of the new point layer with sample points with predicted suitability scores. We name it <span class="style-data">model01_suitability_samplepoints</span>.</li>
+<li>Name of the new point layer with background points with predicted suitability scores. We name it <span class="style-data">model01_suitability_backgroundpoints</span></li>
+<li>Name of the raster layer with the predicted suitability score. We call this layer <span class="style-data">model01_suitability</span>.</li>
+</ul>
+<p>We’ll use a few additional parameters or flags, which are explained in the <i class="fa-solid fa-question" aria-label="question"></i> tab. We’ll go into more detail in the next section when we examine the results. For additional information, see the <a href="https://grass.osgeo.org/grass-stable/manuals/addons/r.maxent.train.html">manual page</a> of the module.</p>
+<div id="exm-g8jUY2JKvW" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 4.2</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="interface">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content" data-group="interface">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">r.maxent.train</span> <span class="at">-ybg</span> samplesfile=model_input/swd01/species.swd environmentallayersfile=model_input/swd01/background_points.swd projectionlayers=model_input/ascii01 outputdirectory=model_01 samplepredictions=model01_suitability_samplepoints backgroundpredictions=model01_suitability_backgroundpoints predictionlayer=model01_suitability threads=4 memory=1000 suffix=<span class="st">""</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>gs.run_command(</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="st">"r.maxent.train"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    flags<span class="op">=</span><span class="st">"ybg"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    samplesfile<span class="op">=</span><span class="st">"model_input/swd01/species.swd"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    environmentallayersfile<span class="op">=</span><span class="st">"model_input/swd01/background_points.swd"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    projectionlayers<span class="op">=</span><span class="st">"model_input/ascii01"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    outputdirectory<span class="op">=</span><span class="st">"model_01"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    samplepredictions<span class="op">=</span><span class="st">"model01_suitability_samplepoints"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9"></a>    backgroundpredictions<span class="op">=</span><span class="st">"model01_suitability_backgroundpoints"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10"></a>    predictionlayer<span class="op">=</span><span class="st">"model01_suitability"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11"></a>    threads<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb4-12"><a href="#cb4-12"></a>    memory<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb4-13"><a href="#cb4-13"></a>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<p>Open the <code>r.maxent.train</code> dialog and run the module with the following parameter settings:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>samplesfile</td>
+<td>model_input/swd01/species.swd</td>
+</tr>
+<tr class="even">
+<td>environmentallayersfile</td>
+<td>model_input/swd01/background_points.swd</td>
+</tr>
+<tr class="odd">
+<td>projectionlayers</td>
+<td>model_input/ascii01</td>
+</tr>
+<tr class="even">
+<td>outputdirectory</td>
+<td>model_01</td>
+</tr>
+<tr class="odd">
+<td>samplepredictions</td>
+<td>model01_suitability_samplepoints</td>
+</tr>
+<tr class="even">
+<td>backgroundpredictions</td>
+<td>model01_suitability_backgroundpoints</td>
+</tr>
+<tr class="odd">
+<td>predictionlayer</td>
+<td>model01_suitability</td>
+</tr>
+<tr class="even">
+<td>threads</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>memory</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td>Create a vector point layer from the sample predictions (y)</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td>Create a vector point layer with predictions at backgr. points (b)</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>Create response curves (g)</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p><br>Tip: if you are using the r.maxent.train dialog screen, keep it open after it finishes. That way, for the next run, you only need to adjust some parameter settings instead of typing in all again.</p>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<p><span class="style-parameter">samplesfile</span>: The (relative) path to the <span class="style-data">species swd</span> file.</p>
+<p><span class="style-parameter">environmentallayersfile</span>: The (relative) path to the <span class="style-data">background swd</span> file.</p>
+<p><span class="style-parameter">projectionlayers</span>: The (relative) path to the folder that holds the ascii raster layers of the input environmental variables. If you select these, Maxent will first create the model, and then use the ascii layers as input in the model to create a prediction raster layer. See also point 8.</p>
+<p><span class="style-parameter">outputdirectory</span>: The (relative) path to the folder where Maxent should write the results. This is the folder we created in the previous step.</p>
+<p><span class="style-parameter">samplepredictions</span>: The module will create a point layer with the locations of species occurrences used for the model. The attribute table contains the predicted probability scores. With this parameter, you can specify a custom name for this point layer. If left empty, a default name will be used, based on the species name, with as suffix <em>samplePredictions</em></p>
+<p><span class="style-parameter">backgroundpredictions</span>: The module will create a vector layer with background points used as input for this model. The attribute table contains the predicted probability scores. With this parameter, you can specify a custom name for the layer. If left empty, a default name will be used, based on the species name, with as suffix <em>backgroundPredictions</em>.</p>
+<p><span class="style-parameter">predictionlayer</span>: If the <span class="style-parameter">projectionlayers</span> is set, a raster prediction layer will be created that reflects the potential distribution based on the projection layers. With the parameter <span class="style-parameter">predictionlayer</span>, you can set the name of this output layers. If left empty, a default name will be used, based on the species name, with as suffix the name of the folder with the environmental raster layers. In this case, that would have been <em>Erebia_alberganus_obs_envdat</em>.</p>
+<p><span class="style-parameter">threads</span>: To improve the performance, you can increase the number of threads. However, before making adjustments, check your system specifications and adjust the settings based on your system’s capabilities.</p>
+<p><span class="style-parameter">memory</span>: Improve performance by allocating more memory. However, before making adjustments, check your system specifications and adjust the settings based on your system’s capabilities.</p>
+<p><span class="style-parameter">-y</span>: Create a point feature layer with for each occurrence point the predicted probability score. This can be useful to identify discrepancies between the observed and predicted distribution.</p>
+<p><span class="style-parameter">-b</span>: Create a vector point layer with predicted probability scores for the background point locations. This is useful to identify discrepancies between the observed and predicted distribution.</p>
+<p><span class="style-parameter">-g</span>: Create response curves, which visualize the (marginal) effect of each explanatory variable on the predicted probability.</p>
+</div>
+</div>
+</div>
+<p>Depending on how you run the module, it will generate some information in the terminal, console, Python console, or the function’s command output window (we will refer to any of these as the <em>console</em>). It also creates a number of files in the output directory you specify, and layers in the current mapset. We will look at these results in the next section.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If training the model seems to take forever, see <a href="A6_troubleshooting.html#sec-toomanypresencepoints" class="quarto-xref"><span>Section D.1</span></a> for possible solutions.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-4examinetheresults" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-4examinetheresults"><span class="header-section-number">4.3</span> Examine the results</h2>
+<p>The <code>r.maxent.train</code> modules shows a few messages on the console for a quick inspection of the results. This includes the main steps it has been carrying out, and a few basic statistics, like the AUC and number of sample and background points. (<a href="#fig-modeltrainconsulemessages01" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>).</p>
+<div id="fig-modeltrainconsulemessages01" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-modeltrainconsulemessages01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/modeltrainconsulemessages01.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;4.2: Messages of the r.maxent.train module in the console, showing the number of training and background points, and the training AUC."><img src="images/modeltrainconsulemessages01.png" class="img-fluid quarto-figure quarto-figure-left figure-img" width="600"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-modeltrainconsulemessages01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Messages of the r.maxent.train module in the console, showing the number of training and background points, and the training AUC.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Keep in mind that your evaluation statistics, including the AUC, may vary slightly from what is presented here. These statistics depend partly on the background points, which are selected randomly. As a result, your background points—and thus your evaluation statistics—may vary.</p>
+</div>
+</div>
+</div>
+<p>The first message is a warning indicating that the background.swd file contains <span class="style-ouput">-9999</span> values, which represent <em>no data</em>. This suggests that one or more background points fall outside the area covered by the Bioclim raster layers. A comparison of the background points and the Bioclim layers confirms that some points are indeed located just out of the coast in the sea.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset exercise">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href=""><i class="fa-regular fa-circle-question" aria-label="circle-question"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href=""><i class="fa-regular fa-comment" aria-label="comment"></i></a></li></ul>
+<div class="tab-content exercise">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div id="exr-3_1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Q 4.1</strong></span> Can you explain what went wrong here?</p>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<p>The background points were generated within the boundaries of a vector layer representing European countries. The bioclim layers contain values for land areas only. The boundaries of these land areas do not perfectly match those of the European countries layer (<a href="#fig-outsidebioclim" class="quarto-xref">Figure&nbsp;<span>4.3</span></a>).</p>
+<div id="fig-outsidebioclim" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-outsidebioclim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/example_point_outside_bioclim.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;4.3: Examples of background points falling within the boundaries of the European countries, but outside the land area as defined by the bioclim layers."><img src="images/example_point_outside_bioclim.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outsidebioclim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: Examples of background points falling within the boundaries of the European countries, but outside the land area as defined by the bioclim layers.
+</figcaption>
+</figure>
+</div>
+<p>To address this mismatch, we can use one of the bioclim layers to create the MASK, instead of using the vector layer of European countries.</p>
+</div>
+</div>
+</div>
+<p>The module prints a few basic statistics to the console. These are the number of training samples, the number of background points, and the the training AUC.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset exercise">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href=""><i class="fa-regular fa-circle-question" aria-label="circle-question"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href=""><i class="fa-regular fa-comment" aria-label="comment"></i></a></li></ul>
+<div class="tab-content exercise">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div id="exr-3_1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Q 4.2</strong></span> We created and used 10,000 background points as input. So where do these 11673 points come from?</p>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<p>By default, Maxent adds the presence points to the background points. You can disable this with the <span class="style-parameter">-n</span> flag.</p>
+<p>Still, the presence + original background points do not add up to the number reported here; that would have been 11731 points. This is because Maxent ignores presence points if there is already a background point at that location.</p>
+<p>It might seem a remarkable coincidence if a randomly generated background point fell exactly on a presence point. However, recall how the background points were created. They were generated by randomly selecting raster cells and placing a point at the centre of each selected cell. In addition, during thinning, all presence points were also moved to the centre of the raster cell in which they occur. As a result, the two points do not need to share identical coordinates. It is sufficient that both fall within the same raster cell.</p>
+</div>
+</div>
+</div>
+<p>The Area Under the Receiver Operator Curve (AUC) is a common metric for evaluating species distribution model (SDM) performance. Here, we are provided with the training AUC, calculated using the same presence and background points that were used to train the model. Note that as we’ll discuss in <a href="6_modelvalidation.html" class="quarto-xref">chapter&nbsp;<span>6</span></a>, evaluating a model with the same data used for training often leads to overly optimistic results, and models should really be evaluated using an dataset that was not used during training.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>AUC of presence only models
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The AUC normally compares the portion of correctly classified known <strong>presence</strong> points, known as the sensitivity of the model, and the portion of <strong>absence</strong> points that were classified as presence. In presence-only models like Maxent, there are no absence points. So the ROC compares the portion of correctly classified presence points with the fraction of <strong>background</strong> points that is predicted to be present (1- specificity, or fractional predicted area).</p>
+</div>
+</div>
+</div>
+<p>The AUC represents the probability that a randomly selected presence location ranks higher than a randomly selected background point. An AUC of <span class="style-output">0.9105</span> suggests that the model has a fairly good predictive ability for species distribution.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpreting the AUC value
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>AUC values range from 0 to 1, with certain threshold interpretations commonly applied: values below 0.5 indicate the model is performing worse than random chance. Values between 0.5 and 0.7 typically suggest poor model performance, values from 0.7 to 0.9 suggest reasonable performance, and values above 0.9 are generally considered good. However, these thresholds should be interpreted cautiously and not used at face value.</p>
+<p>It is important to realize that the AUC doesn’t account for the prevalence of presence points in your dataset. In fact, you can increase the AUC simply by adding more background points. Try this for yourself: create a new point layer with 50,000 background points and run the r.maxent.train module again with the same settings. See how this affects the AUC value. It means that AUC should only be used to compare models with a similar ratio of presence to background points.</p>
+</div>
+</div>
+</div>
+<section id="sec-4probabilitymaps" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="sec-4probabilitymaps"><span class="header-section-number">4.3.1</span> Probability maps</h3>
+<p>The <span class="style-data">occurrences.html</span> file in the output folder <span class="style-data">model_01</span> provides more evaluation statistics, including a short explanation of the results. Before reviewing these, let’s examine the sample prediction, background prediction, and raster prediction layers. In GRASS, go to the <span class="style-menu">data</span> panel, and double click on each of them to open them in the <span class="style-menu">Map display</span> panel.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset exercise">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Suitability sample points</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">Suitability background points</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false" href="">Probability raster</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" role="tab" aria-controls="tabset-5-4" aria-selected="false" href="">Clamping map</a></li></ul>
+<div class="tab-content exercise">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div id="fig-samlepredmodel01" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="DMu5ABe7FD">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-samlepredmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/model01_suitability_samplepoints.png" class="lightbox" data-gallery="DMu5ABe7FD" title="Figure&nbsp;4.4: The suitability_model01_samplepoints vector layer with the GBIF occurrences. The colors in this layer represent the predicted probability that the species occurs at these locations, based on model_01."><img src="images/model01_suitability_samplepoints.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-samlepredmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: The <span class="style-data">suitability_model01_samplepoints</span> vector layer with the GBIF occurrences. The colors in this layer represent the predicted probability that the species occurs at these locations, based on model_01.
+</figcaption>
+</figure>
+</div>
+<p>The map in <a href="#fig-samlepredmodel01" class="quarto-xref">Figure&nbsp;<span>4.4</span></a> shows the predicted probability that <em>Erebia alberganus</em> occurs at each observed location, allowing us to assess where the model accurately predicts suitable conditions and where it incorrectly suggests less or no suitable conditions. Notable examples of the latter include several occurrence points in Bulgaria. A follow up step would be to compare these predictions with maps of relevant environmental data layers or examining the GBIF source data for these observations more closely.</p>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div id="fig-bgrpredmodel01" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="DMu5ABe7FD">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bgrpredmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/model01_suitability_backgroundpoints.png" class="lightbox" data-gallery="DMu5ABe7FD" title="Figure&nbsp;4.5: The suitability_model01_backgroundpoints vector layer with the locations of the background points. The colors in this layer represent the predicted probability of the occurrence of the species at these locations, based on model_01."><img src="images/model01_suitability_backgroundpoints.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bgrpredmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: The <span class="style-data">suitability_model01_backgroundpoints</span> vector layer with the locations of the background points. The colors in this layer represent the predicted probability of the occurrence of the species at these locations, based on model_01.
+</figcaption>
+</figure>
+</div>
+<p>The map in <a href="#fig-bgrpredmodel01" class="quarto-xref">Figure&nbsp;<span>4.5</span></a> shows the predicted probability of <em>Erebia alberganus</em> to occur at individual background point locations, providing similar information to <a href="#fig-probdistmodel01" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>, but with a different presentation. Depending on your needs / preferences, you may want to have the module generate one of these maps.</p>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<div id="fig-probdistmodel01" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="DMu5ABe7FD">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-probdistmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/model01_suitability.png" class="lightbox" data-gallery="DMu5ABe7FD" title="Figure&nbsp;4.6: The raster layer suitability_model01 with the predicted probability of occurrences of Erebia_alberganus, based on model_01."><img src="images/model01_suitability.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-probdistmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: The raster layer <span class="style-data">suitability_model01</span> with the predicted probability of occurrences of <em>Erebia_alberganus</em>, based on model_01.
+</figcaption>
+</figure>
+</div>
+<p>The map in <a href="#fig-probdistmodel01" class="quarto-xref">Figure&nbsp;<span>4.6</span></a> shows the predicted probability of presence of <em>Erebia_alberganus</em> within the bounds of the study area. As expected, probability scores are high in most areas where the species has been observed. However, there are additional areas where predicted probability scores are also high, most notably in Bosnia and Herzegovina and Montenegro. We will not attempt to explain these differences here, as that analysis is beyond the scope of this tutorial, but it is clear that these results warrant further investigation.</p>
+</div>
+<div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
+<div id="fig-clampingmodel01" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="DMu5ABe7FD">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clampingmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/E_alberganus_probability_clamping.png" class="lightbox" data-gallery="DMu5ABe7FD" title="Figure&nbsp;4.7: The values in the suitability_model01_ascii01_clamping raster layer give the absolute difference in predictions when using clamping vs not using clamping. The map is the second map shown in the occurrences.html webpage."><img src="images/E_alberganus_probability_clamping.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clampingmodel01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.7: The values in the suitability_model01_ascii01_clamping raster layer give the absolute difference in predictions when using clamping vs not using clamping. The map is the second map shown in the occurrences.html webpage.
+</figcaption>
+</figure>
+</div>
+<p>Clamping restricts environmental variables and features to the range of values found in the training data. For example, if the input raster layer for <span class="style-variable">bio_1</span> (annual mean temperature) has a value of 35°C, but the highest temperature among the training points is 32°C, all <span class="style-variable">bio_1</span> values above 32°C are clamped to 32°C. This prevents the model from extrapolating beyond the conditions observed during training and ensures that predictions remain within the range of known environmental conditions.</p>
+<p>The clamping raster layer give the absolute difference in predictions when using clamping vs not using clamping. Higher values on the map indicate areas where clamping is likely to have a greater effect on predicted fitness.</p>
+<p>The clamping map is particularly useful for examining how well the background points cover the environmental conditions. In this case, the clamping is limited to a few small areas (outlined in red). These include some mountain tops and other small mountainous areas. This limited clamping is not surprising given the environmental heterogeneity typical of mountain areas. However, the extent of these regions is minimal, so no further adjustments are done at this stage.</p>
+</div>
+</div>
+</div>
+<p>Note that Maxent supports four output formats for model value: <span class="style-parameter">raw</span>, <span class="style-parameter">logistic</span> and <span class="style-parameter">cloglog</span>. We used the default output, which is <em>cloglog</em>. It represents the probability of presence, and has a value between 0 and 1. Importantly, one should be aware that the scores strongly depends on details of the sampling design <span class="citation" data-cites="phillipsOpeningBlackBox2017a">[<a href="references.html#ref-phillipsOpeningBlackBox2017a" role="doc-biblioref">1</a>]</span>.</p>
+</section>
+<section id="sec-4presenceabsence" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="sec-4presenceabsence"><span class="header-section-number">4.3.2</span> Presence-absence</h3>
+<p>While a probability distribution map shows the likelihood of species occurrence across a landscape, it can also be useful to convert this map into a binary presence-absence map. To do this, you need to convert the probability values, which range between 0 and 1, into binary values of 0 (absent) and 1 (present). This is done by selecting a threshold: all cells with a probability above this threshold are classified as 1 (presence), and all others as 0 (absence). We can for example use a threshold of 0.5 to convert the probability map to a presence-absence map. There are several ways to accomplish this conversion.</p>
+<p>The <a href="https://grass.osgeo.org/grass-stable/manuals/r.mapcalc.html">r.mapcalc</a> module is a versatile and powerful tool for this kind of raster calculation, while the <a href="https://grass.osgeo.org/grass-stable/manuals/r.recode.html">r.recode</a> module might be slightly faster for simple thresholding operations. Below, both methods are demonstrated for comparison.</p>
+<div id="exm-dfadecdrlp" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 4.3</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="interface">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" role="tab" aria-controls="tabset-6-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li></ul>
+<div class="tab-content" data-group="interface">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<p>One option is to use <code>r.recode</code>. Check out the function’s <a href="https://grass.osgeo.org/grass-stable/manuals/r.recode.html">help page</a> for an explanation of the recode rules.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">r.recode</span> input=model01_suitability output=model01_presence rules=- <span class="op">&lt;&lt; EOF</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="st">0.0:0.5:0</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">0.5:1:1</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="op">EOF</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or use r.mapcalc</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">r.mapcalc</span> expression=<span class="st">"model01_presence = if(model01_suitability &lt; 0.5,0,1)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<p>One option is to use <code>r.recode</code>. Check out the function’s <a href="https://grass.osgeo.org/grass-stable/manuals/r.recode.html">help page</a> for an explanation of the recode rules.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource python code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1"></a>rules <span class="op">=</span> <span class="st">"0.0:0.5:0</span><span class="ch">\n</span><span class="st">0.5:1:1"</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-2" class="code-annotation-target"><a href="#annotated-cell-7-2"></a>gs.write_command(</span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3"></a>    <span class="st">"r.recode"</span>,</span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"model01_suitability"</span>,</span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5"></a>    output<span class="op">=</span><span class="st">"model01_presence"</span>,</span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6"></a>    rule<span class="op">=</span><span class="st">"-"</span>,</span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7"></a>    stdin<span class="op">=</span>rules,</span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="2" data-code-annotation="1">Note that we need to use the <code>gs.write_command</code> because we are using <span class="style-parameter">stdin</span> parameter.</span>
+</dd>
+</dl>
+<p>Or use r.mapcalc</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>gs.run_command(</span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="st">"r.mapcalc"</span>, expression<span class="op">=</span><span class="st">"model01_presence = if(model01_suitability &lt;0.5,0,1)"</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
+<p>One option is to use <code>r.recode</code>. Check out the function’s <a href="https://grass.osgeo.org/grass-stable/manuals/r.recode.html">help page</a> for an explanation of the recode rules.</p>
+<div id="fig-rrecodeprob2bin" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rrecodeprob2bin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/rrecodeprob2bin.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;4.8: Convert the probability map to a binary map using the r.recode module."><img src="images/rrecodeprob2bin.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rrecodeprob2bin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.8: Convert the probability map to a binary map using the r.recode module.
+</figcaption>
+</figure>
+</div>
+<p>Or use the <code>r.mapcalc</code> module. You can find this in the menu <span class="style-menu">raster → raster map calculator → raster map calculator</span></p>
+<div id="fig-rmapcalctoconvertprob2bin" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rmapcalctoconvertprob2bin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/rmapcalctoconvertprob2bin.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;4.9: Convert the probability map to a binary map using the r.mapcalc module."><img src="images/rmapcalctoconvertprob2bin.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rmapcalctoconvertprob2bin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.9: Convert the probability map to a binary map using the r.mapcalc module.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>The challenge is to choose the best threshold. The answer is the perhaps unsatisfactory “it depends”. Setting a lower threshold will classify more cells as “present”, which means the model will correctly identify more actual presence locations (more true positives). However, this also increases the likelihood of predicting the species in areas where it may not actually occur (more false positives). Conversely, a higher threshold will make the model more conservative, classifying fewer cells as “present”. This reduces false positives, but also means that many areas where the species actually occurs may be missed (increasing false negatives).</p>
+<p>The best threshold depends on your priorities: whether it’s more important to maximize sensitivity (identifying all areas where the species might occur) or specificity (ensuring that areas predicted to be suitable are actually suitable). <a href="#tbl-tresholdvalues_model01" class="quarto-xref">Table&nbsp;<span>4.1</span></a>, which comes from the file <span class="style-data">occurrences.html</span> in the output folder, shows some common thresholds and the corresponding omission rates and fraction of the study area that would be classified as suitable based on that threshold. See the Maxent manual and references for an explanation of these thresholds.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset exercise">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Threshold values</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">0.254</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-3" role="tab" aria-controls="tabset-7-3" aria-selected="false" href="">0.296</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-4" role="tab" aria-controls="tabset-7-4" aria-selected="false" href="">0.512</a></li></ul>
+<div class="tab-content exercise">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div id="tbl-tresholdvalues_model01" class="quarto-float quarto-figure quarto-figure-left anchored" data-tbl-colwidths="[15,15,40,15,15]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tresholdvalues_model01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4.1: Threshold values and corresponding fractional predicted area and omission rate values. The tabs on the right show the resulting maps for three of these thresholds.
+</figcaption>
+<div aria-describedby="tbl-tresholdvalues_model01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 40%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Cumulative threshold</th>
+<th>Cloglog threshold</th>
+<th style="text-align: left;">Description</th>
+<th>Fractional predicted area</th>
+<th>Training omission rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.000</td>
+<td>0.021</td>
+<td style="text-align: left;">Fixed cumulative value 1</td>
+<td>0.435</td>
+<td>0.005</td>
+</tr>
+<tr class="even">
+<td>5.000</td>
+<td>0.107</td>
+<td style="text-align: left;">Fixed cumulative value 5</td>
+<td>0.241</td>
+<td>0.027</td>
+</tr>
+<tr class="odd">
+<td>10.000</td>
+<td>0.296</td>
+<td style="text-align: left;">Fixed cumulative value 10</td>
+<td>0.180</td>
+<td>0.063</td>
+</tr>
+<tr class="even">
+<td>0.008</td>
+<td>0.000</td>
+<td style="text-align: left;">Minimum training presence</td>
+<td>0.843</td>
+<td>0.000</td>
+</tr>
+<tr class="odd">
+<td>13.463</td>
+<td>0.415</td>
+<td style="text-align: left;">10 percentile training presence</td>
+<td>0.160</td>
+<td>0.100</td>
+</tr>
+<tr class="even">
+<td>17.126</td>
+<td>0.512</td>
+<td style="text-align: left;">Equal training sensitivity and specificity</td>
+<td>0.146</td>
+<td>0.146</td>
+</tr>
+<tr class="odd">
+<td>8.982</td>
+<td>0.254</td>
+<td style="text-align: left;">Maximum training sensitivity plus specificity</td>
+<td>0.188</td>
+<td>0.053</td>
+</tr>
+<tr class="even">
+<td>3.610</td>
+<td>0.070</td>
+<td style="text-align: left;">Balance training omission, predicted area and threshold value</td>
+<td>0.278</td>
+<td>0.016</td>
+</tr>
+<tr class="odd">
+<td>4.939</td>
+<td>0.106</td>
+<td style="text-align: left;">Equate entropy of thresholded and original distributions</td>
+<td>0.242</td>
+<td>0.027</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div id="fig-thr2" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left" data-group="presabs">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-thr2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/bin4_model_01.png" class="lightbox" data-gallery="presabs" title="Figure&nbsp;4.10: Binary map based on a Maximum training sensitivity plus specificity threshold. The red oulines show the boundaries of the species rangemap."><img src="images/bin4_model_01.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thr2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.10: Binary map based on a Maximum training sensitivity plus specificity threshold. The red oulines show the boundaries of the species rangemap.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-7-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-3-tab">
+<div id="fig-thr3" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left" data-group="presabs">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-thr3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/bin2_model_01.png" class="lightbox" data-gallery="presabs" title="Figure&nbsp;4.11: Binary map based on a Fixed cumulative value 10 threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap."><img src="images/bin2_model_01.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thr3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.11: Binary map based on a Fixed cumulative value 10 threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-7-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-4-tab">
+<div id="fig-thr4" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left" data-group="presabs">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-thr4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/bin3_model_01.png" class="lightbox" data-gallery="presabs" title="Figure&nbsp;4.12: Binary map based on a Equal training sensitivity and specificity threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap."><img src="images/bin3_model_01.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thr4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.12: Binary map based on a Equal training sensitivity and specificity threshold. The red oulines show the boundaries of the species range according to the IUCN Redlist rangemap.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Comparing the predicted distribution with the IUCN Red List range map highlights several discrepancies. In some areas, the range map boundaries appear slightly shifted, while in others they seem overly optimistic. The question is whether this is due to unaccounted for variables or indicates a decline of the species’ presence in these areas. Notably, there are the extensive areas with similar climate conditions where the species has not been recorded according to GBIF data. This suggests that factors other than those used in the model may play a critical role in determining the distribution of the species.</p>
+</section>
+<section id="sec-4evalstats" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="sec-4evalstats"><span class="header-section-number">4.3.3</span> Evaluation statistics</h3>
+<p>To determine how good the model is at predicting the presence of a species, Maxent generates some model evaluation statistics. To do this, it converts the probability map to a binary map using a range of threshold values from 0 to 1. Each time, the number of presence points correctly classified, the number misclassified as absence, and the number of background points classified as either presence or absence are calculated. The resulting statistics serve as input for the calculation of standard validation metrics such as the area under the receiver operating characteristic curve (<a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">AUC-ROC</a>). The results, which can be found in the file <a href="share/model_01/occurrences.html" target="_blank">occurrences.html</a> in the output folder, are briefly discussed below.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset exercise">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">AUC-ROC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">Omission graph</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-3" role="tab" aria-controls="tabset-8-3" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content exercise">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<p>The ROC plot compares the proportion of correctly classified presence points, known as the sensitivity of the model, with the proportion of background points classified as presence. This comparison is made across a range of presence probability cutoff values between 0 and 1. The closer the ROC curve is to the upper left corner, the larger the area under the curve (AUC), and the better the model performance<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. In other words, the AUC provides a threshold-independent estimate of the predictive power of the model. As we have seen before, the AUC for our model is 0.911.</p>
+<div id="fig-rocauc" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left" data-group="qmXR1UJHFa">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rocauc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/occurrences_roc.png" class="lightbox" data-gallery="qmXR1UJHFa" title="Figure&nbsp;4.13: ROC curve and the area under the curve statistics for our model. Because we are dealing with presence-only data, we do not have real absence points. Therefore, on the X-axis, Maxent uses the 1 - fraction of background points predicted to be present instead of the fraction of absence points that are predicted to be present."><img src="images/occurrences_roc.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rocauc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.13: ROC curve and the area under the curve statistics for our model. Because we are dealing with presence-only data, we do not have real absence points. Therefore, on the X-axis, Maxent uses the 1 - fraction of background points predicted to be present instead of the fraction of absence points that are predicted to be present.
+</figcaption>
+</figure>
+</div>
+<p>A ROC curve below the black line indicates that the model performs worse than a random model would. It is important to reiterate that AUC values tend to be higher for species with narrow ranges, relative to the study area described by the environmental data.</p>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<p>The <em>omission and predicted area</em> graph (<a href="#fig-commissiongraph" class="quarto-xref">Figure&nbsp;<span>4.14</span></a>) illustrates how the proportion of presence points incorrectly classified as absence (omission - blue line) and the fraction of background points predicted as suitable (red line) vary with the choice of cumulative threshold. Note that the x-axis shows the cumulative raw threshold values<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. We see that the omission matches the expected omission rate (black line) closely.</p>
+<div id="fig-commissiongraph" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left" data-group="qmXR1UJHFa">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-commissiongraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/omission_predicted_area.png" class="lightbox" data-gallery="qmXR1UJHFa" title="Figure&nbsp;4.14: The omission/commission graph shows how omission rate and predicted area vary with the choice of cumulative threshold. The pink arrows show two of the threshold values and corresponding omission rate in Table&nbsp;tbl-tresholdvalues_model01."><img src="images/omission_predicted_area.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-commissiongraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.14: The omission/commission graph shows how omission rate and predicted area vary with the choice of cumulative threshold. The pink arrows show two of the threshold values and corresponding omission rate in <a href="#tbl-tresholdvalues_model01" class="quarto-xref">Table&nbsp;<span>4.1</span></a>.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-8-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-3-tab">
+<p>Note that Maxent uses random background points rather than true absence points. Since the background points don’t exclusively represent areas where the species is absent but rather a sample of the entire study area, there’s a degree of overlap between conditions at presence and background points. This overlap limits the model’s ability to perfectly separate the two classes, meaning that the AUC will typically be less than 1. In contrast, if true absences were available and clearly distinct from presences, a higher maximum AUC could theoretically be achieved.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-4variableimportance" class="level3" data-number="4.3.4">
+<h3 data-number="4.3.4" class="anchored" data-anchor-id="sec-4variableimportance"><span class="header-section-number">4.3.4</span> Variable importance</h3>
+<p>A natural application of species distribution modeling is to answer the question, “Which variables are most important for the species being modeled? There is more than one way to answer this question.</p>
+<p>While the Maxent model is being trained, it keeps track of which environmental variables are contributing to fitting the model. This is at the end of the training process converted into an estimate of the relative contribution of each variable to the model. This is expressed as a <em>percentage contribution</em>. The higher the percentage, the more important that variable is for the model. This is somewhat equivalent to the coefficients of a regression model. Like the regression coefficients, when the environmental variables are highly correlated environmental variables, the percent contributions should be interpreted with caution.</p>
+<div id="tbl-relativeimportance" class="quarto-float quarto-figure quarto-figure-left anchored" data-tbl-colwidths="[33,33,33]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-relativeimportance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4.2: Relative importance of the explanatory variables. The table is presented in the section ‘Analysis of variable contributions’ of the file <span class="style-data">occurrences.html</span> in the output folder
+</figcaption>
+<div aria-describedby="tbl-relativeimportance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th>Percent contribution</th>
+<th>Permutation importance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">bio_1</td>
+<td>51.8</td>
+<td>33.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bio_4</td>
+<td>24.8</td>
+<td>32.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bio_8</td>
+<td>13.3</td>
+<td>0.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bio_13</td>
+<td>3.5</td>
+<td>14.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bio_14</td>
+<td>2.4</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bio_9</td>
+<td>1.6</td>
+<td>1.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bio_19</td>
+<td>1.2</td>
+<td>4.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bio_15</td>
+<td>0.9</td>
+<td>10.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bio_2</td>
+<td>0.5</td>
+<td>0.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The other metric is the <em>Permutation importance</em>. The contribution for each variable is determined by randomly permuting the values of that variable among the training points (both presence and background) and measuring the resulting decrease in training AUC. A large decrease indicates that the model depends heavily on that variable. Values are normalized to give percentages.</p>
+</section>
+<section id="sec-4responsecurves" class="level3" data-number="4.3.5">
+<h3 data-number="4.3.5" class="anchored" data-anchor-id="sec-4responsecurves"><span class="header-section-number">4.3.5</span> Response curves</h3>
+<p>The HTML file <span class="style-data">occurrences.html</span> also includes a section with two types of response curves. Both show how each environmental variable affects the prediction of the species probability distribution. Note that you can click on a plot for a larger and more detailed image<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>The first set of curves (<a href="#fig-responsecurves1" class="quarto-xref">Figure&nbsp;<span>4.15</span></a>) illustrates how the predicted probability of presence changes when each environmental variable is varied individually, while keeping all other variables fixed at their average sample value. These are known as <em>marginal response curves</em>. They indicate, for example, that the species prefers cooler areas, with a mean annual temperature (<span class="style-variable">bio_1</span>) below 5°C, or a temperature seasonality around 600, corresponding to a standard deviation of monthly temperatures close to 6°C.</p>
+<p>The curves in <a href="#fig-responsecurves2" class="quarto-xref">Figure&nbsp;<span>4.16</span></a> represent different models, where each model is built using only the corresponding environmental variable. These curves can be more straightforward to interpret when there are strong correlations between variables.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset exercise">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Marginal response curves</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">single-variable response curves</a></li></ul>
+<div class="tab-content exercise">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div id="fig-responsecurves1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-responsecurves1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_1.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_1.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_2.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_2.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_4.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_4.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_8.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_8.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_9.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_9.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_13.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_13.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_14.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_14.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_15.png" class="lightbox" data-gallery="hbhHpuMH7S" title="Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value."><img src="share/model_01/plots/occurrences_bio_15.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-responsecurves1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.15: Response curves created by varying the specific variable, while keeping all other variables fixed at their average sample value.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div id="fig-responsecurves2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-responsecurves2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_1_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_1_only.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_2_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_2_only.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_4_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_4_only.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_8_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_8_only.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_9_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_9_only.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_13_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_13_only.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_14_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_14_only.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="share/model_01/plots/occurrences_bio_15_only.png" class="lightbox" data-gallery="d5aRYc7tfLd" title="Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable."><img src="share/model_01/plots/occurrences_bio_15_only.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-responsecurves2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.16: Response curves created by running a model based on only the specific variable as explanatory variable.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>These two types of curves can sometimes yield conflicting insights. Click between the tabs to compare them. For instance, the marginal response curve for precipitation of the driest month (<span class="style-variable">bio_14</span>) suggests a negative relationship between this variable and the predicted probability of presence. In other words, when all other variables are held constant, an increase in precipitation during the driest month reduces the predicted probability of presence.</p>
+<p>In contrast, the single-variable response curve for <span class="style-variable">bio_14</span> shows the opposite trend: as precipitation increases, the predicted probability of presence also rises. This discrepancy likely arises because <span class="style-variable">bio_14</span> is correlated with other precipitation-based variables<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Consequently, when environmental variables are correlated, marginal response curves can sometimes be misleading.</p>
+<p>A similar situation can occur when two strongly correlated variables have nearly opposite response curves. Their combined effect may then be close to zero across most of the study area, even though each variable appears influential when considered in isolation.</p>
+<p>Therefore, it’s advisable to examine and compare both sets of curves for a clearer understanding. For further details and examples, see the <a href="https://biodiversityinformatics.amnh.org/open_source/maxent/">Maxent tutorial</a>.</p>
+</section>
+<section id="raw-data" class="level3" data-number="4.3.6">
+<h3 data-number="4.3.6" class="anchored" data-anchor-id="raw-data"><span class="header-section-number">4.3.6</span> Raw data</h3>
+<p>At the end of the HTML file <a href="share/model_01/occurrences.html" target="_blank">occurrences.html</a>, you’ll find a summary of the model input data and parameter settings. In addition, links are provided to various files in your output folder with model settings, predictions at presence and background point locations and summary statistics. This allow you to further analyse the model outcomes using other tools such as R. Some examples are provided in the <a href="https://biodiversityinformatics.amnh.org/open_source/maxent/">Maxent tutorial</a>.</p>
+<p><br><br></p>
+</section>
+</section>
+<section id="footnotes" class="level2 unlisted unnumbered hidefootnotes">
+<h2 class="unlisted unnumbered hidefootnotes anchored" data-anchor-id="footnotes">Footnotes</h2>
+
+
+<div id="refs" class="references csl-bib-body" role="list" style="display: none">
+<div id="ref-phillipsOpeningBlackBox2017a" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Phillips SJ, Anderson RP, Dudík M, Schapire RE, Blair ME (2017) Opening the black box: An open-source release of <span>Maxent</span>. Ecography 40(7):887–893. <a href="https://doi.org/10.1111/ecog.03049">https://doi.org/10.1111/ecog.03049</a></div>
+</div>
+<div id="ref-vanswaay2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">van Swaay C, Wynhoff I, Verovnik R, et al (2010) Erebia albergana. <span>The IUCN Red List</span> of <span>Threatened Species</span> 2010. IUCN Red List of Threatened Species. <a href="https://doi.org/10.2305/IUCN.UK.2010-1.RLTS.T173278A6984115.en">https://doi.org/10.2305/IUCN.UK.2010-1.RLTS.T173278A6984115.en</a></div>
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="images/Roc_curve.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="The ROC plot used to evaluate the model performance. Source: Wikipedia."><img src="images/Roc_curve.svg" class="img-fluid figure-img" alt="The ROC plot used to evaluate the model performance. Source: Wikipedia."></a></p>
+<figcaption>The ROC plot used to evaluate the model performance. Source: Wikipedia.</figcaption>
+</figure>
+</div>
+<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
+<li id="fn2"><p>So to be clear, it does not use the cloglog values. In the file that ends with <span class="style-data">_omission.csv</span> (in our case, this is the file <span class="style-data">OCCURRENCES_omission.csv</span>), you can find for each raw value the corresponding cloglog value. In <a href="#tbl-relativeimportance" class="quarto-xref">Table&nbsp;<span>4.2</span></a> some key treshold values are provided (both the raw and cloglog variants) with the corresponding omission values.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>We have attempted to reduce the issue of multi-collinearity using the stepwise VIF procedure (<a href="3_data_preparation.html#sec-multicollinearity" class="quarto-xref"><span>Section 3.3</span></a>). But the results suggest that this did not solve all problems.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>We have attempted to reduce the issue of multi-collinearity using the stepwise VIF procedure (<a href="3_data_preparation.html#sec-multicollinearity" class="quarto-xref"><span>Section 3.3</span></a>). But the results suggest that this did not solve all problems.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ecodiv\.earth\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./3_data_preparation.html" class="pagination-link" aria-label="Prepare the data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Prepare the data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./5_model_prediction.html" class="pagination-link" aria-label="Model prediction">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model prediction</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> by Paulo van Breugel, Ecodiv.earth, 2024.</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ecodiv/sdm_in_grassgis/edit/main/4_model_training.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ecodiv/sdm_in_grassgis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
