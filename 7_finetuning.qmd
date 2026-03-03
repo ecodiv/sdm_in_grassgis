@@ -32,7 +32,7 @@ As we did previously, we'll first create a separate sub-folder in our working di
 ::: {#exm-DXBuP8nUXR .hiddendiv}
 :::
 
-::: {.panel-tabset group="bashpython"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 We want to store the result in the [Erebia_alberganus]{.style-data} mapset. Make sure you are working in that mapset, and that the region settings are correct.
@@ -95,7 +95,7 @@ By default, a regularization multiplier value of 1 is used. In this example, we'
 ::: {#exm-xp61oQN3Ho .hiddendiv}
 :::
 
-::: {.panel-tabset group="bashpython"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 First run using [betamultiplier]{.style-parameter} of 0.01:

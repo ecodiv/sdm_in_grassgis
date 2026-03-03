@@ -39,7 +39,7 @@ We use the [projectionlayers]{.style-parameter} parameter to specify the folder 
 ::: {#exm-fb4bZ2MIs0 .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 We want to store the result in the [Erebia_alberganus]{.style-data} mapset. Make sure you are working in that mapset, and that the region settings are correct.
@@ -151,7 +151,7 @@ To create the new color table, we use the [r.colors](https://grass.osgeo.org/gra
 ::: {#exm-varKii8QsL .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -205,7 +205,7 @@ Ideally, the four sub-model should result in high average probability scores for
 ::: {#exm-972VUKNJIx .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -247,7 +247,7 @@ The resulting scatterplot (@fig-meanvsrange) shows that there are quite a few oc
 ::: {#exm-NlC6SPkAy7 .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -373,7 +373,7 @@ We use the `r.mess` module to examine how different the climatic conditions in 2
 ::: {#exm-dCCiaw6IUX .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
@@ -462,12 +462,15 @@ To assess if and where future conditions are outside the range of conditions obs
 ::: {#exm-lHWXJikKCV .hiddendiv}
 :::
 
-::: {.panel-tabset group="interface"}
+::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
 ``` bash
+# Save the region
+
+
 # Compute mess
-r.mess -m -n -k -c -i ref_env=bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 proj_env=bio.1,bio.2,bio.4,bio.8,bio.9,bio.13,bio.14,bio.15,bio.19 ref_rast=referencepoints output=mess nprocs=2 memory=1000
+r.mess -m -n -k -c -i ref_env=bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 proj_env=ECE3V_585_8100.1,ECE3V_585_8100.2,ECE3V_585_8100.4,ECE3V_585_8100.8,ECE3V_585_8100.9,ECE3V_585_8100.13,ECE3V_585_8100.14,ECE3V_585_8100.15,ECE3V_585_8100.19 ref_rast=referencepoints output=mess nprocs=2 memory=1000
 ```
 
 Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) about the meaning of the flags [m]{.style-parameter}, [n]{.style-parameter}, [k]{.style-parameter}, [c]{.style-parameter} and [i]{.style-parameter}.
@@ -478,8 +481,9 @@ Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.me
 gs.run_command("r.mess", flags="mnkci",
     ref_env=["bio_1", "bio_2", "bio_4", "bio_8", "bio_9",
              "bio_13", "bio_14", "bio_15", "bio_19"],
-    proj_env=["bio.1", "bio.2", "bio.4", "bio.8","bio.9",
-              "bio.13", "bio.14", "bio.15", "bio.19"],
+    proj_env=["ECE3V_585_8100.1", "ECE3V_585_8100.2", "ECE3V_585_8100.4",
+              "ECE3V_585_8100.8", "ECE3V_585_8100.9", "ECE3V_585_8100.13",
+              "ECE3V_585_8100.14", "ECE3V_585_8100.15", "ECE3V_585_8100.19"],
     ref_rast="referencepoints", output="mess",
     nprocs=2, memory=1000,
 )
@@ -494,7 +498,7 @@ Open the `r.mess` dialog and run it with:
 | Parameter | Value |
 |----|----|
 | ref_env | bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 |
-| proj_env | bio.1,bio.2,bio.4,bio.8,bio.9,bio.13,bio.14,bio.15,bio.19 |
+| proj_env | ECE3V_585_8100.1,ECE3V_585_8100.2,ECE3V_585_8100.4,ECE3V_585_8100.8,ECE3V_585_8100.9,ECE3V_585_8100.13,ECE3V_585_8100.14,ECE3V_585_8100.15,ECE3V_585_8100.19 |
 | proj_env | attr |
 | ref_rast | referencepoints |
 | nprocs | 2 |
@@ -508,6 +512,17 @@ Open the `r.mess` dialog and run it with:
 : {tbl-colwidths="\[42,57\]"}
 
 Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) about the meaning of the flags [m]{.style-parameter}, [n]{.style-parameter}, [k]{.style-parameter}, [c]{.style-parameter} and [i]{.style-parameter}.
+
+## {{< fa question >}}
+
+The spatial extent and resolution of the rasters produced by `r.mess` are inherited from the input rasters specified via the [proj_env]{.style-parameter} parameter. If you followed the workflow step by step, this should already be correctly configured.
+
+However, if you imported full future climate layers (e.g. global coverage) but only want to compute r.mess outputs for a smaller study area, proceed as follows:
+
+1. Set the computational region to your study area and save it using `g.region save=name-of-region`. 
+2. When running `r.mess`, specify [proj_region]{.style-parameter} = [name-of-region]{.style-value} to restrict the output rasters to that saved region.
+
+See the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) for more details.
 
 :::
 

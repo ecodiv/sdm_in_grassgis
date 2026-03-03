@@ -60,7 +60,7 @@ book:
 
   bread-crumbs: false
   page-navigation: true
-  reader-mode: false
+  reader-mode: true
 
   # navbar:
   #   pinned: false

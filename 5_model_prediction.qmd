@@ -584,7 +584,7 @@ You can find the `r.category` in the [raster]{.style-menu} menu.
 
 ![](images/r_category_crossproduct_01.png){group="rcat"}
 
-Using `r.category` to rename the categories of the raster layer [E_alberganus_presabschange]{.style-data} (click on the images to enlarge).
+Using `r.category` to rename the categories of the raster layer [model01_presabschange]{.style-data} (click on the images to enlarge).
 :::
 
 To change the colors of the categories, see @exm-Yc5f3VPPR2.

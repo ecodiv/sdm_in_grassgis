@@ -151,7 +151,7 @@ When using `v.in.ogr`, a GeoPackage is treated as a container of separate layers
 
 :::
 
-Next, download the Copernicus 90m DEM [(cop90.tif)](https://ecodiv.earth/share/sdm_in_grassgis/cop90.tif), the shaded relief map ([shaded_relief.tif](https://ecodiv.earth/share/sdm_in_grassgis/shaded_relief_NE.tif)) and the Urban areas map ([urban_areas.tif](https://ecodiv.earth/share/sdm_in_grassgis/urban_areas.tif)) and copy the files to your working directory. Next, import these layers in GRASS with the `r.in.gdal` function.
+Next, download the Copernicus DEM ([CopDEM.tif](https://ecodiv.earth/share/sdm_in_grassgis/CopDEM.tif): downsampled to a resoluton of 0.00833 arc degree), the shaded relief map ([shaded_relief.tif](https://ecodiv.earth/share/sdm_in_grassgis/shaded_relief_NE.tif)) and the Urban areas map ([urban_areas.tif](https://ecodiv.earth/share/sdm_in_grassgis/urban_areas.tif)) and copy the files to your working directory. Next, import these layers in GRASS with the `r.in.gdal` function.
 
 
 ::: {#exm-Xm99Mh .hiddendiv}
@@ -292,17 +292,17 @@ GBIF is an international biodiversity informatics infrastructure that aggregates
 
 Before downloading data, you must first register on the site. Once logged in, search for *Erebia alberganus* von Prunner, 1798. Select the result and open the page. Then click on the green button with the number of observations to open the table with observations.
 
-![At the time of writing, GBIF had 20410 occurrences of *Erebia alberganus*. After applying the filters described below, 17,348 records remained](images/numberofoccurrences.png){#fig-numerofoccurrences fig-align="left"}
+![At the time of writing, GBIF had 20999 occurrences of *Erebia alberganus*. After applying the filters described below, 18,642 records remained](images/numberofoccurrences.png){#fig-numerofoccurrences fig-align="left"}
 
 In the new window, apply the filters you consider relevant. For example, under [Basis of record]{.style-menu}, select [Human observation]{.style-menu} and [Occurrences]{.style-menu} to exclude fossil records or machine-based observations. You may also restrict the data to a specific time period, for example, the last 45 years.
 
-Finally, check the [Issues and flags]]{.style-menu} section to exclude records with known problems, such as missing coordinates. If you only want to exclude a few issues, you can reverse the selection at the bottom of the list.
+Finally, check the [Issues and flags]{.style-menu} section to exclude records with known problems, such as missing coordinates. If you only want to exclude a few issues, you can reverse the selection at the bottom of the list.
 
 Note which filters and what settings you used to select the records. Tip: open the map tab and check the map each time you change a filter to see how it affects the selection of observations.
 
 ![The table shows all occurrence records for our species. In the panel at the left, you can select specific records based on a number of criteria.](images/gbifoccurrencefilters.png){#fig-gbiffilters fig-align="left"}
 
-Click on the [download]{.style-menu} tab and select the [Simple]{.style-menu} option. This will take you to the download page (it may take a while to complete, but you get an email when the download is ready). When the download is complete, download the file and unzip into to your data .
+Click on the [download]{.style-menu} tab and select the [Simple]{.style-menu} option. This will take you to the download page (it may take a while to complete, but you get an email when the download is ready). When the download is complete, download the file and unzip into to your data. 
 
 ::: callout-tip
 It is good practice to cite the data you use in your publications. GBIF conveniently provides you with the citation on the download page, including a Digital Object Identifier (DOI). This is a link to a web page that describes your search, including any filters you have set. Copy and save the citation, so you can use it in your report. If you are using a reference manager such as [Zotero](https://www.zotero.org/) (highly recommended), you can use the provided BibTex or RIS file to import the reference.
@@ -795,7 +795,7 @@ When possible, increase the value of the [memory]{.style-parameter} parameter, a
 ## {{< fa solid terminal >}}
 
 ``` bash
-r.in.gdal input=/home/paulo/Downloads/wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=ECE3V_585_8100 memory=1000 -r
+r.in.gdal input=wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=ECE3V_585_8100 memory=1000 -r
 ```
 
 ## {{< fa brands python >}}
