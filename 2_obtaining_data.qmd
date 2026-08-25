@@ -102,6 +102,17 @@ First, download the Geopackage [sdm_base_layers.gpkg](https://ecodiv.earth/share
 ::: {#exm-XmMn498Mh .hiddendiv}
 :::
 
+![The study area with the national boundaries, main roads and shaded relief (source: [Natural Earth](https://www.naturalearthdata.com/)) and the urban areas (source: [GLC](https://land.copernicus.eu/en/products/corine-land-cover)).](images/reference_layers.png){#fig-baselayers}
+
+For an effective workflow, it is a good idea to organize your data well. For this tutorial, we'll keep the base layers in the [PERMANENT]{.style-db} mapset. We'll use separate mapsets for the input data for our modelling and the modelling results.
+
+### Boundaries {#sec-nationalboundaries}
+
+We'll use the 1:10m scale data from [Natural Earth](https://www.naturalearthdata.com/), a public domain map dataset available at various scales. We download the Shapefile from [Admin 0 - countries](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) and unzip the data to the working directory. Next, we import the Shapefile in GRASS as [admin0]{.style-data} using [v.in.ogr](https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html).
+
+::: {#exm-XmMn498Mh .hiddendiv}
+:::
+
 ::: {.panel-tabset}
 ## {{< fa solid terminal >}}
 
@@ -149,12 +160,72 @@ Note, the assumption is that the GeoPackage file is in your working directory, w
 
 When using `v.in.ogr`, a GeoPackage is treated as a container of separate layers, not a single dataset. That means that if the GeoPackage contains multiple layers, each layer must be explicitly specified and imported individually.
 
+: {tbl-colwidths="\[50,50\]"}
 :::
 
 Next, download the Copernicus DEM ([CopDEM.tif](https://ecodiv.earth/share/sdm_in_grassgis/CopDEM.tif): downsampled to a resoluton of 0.00833 arc degree), the shaded relief map ([shaded_relief.tif](https://ecodiv.earth/share/sdm_in_grassgis/shaded_relief_NE.tif)) and the Urban areas map ([urban_areas.tif](https://ecodiv.earth/share/sdm_in_grassgis/urban_areas.tif)) and copy the files to your working directory. Next, import these layers in GRASS with the `r.in.gdal` function.
 
+::: {#exm-7Z3CL3lWfe .hiddendiv}
+:::
 
-::: {#exm-Xm99Mh .hiddendiv}
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+# Import urban areas raster
+r.in.gdal input=urban_areas.tif output=urban_areas
+
+# Import shaded relief raster
+r.in.gdal input=shaded_relief.tif output=shaded_relief
+
+# Import the digital elevation model (cop90)
+r.in.gdal input=cop90.tif output=cop90
+
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("g.region", n=55, s=35, w=-10, e=33)
+```
+
+## {{< fa regular window-restore >}}
+
+{{< video "https://ecodiv.earth/share/sdm_in_grassgis/set_region_extent_interactively.mp4" >}}
+:::
+
+The next step is to create a vector layer [aoi]{.style-data} with a polygon representing the boundaries of the region's extent using [v.in.region](https://grass.osgeo.org/grass84/manuals/v.in.region.html).
+
+::: {#exm-skRCyG0NKS .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+v.in.region output=aoi
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("v.in.region", output="aoi")
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [v.in.region]{.style-function} dialog. Fill in:
+
+| Parameter | Value |
+|-----------|-------|
+| output    | aoi   |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+To save some space, we can use the [aoi]{.style-data} vector layer to clip the [admin0]{.style-data} layer to the spatial bounds of the computational region using [v.clip](https://grass.osgeo.org/grass-stable/manuals/v.clip.html), save the result as [countries]{.style-data}, and subsequently remove the [admin0]{.style-data} layer using the [g.remove](https://grass.osgeo.org/grass84/manuals/g.remove.html) module.
+
+::: {#exm-u9sDIGepop .hiddendiv}
 :::
 
 ::: {.panel-tabset}
@@ -177,16 +248,11 @@ r.in.gdal input=cop90.tif output=cop90
 ``` python
 # Import urban areas raster
 gs.run_command(
-    "r.in.gdal",
-    input="urban_areas.tif",
-    output="urban_areas"
-)
-
-# Import shaded relief raster
-gs.run_command(
-    "r.in.gdal",
-    input="shaded_relief_NE.tif",
-    output="shaded_relief_NE"
+    "v.in.ogr",
+    flags="r",
+    input="ne_10m_roads.shp",
+    where="featurecla='Road'",
+    output="tmp",
 )
 
 # Import the digital elevation model (eudem)
@@ -217,25 +283,78 @@ Repeat for the digital elevation model (eudem) map:
 - Set the name of the output raster layer as [eudem]{.style-parameter}.
 - Click on [Run]{.style-menu}
 
+: {tbl-colwidths="\[50,50\]"}
 :::
 
-Open the layers in the Layers panel and style them as you like. You can also add any other layer. For example, you can add the Corina land use layer. I'll leave that as an exercise for you.
+Next, we clip the layer to the boundaries of our region with [v.clip](https://grass.osgeo.org/grass-stable/manuals/v.clip.html) and remove the temporary data.
 
-## Species range map {#sec-rangemap}
+In this particular case, we are out of luck, as the resulting vector layer does not have an attribute table. This type of error is often caused by incorrect attribute data, such as hard returns or invalid column names. The latter is the case here. There is a column 'add', which GRASS does not accept. There are two ways to fix this. Rename the offending column with [v.db.renamecolumn](https://grass.osgeo.org/grass-stable/manuals/v.db.renamecolumn.html) or remove it using [v.db.dropcolumn](https://grass.osgeo.org/grass-stable/manuals/v.db.dropcolumn.html). We'll go for the latter solution.
 
-To get an idea of the distribution of our species, we first consult expert-derived range information. A commonly used source is the [IUCN Red List](https://www.iucnredlist.org/).
-
-Visit the website and log in. If you do not yet have an account, create one first. Use the search bar to find the species, preferably by its scientific name.
-
-::: {.callout-note}
-The IUCN Red List uses a different scientific name for this species, namely _Erebia albergana_. This is something to be aware of; scientific names are not always used consistently across data sources.
+::: {#exm-e84zg44AIs .hiddendiv}
 :::
 
-Download the range data and unzip the files into your working directory. If you plan to use these data in a report or publication, note the citation information provided on the webpage (below the Abstract). Recording this information now will save time later and helps ensure proper data attribution.
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
 
-Next, create a new mapset called [Erebia_alberganus]{.style-data}. This mapset will be used to store the distribution data of our species. Import the downloaded range map into this mapset. Because the mapset itself already identifies the species, the names of the layer is kept generic, for example rangemap and occurrences.
+``` bash
+# Remove problematic column
+v.db.dropcolumn map=tmp columns=add
 
-This naming strategy only works if a mapset is dedicated to a single species. If you store data for multiple species in the same mapset, layer names would need to include the species name or another clear identifier to avoid confusion.
+# Clip to aoi spatial bounds
+v.clip input=tmp clip=aoi output=roads
+
+# Remove temporary data
+g.remove -f type=vector name=tmp
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Remove problematic column
+gs.run_command("v.db.dropcolumn", map="tmp", columns="add")
+
+# Clip to aoi spatial bounds
+gs.run_command("v.clip", input="tmp", clip="aoi", output="roads")
+
+# Remove temporary data
+gs.run_command("g.remove", flags="f", type="vector", name="tmp")
+```
+
+## {{< fa regular window-restore >}}
+
+Open the [v.db.dropcolumn]{.style-function} dialog.
+
+| Parameter | Value |
+|-----------|-------|
+| map       | tmp   |
+| column    | add   |
+
+: {tbl-colwidths="\[50,50\]"}
+
+Open the [v.clip]{.style-function} dialog, and fill in:
+
+| Parameter | Value |
+|-----------|-------|
+| input     | tmp   |
+| clip      | aoi   |
+| output    | roads |
+
+: {tbl-colwidths="\[50,50\]"}
+
+Open the [g.remove]{.style-function} dialog, and fill in:
+
+| Parameter         | Value  |
+|-------------------|--------|
+| type              | vector |
+| name              | tmp    |
+| Force removal (r) | ✅     |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+### Rivers {#sec-rivers}
+
+We get the river data from Natural Earth as well ([download link](https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-rivers-lake-centerlines/)). Download both the [rivers and lake centerlines]{.style-db} and [Europe supplement]{.style-db} Shapefiles and unzip them into your working directory. We'll use the same steps as above to import these layers.
 
 ::: {#exm-XmMn4IG2Mh .hiddendiv}
 :::
@@ -314,6 +433,264 @@ The downloaded file is a tab delimited text file, which can be imported with the
 :::
 
 ::: {.panel-tabset}
+## {{< fa solid terminal >}}
+
+Replace the name of the input file with the name of the CSV file you downloaded from GBIF.
+
+``` bash
+v.in.gbif input=0069182-251120083545085.csv output=occurrences
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "v.in.gbif", input="DataFiles/speciesdata/0069182-251120083545085.csv", output="occurrences"
+)
+```
+
+## {{< iconify carbon gui size=lg >}}
+
+Open the `v.in.gbif` dialog, and run it with the following parameter settings:
+
+| Parameter | Value                       |
+|-----------|-----------------------------|
+| input     | 0069182-251120083545085.csv |
+| output    | occurrences       |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+After importing the data in GRASS, it is good practice to check carefully for outliers and other possible problems. If you zoom to the extent of the data, you may find out that there are a outliers that are clearly erroneous, such as points in the ocean. A common problem is features with coordinates at (0, 0). These typically indicate records with missing coordinates that were filled with zeros during data preparation or import. You can easily identify such cases by opening the attribute table and sorting by [g.decidmallatitude]{.style-parameter} or [decimalLongitude]{.style-parameter} (click on the column header). 
+
+::: {#exm-84575 .hiddendiv}
+:::
+
+::: {.panel-tabset}
+## {{< fa solid terminal >}}
+
+You can remove these points using the [v.db.droprow](https://grass.osgeo.org/grass-stable/manuals/v.db.droprow.html) module, which creates a new vector map containing only the features that do not match the selection criteria. 
+
+``` bash
+# Select and remove features
+v.db.droprow input=occurrences where="g_decimallatitude=0" output=temp
+```
+
+Because `v.db.droprow` does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.
+
+``` bash
+# Replace previous layer with current version, using the original name
+g.rename vector=temp,occurrences --overwrite
+```
+
+## {{< fa brands python >}}
+
+You can remove these points using the [v.db.droprow](https://grass.osgeo.org/grass-stable/manuals/v.db.droprow.html) module, which creates a new vector map containing only the features that do not match the selection criteria. 
+
+``` python
+gs.run_command(
+    "v.db.droprow",
+    input="occurrences@Erebia_alberganus",
+    where="g_decimallatitude=0",
+    output="temp"
+)
+```
+
+Because `v.db.droprow` does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.
+
+``` python
+# Replace previous layer with current version, using the original name
+gs.run_command("g.rename", vector="temp,occurrences", overwrite=True)
+```
+
+
+## {{< iconify carbon gui size=lg >}}
+
+Open the `v.db.droprow` dialog, and run it with the following parameter settings:
+
+| Parameter | Value                           |
+|-----------|---------------------------------|
+| input       | occurrences@Erebia_alberganus |
+| where       | g_decimallatitude=0           |
+| output      | temp                          |
+
+Because `v.db.droprow` does not allow to modify data in place, the subsequent [g.rename](https://grass.osgeo.org/grass-stable/manuals/g.rename.html) step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map. Run it with the following parameter settings:
+
+| Parameter | Value                |
+|-----------|----------------------|
+| vector       | temp,occurrences  |
+| overwrite    | ✅                |
+
+
+: {tbl-colwidths="\[50,50\]"}
+
+
+## {{< fa question >}}
+
+Here are several alternative ways to remove these erroneous points:
+
+- One option is to use v.edit to delete the points directly. Be aware, however, that this approach removes only the geometries; the corresponding rows in the attribute table remain.
+- Alternatively, you can open the occurrences attribute table, sort by g_decimallatitude, select the rows where g_decimallatitude = 0, then right-click and choose Delete selected features.
+- You can also remove the points manually in editing mode. Activate editing by clicking the pencil icon in the Layers panel, select the points with latitude 0, and delete them.
+- Another option is to use [v.extract](https://grass.osgeo.org/grass-stable/manuals/v.extract.html) to create a new layer containing only valid points—for example, by extracting all features with latitude greater than 0.
+
+Being aware of these alternatives is useful, as the most appropriate method depends on the specific task and your familiarity with the available tools.
+
+:::
+
+Not all errors are that obvious. To identify other potential problems, you will need to visually inspect the data and compare them with other sources of information, like the RED list range map (@fig-rangemapoccurrences). 
+
+One likely error in the data are the points on the northern coast of France (@fig-rangemapoccurrences). These points are far outside the known range of the species, so we are going to assume that these are errors. You can check that these points are above 50 degrees latitude. We can delete them in the same way as the previous example.
+
+::: {#exm-845752 .hiddendiv}
+:::
+
+::: {.panel-tabset}
+## {{< fa solid terminal >}}
+
+``` bash
+# Select and remove features
+v.db.droprow input=occurrences where="g_decimallatitude>=50" output=temp
+
+# Replace previous layer with current version, using the original name
+g.rename vector=temp,occurrences --overwrite
+```
+
+## {{< fa brands python >}}
+
+``` python
+# Remove the features (points)
+gs.run_command(
+    "v.db.droprow",
+    input="occurrences",
+    where="g_decimallatitude>=50",
+    output="temp"
+)
+
+# Replace previous layer with current version, using the original name
+gs.run_command(
+    "g.rename",
+    vector="temp,occurrences",
+    overwrite=True,
+)
+```
+
+## {{< iconify carbon gui size=lg >}}
+
+Open the `v.db.droprow` dialog, and run it with the following parameter settings:
+
+| Parameter | Value                           |
+|-----------|---------------------------------|
+| input       | occurrences@Erebia_alberganus |
+| where       | g_decimallatitude>=50           |
+| output      | temp                          |
+
+Run `g.rename` with the following parameter settings:
+
+| Parameter | Value                |
+|-----------|----------------------|
+| vector       | temp,occurrences  |
+| overwrite    | ✅                |
+
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+Keep in mind that we imported the land cover raster at approximately its original resolution. For further analyses with this layer, it may be necessary to resample this layer so it matches the resolution of other raster layers. GRASS can handle resampling automatically "on the fly", which is convenient. However, it’s important to think critically about whether the default nearest neighbor method is truly the best option. We’ll revisit this topic later, but for now, make a note of it.
+
+## Species range map {#sec-rangemap}
+
+To get an idea of the distribution of our species, we first consult expert-derived range information. A commonly used source is the [IUCN Red List](https://www.iucnredlist.org/).
+
+Visit the website and log in. If you do not yet have an account, create one first. Use the search bar to find the species, preferably by its scientific name.
+
+::: {.callout-note}
+The IUCN Red List uses a different scientific name for this species, namely _Erebia albergana_. This is something to be aware of; scientific names are not always used consistently across data sources.
+:::
+
+Download the range data and unzip the files into your working directory. If you plan to use these data in a report or publication, note the citation information provided on the webpage (below the Abstract). Recording this information now will save time later and helps ensure proper data attribution.
+
+Next, create a new mapset called [Erebia_alberganus]{.style-data}. This mapset will be used to store the distribution data of our species. Import the downloaded range map into this mapset. Because the mapset itself already identifies the species, the names of the layer is kept generic, for example rangemap and occurrences.
+
+This naming strategy only works if a mapset is dedicated to a single species. If you store data for multiple species in the same mapset, layer names would need to include the species name or another clear identifier to avoid confusion.
+
+::: {#exm-XmMn4IG2Mh .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
+## {{< fa solid terminal >}}
+
+``` bash
+g.mapset -c mapset=Erebia_alberganus
+v.in.ogr input=data_0.shp output=rangemap
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("g.mapset", flags="c", mapset="Erebia_alberganus")
+gs.run_command(
+    "v.in.ogr",
+    input="data_0.shp",
+    output="rangemap",
+)
+```
+
+## {{< iconify carbon gui size=lg >}}
+
+Type in `g.mapset` in the console to open the dialog, and use the following parameter settings.
+
+| Parameter                             | Value             |
+|---------------------------------------|-------------------|
+| mapset                                | Erebia_alberganus |
+| Create mapset if it doesn't exist (c) | ✅                |
+
+: {tbl-colwidths="\[50,50\]"}
+
+Run `v.in.ogr with the following parameter settings:
+
+| Parameter | Value                      |
+|-----------|----------------------------|
+| input     | data_0.shp                 |
+| output    | rangemap                   |
+
+: {tbl-colwidths="\[50,50\]"}
+:::
+
+## Species occurrences {#sec-occurrence}
+
+The Global Biodiversity Information Facility ([GBIF](https://www.gbif.org/)) provides openly accessible records of species occurrences, which is the primary type of data used in species distribution modeling. 
+
+::: {.aside}
+::: {.callout-note appearance="default" title="About GBIF"}
+GBIF is an international biodiversity informatics infrastructure that aggregates occurrence data spanning more than three centuries of natural history, including historical museum specimens and contemporary observations. These data are contributed by a wide range of sources, such as research institutions, citizen science initiatives, and automated monitoring programs, and are made freely available under open-data principles.
+:::
+:::
+
+Before downloading data, you must first register on the site. Once logged in, search for *Erebia alberganus* von Prunner, 1798. Select the result and open the page. Then click on the green button with the number of observations to open the table with observations.
+
+![At the time of writing, GBIF had 20999 occurrences of *Erebia alberganus*. After applying the filters described below, 18,642 records remained](images/numberofoccurrences.png){#fig-numerofoccurrences fig-align="left"}
+
+In the new window, apply the filters you consider relevant. For example, under [Basis of record]{.style-menu}, select [Human observation]{.style-menu} and [Occurrences]{.style-menu} to exclude fossil records or machine-based observations. You may also restrict the data to a specific time period, for example, the last 45 years.
+
+Finally, check the [Issues and flags]{.style-menu} section to exclude records with known problems, such as missing coordinates. If you only want to exclude a few issues, you can reverse the selection at the bottom of the list.
+
+Note which filters and what settings you used to select the records. Tip: open the map tab and check the map each time you change a filter to see how it affects the selection of observations.
+
+![The table shows all occurrence records for our species. In the panel at the left, you can select specific records based on a number of criteria.](images/gbifoccurrencefilters.png){#fig-gbiffilters fig-align="left"}
+
+Click on the [download]{.style-menu} tab and select the [Simple]{.style-menu} option. This will take you to the download page (it may take a while to complete, but you get an email when the download is ready). When the download is complete, download the file and unzip into to your data. 
+
+::: callout-tip
+It is good practice to cite the data you use in your publications. GBIF conveniently provides you with the citation on the download page, including a Digital Object Identifier (DOI). This is a link to a web page that describes your search, including any filters you have set. Copy and save the citation, so you can use it in your report. If you are using a reference manager such as [Zotero](https://www.zotero.org/) (highly recommended), you can use the provided BibTex or RIS file to import the reference.
+:::
+
+The downloaded file is a tab delimited text file, which can be imported with the [v.in.ascii](https://grass.osgeo.org/grass-stable/manuals/v.in.ascii.html) module. A more convenient way is to import the downloaded data using the [v.in.gbif](https://grass.osgeo.org/grass-stable/manuals/addons/v.in.gbif.html) module. It's an addon, so install it if you haven't done so yet.
+
+::: {#exm-EZ65hmOvkK .hiddendiv}
+:::
+
+::: {.panel-tabset group="interface"}
 ## {{< fa solid terminal >}}
 
 Replace the name of the input file with the name of the CSV file you downloaded from GBIF.

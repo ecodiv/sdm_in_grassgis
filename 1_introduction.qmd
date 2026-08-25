@@ -18,6 +18,12 @@ Do not copy command-line examples blindly. Code snippets often contain placehold
 
 :::
 
+::: {.callout-warning  appearance="simple"}
+
+Do not copy command-line examples blindly. Code snippets often contain placeholders, such as `path-to-file`, that must be replaced with, in this case, the actual location of the file on your system. Always check whether paths, filenames, and parameters need to be adapted before running a command.
+
+:::
+
 While detailed explanations of the various settings and parameters are not always provided, each function includes a link to its corresponding help page. These help pages are comprehensive, and reading them is highly recommended to fully understand the choices made in the tutorial and the options available to you.
 
 ::: {.callout-tip appearance="simple" collapse="true"}
