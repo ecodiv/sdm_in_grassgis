@@ -470,14 +470,7 @@ To assess if and where future conditions are outside the range of conditions obs
 
 
 # Compute mess
-<<<<<<< HEAD
 r.mess -m -n -k -c -i ref_env=bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 proj_env=ECE3V_585_8100.1,ECE3V_585_8100.2,ECE3V_585_8100.4,ECE3V_585_8100.8,ECE3V_585_8100.9,ECE3V_585_8100.13,ECE3V_585_8100.14,ECE3V_585_8100.15,ECE3V_585_8100.19 ref_rast=referencepoints output=mess nprocs=2 memory=1000
-=======
-r.mess flags=mnkci \# <1>
-ref_env=bio_1,bio_2,bio_4,bio_8,bio_9,bio_13,bio_14,bio_15,bio_19 \
-proj_env=bio.1,bio.2,bio.4,bio.8,bio.9,bio.13,bio.14,bio.15,bio.19 \
-ref_rast=referencepoints output=mess nprocs=2 memory=1000
->>>>>>> origin/main
 ```
 
 Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) about the meaning of the flags [m]{.style-parameter}, [n]{.style-parameter}, [k]{.style-parameter}, [c]{.style-parameter} and [i]{.style-parameter}.
