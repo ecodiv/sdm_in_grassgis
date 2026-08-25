@@ -1,6 +1,6 @@
 # The basic steps {#sec-basics}
 
-In this part we'll go through the basic steps of species distribution modeling: acquiring and importing data (section [2](#sec-data)), preparing the data (section [3](#sec-dataprep)), training, validating and evaluating distribution models (section [4](#sec-modeltraining)), and using these models to predict the future potential distribution of the almond-eyed ringlet butterfly (section [5](#sec-modelprediction)). By the end of this section, you will know how to build a species distribution model using Maxent, and how to visualize the results.
+In this part, we introduce the basic workflow of species distribution modeling. We start with acquiring and importing data (section [2](#sec-data)), followed by data preparation (section [3](#sec-dataprep)). Next, we train, validate, and evaluate distribution models (section [4](#sec-modeltraining)). Finally, we use these models to predict the potential future distribution of the almond-eyed ringlet butterfly (section [5](#sec-modelprediction)). By the end of this part, you will be able to build a species distribution model using Maxent and to visualise and interpret the results.
 
 ![The four main steps in species distribution modeling and the corresponding GRASS GIS addon[^the_basics-1].](images/modeling_workflow.png){#fig-modeling_workflow fig-align="left"}
 
@@ -8,7 +8,7 @@ In this part we'll go through the basic steps of species distribution modeling: 
 
 [^the_basics-2]: The rationale for having separate addons for each step is to encourage and help the user to carefully consider the assumptions and considerations at each stage of the modeling process. The tutorial follows the same structure.
 
-This is just the beginning of your journey into species distribution modeling. You normally will further explore various ways to fine-tune your model. This includes experimenting with different input data, adjusting parameters, and evaluating the outcomes to identify the best model or set of models for your needs. Some of these steps are explored in the second part of this reader, 'Beyond the Basics', where we dive deeper into techniques for refining and validating your models.
+This is only the starting point of your journey into species distribution modeling. In practice, model development is an iterative process that involves fine-tuning. This may include experimenting with different input data, adjusting model parameters, and comparing model performance to identify the most suitable model or set of models for a given question. Several of these advanced steps are addressed in the second part of this reader, *Beyond the basics*, where we explore methods for improving and validating species distribution models in more detail.
 
 <!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->
 

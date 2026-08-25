@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paulo van Breugel">
+
+<title>Ecodiv.earth | sdm in grass – Species distribution modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./A3_sampledata.html" rel="next">
+<link href="./references.html" rel="prev">
+<link href="./images/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a2d81309921060cb4eca094a98445b7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-7583084869af5459983b8eb5a0e13933.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-a2d81309921060cb4eca094a98445b7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script src="site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<meta property="og:title" content="Ecodiv.earth | sdm in grass">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://ecodiv.earth/images/startup_firsttime_users.png">
+<meta property="og:site_name" content="Species distribution modeling">
+<meta property="og:image:height" content="1077">
+<meta property="og:image:width" content="1948">
+<meta name="twitter:title" content="Ecodiv.earth | sdm in grass">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://ecodiv.earth/images/startup_firsttime_users.png">
+<meta name="twitter:site" content="@ecodiv">
+<meta name="twitter:image-height" content="1077">
+<meta name="twitter:image-width" content="1948">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title"><span id="seq-AppendixA" class="quarto-section-identifier">Appendix A. GRASS basics</span></h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./images/logo_SDM2.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo_SDM2.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SDM in GRASS<br><span class="modifieddate">1st publication date: 2025-2-12</span></a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/ecodiv/sdm_in_grassgis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The basic steps</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_obtaining_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Acquire the data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_data_preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Prepare the data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4_model_training.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model training</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./5_model_prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6_modelvalidation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Model evaluation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./7_finetuning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model fine-tuning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A1_grassbasics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">GRASS basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A3_sampledata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data sources</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A4_scriptmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Scripting a map</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A6_troubleshooting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Trouble shooting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A7_baselayers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Base layers</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#first-time-use" id="toc-first-time-use" class="nav-link active" data-scroll-target="#first-time-use"><span class="header-section-number">A.1</span> First time use</a></li>
+  <li><a href="#sec-thedatabase" id="toc-sec-thedatabase" class="nav-link" data-scroll-target="#sec-thedatabase"><span class="header-section-number">A.2</span> The database</a>
+  <ul class="collapse">
+  <li><a href="#sec-dbstructure" id="toc-sec-dbstructure" class="nav-link" data-scroll-target="#sec-dbstructure"><span class="header-section-number">A.2.1</span> DB structure</a></li>
+  <li><a href="#mapset-access" id="toc-mapset-access" class="nav-link" data-scroll-target="#mapset-access"><span class="header-section-number">A.2.2</span> Mapset access</a></li>
+  <li><a href="#sec-attributemanagement" id="toc-sec-attributemanagement" class="nav-link" data-scroll-target="#sec-attributemanagement"><span class="header-section-number">A.2.3</span> Attribute management</a></li>
+  <li><a href="#create-a-database" id="toc-create-a-database" class="nav-link" data-scroll-target="#create-a-database"><span class="header-section-number">A.2.4</span> Create a database</a></li>
+  </ul></li>
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import"><span class="header-section-number">A.3</span> Data import</a></li>
+  <li><a href="#data-management" id="toc-data-management" class="nav-link" data-scroll-target="#data-management"><span class="header-section-number">A.4</span> Data management</a></li>
+  <li><a href="#sec-runningfunctions" id="toc-sec-runningfunctions" class="nav-link" data-scroll-target="#sec-runningfunctions"><span class="header-section-number">A.5</span> GRASS modules</a></li>
+  <li><a href="#sec-usingaddons" id="toc-sec-usingaddons" class="nav-link" data-scroll-target="#sec-usingaddons"><span class="header-section-number">A.6</span> GRASS addons</a></li>
+  <li><a href="#sec-computationalregion" id="toc-sec-computationalregion" class="nav-link" data-scroll-target="#sec-computationalregion"><span class="header-section-number">A.7</span> Computational region</a></li>
+  <li><a href="#sec-mask" id="toc-sec-mask" class="nav-link" data-scroll-target="#sec-mask"><span class="header-section-number">A.8</span> Using a MASK</a></li>
+  <li><a href="#sec-workinginpython" id="toc-sec-workinginpython" class="nav-link" data-scroll-target="#sec-workinginpython"><span class="header-section-number">A.9</span> Working in Python</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ecodiv/sdm_in_grassgis/edit/main/A1_grassbasics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ecodiv/sdm_in_grassgis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span id="seq-AppendixA" class="quarto-section-identifier">Appendix A. GRASS basics</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>GRASS (Geographic Resources Analysis Support System) offers a wide range of tools for terrain and ecosystem modeling, hydrology, management and analysis of geospatial data, and the processing of satellite and aerial imagery. It comes with a temporal framework for advanced time series processing and a Python API for rapid geospatial programming. <a href="https://grass.osgeo.org/learn/overview/">Read more here…</a></p>
+<p>The functionality of GRASS can be used from its Graphical User Interface (GUI, <a href="#fig-startupfirsttimeusers" class="quarto-xref">Figure&nbsp;<span>A.1</span></a>), from command line (CLI), from a Python IDE or Jupyter Notebook via the <a href="https://grass.osgeo.org/grass-stable/manuals/libpython/script_intro.html">grass.script</a>, <a href="https://grass.osgeo.org/grass-stable/manuals/libpython/pygrass_index.html">pygrass</a> or <a href="https://grass.osgeo.org/grass84/manuals/libpython/grass.jupyter.html">grass.jupyter packages</a>, from R IDEs like RStudio via the <a href="https://github.com/rsbivand/rgrass/">rgrass</a> package, from REST APIs like <a href="https://actinia.mundialis.de/">Actinia</a> and also via web processes like WPS. GRASS is a versatile and robust software package.</p>
+<p>For users not familiar with GRASS, start with this page, and next, check out the <a href="https://grass.osgeo.org/learn/newcomers/">First time users</a> page. For those who are well versed in GIS, but new to GRASS, have a look at these <a href="https://grasswiki.osgeo.org/wiki/GRASS_migration_hints">tips</a>. And if you are more familiar with ArcGIS, check out the page <a href="https://grasswiki.osgeo.org/wiki/GRASS_GIS_for_ArcGIS_users">GRASS for ArcGIS users</a> to get a grasp of the main GRASS concepts you should know about. QGIS users should note that most grass functions used in this tutorial are also <a href="https://docs.qgis.org/3.34/en/docs/user_manual/grass_integration/grass_integration.html">available in QGIS</a>.</p>
+<section id="first-time-use" class="level2" data-number="A.1">
+<h2 data-number="A.1" class="anchored" data-anchor-id="first-time-use"><span class="header-section-number">A.1</span> First time use</h2>
+<p>To run GRASS, click on the GRASS link on the desktop or from the system menu. Alternatively, open the command line window and type <span class="style-apps">grass</span>. When <a href="https://grass.osgeo.org/grass-stable/manuals/grass.html">launching</a> GRASS for the first time, you will open a default project called <span class="style-data">world_latlog_wgs84</span> where you can find a map layer called <span class="style-data">country_boundaries</span> showing a world map in the <a href="https://epsg.io/4326">WGS84 coordinate system</a>.</p>
+<div id="fig-startupfirsttimeusers" class="quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-startupfirsttimeusers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/startup_firsttime_users.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;A.1: Start-up screen for first time users. On the left, you can find the data browser which allows you to navigate through your projects and data, and the layers panel showing displayed layers. The panel in the middle is the map display. You can add additional ones if you need using . On the right there are multiple tabs where you can find a searchable tools’ tree similar to the Processing toolbox in QGIS, a console where you can type GRASS commands, the history of executed commands in case you want to re-run a task and a simple Python console where you can use the GRASS Python API."><img src="images/startup_firsttime_users.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-startupfirsttimeusers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.1: Start-up screen for first time users. On the left, you can find the data browser which allows you to navigate through your projects and data, and the layers panel showing displayed layers. The panel in the middle is the map display. You can add additional ones if you need using <a href="images/newwindow.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;A.1: Start-up screen for first time users. On the left, you can find the data browser which allows you to navigate through your projects and data, and the layers panel showing displayed layers. The panel in the middle is the map display. You can add additional ones if you need using . On the right there are multiple tabs where you can find a searchable tools’ tree similar to the Processing toolbox in QGIS, a console where you can type GRASS commands, the history of executed commands in case you want to re-run a task and a simple Python console where you can use the GRASS Python API."><img src="images/newwindow.png" class="img-fluid figure-img"></a>. On the right there are multiple tabs where you can find a searchable tools’ tree similar to the Processing toolbox in QGIS, a console where you can type GRASS commands, the history of executed commands in case you want to re-run a task and a simple Python console where you can use the GRASS Python API.
+</figcaption>
+</figure>
+</div>
+<p>To practice, you can download various sample datasets. For example, the <span class="style-data">North Carolina</span> dataset is often used in tutorials. You can simply reach them through <span class="style-menu">Download sample project to current database</span> icon <img src="images/location-download.png" class="img-fluid"> in the <span class="style-menu">Data</span> panel. The sample data will be downloaded and imported as a new project in the current GRASS database.</p>
+<p>The start up message offers you the option to create a new <span class="style-data">project</span> (it still uses the older term Location for <span class="style-data">project</span> here). Selecting this will start a <span class="style-menu">project wizard</span> which will guide you through a series of steps to browse and select the <a href="https://en.wikipedia.org/wiki/Spatial_reference_system">coordinate reference system (CRS)</a> suitable for your study area or one that matches your data’s CRS. By default, it will do this in the current GRASS database, but you have the option to create a new one in the process. But before you start creating your own database, let’s see how GRASS handles and stores data.</p>
+</section>
+<section id="sec-thedatabase" class="level2" data-number="A.2">
+<h2 data-number="A.2" class="anchored" data-anchor-id="sec-thedatabase"><span class="header-section-number">A.2</span> The database</h2>
+<section id="sec-dbstructure" class="level3" data-number="A.2.1">
+<h3 data-number="A.2.1" class="anchored" data-anchor-id="sec-dbstructure"><span class="header-section-number">A.2.1</span> DB structure</h3>
+<p>Raster (incl.&nbsp;aerial imagery and satellite data) and vector data are stored in a GRASS database. Hence, all external data files (GeoTIFF, SHAPE, GeoPackage, …) need to be imported into the GRASS database. The database consist of a set of folders and files with certain structure (<a href="#fig-grassgisdb" class="quarto-xref">Figure&nbsp;<span>A.2</span></a>). Directories within a GRASS database are called <span class="style-data">projects</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. All data in a <span class="style-data">project</span> are in the same projection/coordinate reference system (CRS)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Typically, a <span class="style-data">project</span> contains all data related to one project or a geographic area. Alternatively, a <span class="style-data">project</span> can simply contain all data in a given CRS.<br><br></p>
+<div id="fig-grassgisdb" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grassgisdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/grassgis_db_structure.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;A.2: A sample GRASS dataset names grassdata with three projects, nc_spm, usa_albers and world_latlon. All data in one project have the same coordinate reference system (projection, datum). The structure of the nc_spm project includes the obligatory PERMANENT mapset, a mapset with data for the Wake county and another mapset with data set for user 1."><img src="images/grassgis_db_structure.png" class="img-fluid quarto-figure quarto-figure-left figure-img" width="500"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grassgisdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.2: A sample GRASS dataset names <span class="style-data">grassdata</span> with three projects, <span class="style-data">nc_spm</span>, <span class="style-data">usa_albers</span> and <span class="style-data">world_latlon</span>. All data in one project have the same coordinate reference system (projection, datum). The structure of the <span class="style-data">nc_spm</span> project includes the obligatory <span class="style-data">PERMANENT</span> mapset, a mapset with data for the Wake county and another mapset with data set for user 1.
+</figcaption>
+</figure>
+</div>
+<p>At the project level, data is further organized into subprojects called mapsets. Every project includes a obligatory <span class="style-data">PERMANENT</span> <span class="style-data">mapset</span>, which typically contain commonly used data within one GRASS project such as base maps. It can furthermore contain other <span class="style-data">mapsets</span> (subprojects) that can be used to group data sets together according to e.g., area, task, theme or user.</p>
+</section>
+<section id="mapset-access" class="level3" data-number="A.2.2">
+<h3 data-number="A.2.2" class="anchored" data-anchor-id="mapset-access"><span class="header-section-number">A.2.2</span> Mapset access</h3>
+<p>When you’re working within the PERMANENT mapset, you automatically have read access to all the other mapsets within that project This allows you to use data from any other mapset in the current location without needing to change settings or append the mapset name.</p>
+<p>If you are working within any other mapset (besides <span class="style-data">PERMANENT</span>), you do not have automatic access to the data in other mapsets. To use data from a different mapset, you have two options:</p>
+<ul>
+<li>Append the name of the mapset to the layer name using the format <code>layername@mapsetname</code>. This lets GRASS know to look for the layer in a different mapset.</li>
+<li>Use the <a href="https://grass.osgeo.org/grass-stable/manuals/g.mapsets.html">g.mapsets</a> command to add access to multiple mapsets. Alternatively, use the <a href="https://grass.osgeo.org/grass-stable/manuals/wxGUI.datacatalog.html">Data catalog</a> to grant access.</li>
+</ul>
+<p>Regardless of which mapset you are working in, you can only write (create or modify) layers in the current mapset. Even if you access data from other mapsets, you cannot modify or add data to those mapsets. This ensures that mapsets maintain some level of separation and data integrity, preventing accidental changes to data outside your working environment.</p>
+<p>For GIS users not used to this setup, it may take a bit to get used to. But it has some clear advantages. Read <a href="https://grass.osgeo.org/grass-stable/manuals/grass_database.html">this overview</a> for more information about the GRASS database.</p>
+</section>
+<section id="sec-attributemanagement" class="level3" data-number="A.2.3">
+<h3 data-number="A.2.3" class="anchored" data-anchor-id="sec-attributemanagement"><span class="header-section-number">A.2.3</span> Attribute management</h3>
+<p>In GRASS, the geometry (spatial data) of vector layers is stored and managed separately from their associated attribute data. The geometry (spatial data) of vector features, such as points, lines, and polygons, is stored in a special format within the GRASS database. This geometry data includes the coordinates that define the shape and location of each feature on the map. The attribute data (non-spatial data)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> stored it in a separate attribute database. GRASS supports various database management systems (DBMS), such as SQLite (default), PostgreSQL, MySQL etc.). All these database backends provide full SQL support<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>Each vector feature in the geometry data has a unique ID. This ID is used to link the feature to its corresponding row in the attribute table based on the matching ID (usually stored in the “cat” integer column). When performing analysis or creating maps, GRASS automatically combines the geometry with the relevant attribute information, allowing you to to work seamlessly with both the geometry and attribute data, even though they are stored separately.</p>
+<p>The way the data is stored is not something the casual user should be concerned with, but good to know for more advanced uses. It gives more flexibility as users can update or modify attribute data without affecting the geometry, and vice versa. For an example of how this can be used, see <a href="A7_baselayers.html#sec-rivers" class="quarto-xref"><span>Section E.0.3</span></a>.</p>
+</section>
+<section id="create-a-database" class="level3" data-number="A.2.4">
+<h3 data-number="A.2.4" class="anchored" data-anchor-id="create-a-database"><span class="header-section-number">A.2.4</span> Create a database</h3>
+<p>Creating a new database is rather straightforwards using the database <span class="style-menu">database wizard</span> <img src="images/grassdb-add.png" class="img-fluid">. It guides the user through a number of simple dialogs. In the example below a new GRASS database called <span class="style-data">GRASSdb</span> is created with a project called <span class="style-data">SDM</span> with the coordinate reference system (CRS) WGS84 lat/lon (<a href="https://epsg.io/4326">EPSG 4326</a>). Note that if you want to create a new project in an existing GRASS database, use the <span class="style-menu">project Wizard</span> <img src="images/location-add.png" class="img-fluid"> instead, and go straight to step 3.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page"><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> 2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> 3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> 4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> 5/6</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> 7</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>In the <span class="style-menu">Data catalog</span>, click the <a href="images/grassdb-add.png"></a> icon to create a new database. Next, select the folder in which you want to create the database. Create a new sub-folder (the GRASS data directory) with the name of your GRASS database and select it. After you have created the database, it will appear in the list of databases in the <span class="style-menu">Data panel</span>.</p>
+<p><a href="images/createnewdatabase.png" class="lightbox" data-gallery="createdb"><img src="images/createnewdatabase.png" class="img-fluid"></a></p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>After selecting the folder for your database, you are asked if you want to create a new <span class="style-data">project</span>. Select <span class="style-parameter">Yes</span></p>
+<p><a href="images/createnewdatabase2.png" class="lightbox" data-gallery="createdb"><img src="images/createnewdatabase2.png" class="img-fluid"></a></p>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Provide the name of the new <span class="style-data">project</span>, for example <span class="style-parameter">SDM</span>, optionally add a description, and hit <span class="style-parameter">Next</span>.</p>
+<p><a href="images/createnewdatabase3.png" class="lightbox" data-gallery="createdb"><img src="images/createnewdatabase3.png" class="img-fluid"></a></p>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p>If you know the CRS of your data or study area, you can fill EPSG code or description. In this example, use keep the default choice to select the CRS from a list by EPSG in the next step.</p>
+<p><a href="images/createnewdatabase4.png" class="lightbox" data-gallery="createdb"><img src="images/createnewdatabase4.png" class="img-fluid"></a></p>
+<p>If you do not know CRS of you data, you can read it from your georeferenced data file (e.g.&nbsp;GeoPackage or GeoTiff file with the related metadata properly included). If you use this option, you are asked whether the data itself should be imported into the new project. The default region is then set to match imported map.</p>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<p>Type in <span class="style-parameter">4326</span> in the search box of the ‘Select coordinate reference system (CRS) window’, hit <span class="style-parameter">Next</span> and in the subsequent ‘Data transformation’ window keep the default and hit <span class="style-parameter">Next</span> again.</p>
+<p><a href="images/createnewdatabase5.png" class="lightbox" data-gallery="createdb"><img src="images/createnewdatabase5.png" class="img-fluid"></a></p>
+</div>
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<p>Review the information in the ‘Summary’ window, and if everything is OK, hiet <span class="style-parameter">Enter</span>.</p>
+<p><a href="images/createnewdatabase6.png" class="lightbox" data-gallery="createdb"><img src="images/createnewdatabase6.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<p>The GRASS database and <span class="style-data">project</span> should now be visible in the <span class="style-menu">Data</span> panel, and include a <span class="style-data">PERMANENT</span> mapset. Note that you can also create a new database, project or mapset using Python code, as explained in <a href="#sec-workinginpython" class="quarto-xref"><span>Section A.9</span></a>.</p>
+</section>
+</section>
+<section id="data-import" class="level2" data-number="A.3">
+<h2 data-number="A.3" class="anchored" data-anchor-id="data-import"><span class="header-section-number">A.3</span> Data import</h2>
+<p>When processing spatial data in GRASS, the first step is to import the datasets of interest into GRASS (they can also just be registered to avoid data duplication at the expense of sometimes lower data quality). To import your own data, use the raster data import <img src="images/raster-import.png" class="img-fluid"> or vector data import <img src="images/vector-import.png" class="img-fluid"> tools. If the coordinate reference system (CRS) of your data does not match your project’s CRS, data will be automatically reprojected. Alternatively, you can import data using the command line. For the import of raster data, use <a href="https://grass.osgeo.org/grass-stable/manuals/r.import.html">r.import</a> or <a href="https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html">r.in.gdal</a>. The first offers on-the-fly reprojection<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, while the latter offers more control about how your data is imported. Similarly, you can import vector data using <a href="https://grass.osgeo.org/grass-stable/manuals/v.import.html">v.import</a> and <a href="https://grass.osgeo.org/grass-stable/manuals/v.in.ogr.html">v.in.ogr</a>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Import raster data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Import vector data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Import other data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div id="fig-importrasterdata" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="importdata" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-importrasterdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/import_rasterdata.png" class="lightbox" data-gallery="importdata" title="Figure&nbsp;A.3: Import raster data using the GUI or command line/console. Make sure to check the options under import settings tab."><img src="images/import_rasterdata.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-importrasterdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.3: Import raster data using the GUI or command line/console. Make sure to check the options under <span class="style-menu">import settings</span> tab.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="fig-importvectordata" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="importdata" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-importvectordata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/import_vectordata.png" class="lightbox" data-gallery="importdata" title="Figure&nbsp;A.4: Import vector data using the GUI or command line/console. Make sure to check the options under import settings tab."><img src="images/import_vectordata.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-importvectordata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.4: Import vector data using the GUI or command line/console. Make sure to check the options under <span class="style-menu">import settings</span> tab.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div id="fig-importotherdata" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="importdata" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-importotherdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/import_otherdata.png" class="lightbox" data-gallery="importdata" title="Figure&nbsp;A.5: GRASS can handle many different data types. Most types of raster can be imported using r.in.gdal, but you’ll find more options in the Raster import menu. Similarly, you’ll find more options for the import of vector, 3D and tabular data under the File menu."><img src="images/import_otherdata.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-importotherdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.5: GRASS can handle many different data types. Most types of raster can be imported using <code>r.in.gdal</code>, but you’ll find more options in the <span class="style-menu">Raster import</span> menu. Similarly, you’ll find more options for the import of vector, 3D and tabular data under the <span class="style-menu">File</span> menu.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>GRASS can handle many different data types, and offers various tools to import e.g., temporal data sets and satellite images as well. <a href="https://grass.osgeo.org/grass-stable/manuals/topic_import.html">This page</a> provides a list of core import modules. And for more specialized data import tools, check out the list of addons (<a href="#sec-usingaddons" class="quarto-xref"><span>Section A.6</span></a>).</p>
+</section>
+<section id="data-management" class="level2" data-number="A.4">
+<h2 data-number="A.4" class="anchored" data-anchor-id="data-management"><span class="header-section-number">A.4</span> Data management</h2>
+<p>The GUI interface allows you to find, explore, manage and display raster and vector data. More advanced exploration and visualization is also possible using, e.g., queries and adding legend. The screenshots below depicts some of the ways to display and explore data. You are encouraged to familiarize yourself with the different ways to interact with the data using the menu, context menu<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> and command line. For a more detailed overview of the GRASS GUI, see <a href="https://grass.osgeo.org/grass84/manuals/wxGUI.html">here</a>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Data catalog</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Adding layers</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Layer properties</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Attribute data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" role="tab" aria-controls="tabset-3-5" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Metadata</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div id="fig-datapanel" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="guiinterface" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-datapanel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/datapanel.png" class="lightbox" data-gallery="guiinterface" title="Figure&nbsp;A.6: To have a better overview of our raster and vector data, we can use the Data catalog. You can search for data by name and when you right click at the item. In the context menu, you’ll find options to e.g., easily copy or remove data, add them to display, or switch between mapsets. Note that by for safety reasons you can modify data only in current location and mapset. However, you can unlock the other mapsets for editing by clicking on the pencil."><img src="images/datapanel.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-datapanel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.6: To have a better overview of our raster and vector data, we can use the <a href="https://grass.osgeo.org/grass-stable/manuals/wxGUI.datacatalog.html">Data catalog</a>. You can search for data by name and when you right click at the item. In the context menu, you’ll find options to e.g., easily copy or remove data, add them to display, or switch between mapsets. Note that by for safety reasons you can modify data only in current location and mapset. However, you can unlock the other mapsets for editing by clicking on the pencil.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div id="fig-addrasterdata" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="guiinterface" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-addrasterdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/addrasterdata.png" class="lightbox" data-gallery="guiinterface" title="Figure&nbsp;A.7: Different ways to add raster data to the map display. The same goes for vector and 3D data."><img src="images/addrasterdata.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-addrasterdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.7: Different ways to add raster data to the map display. The same goes for vector and 3D data.
+</figcaption>
+</figure>
+</div>
+<div id="fig-mapdisplay" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="guiinterface" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mapdisplay-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/mapdisplay.png" class="lightbox" data-gallery="guiinterface" title="Figure&nbsp;A.8: Add overlay elements to the map and zoom, pan and query maps."><img src="images/mapdisplay.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mapdisplay-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.8: Add overlay elements to the map and zoom, pan and query maps.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div id="fig-datalayercontextmenu" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="guiinterface" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-datalayercontextmenu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/datalayercontextmenu.png" class="lightbox" data-gallery="guiinterface" title="Figure&nbsp;A.9: To change layer properties, right click on the layer name in the Layers panel. This will give you a context menu with various options, like the ‘Set color interactively’ option."><img src="images/datalayercontextmenu.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-datalayercontextmenu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.9: To change layer properties, right click on the layer name in the <span class="style-menu">Layers</span> panel. This will give you a context menu with various options, like the ‘Set color interactively’ option.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div id="fig-attributetable" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="guiinterface" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-attributetable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/attributetable.png" class="lightbox" data-gallery="guiinterface" title="Figure&nbsp;A.10: View the attribute table of a vector layer and highlight selected records on the map."><img src="images/attributetable.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-attributetable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.10: View the attribute table of a vector layer and highlight selected records on the map.
+</figcaption>
+</figure>
+</div>
+<p><img src="images/attributetable2.png" id="fig-attributetable2" class="img-fluid quarto-figure quarto-figure-left anchored" data-group="guiinterface" alt="Query attributes using the simple or advanced query builder"> <img src="images/queryraster.png" id="fig-queryraster" class="img-fluid quarto-figure quarto-figure-left anchored" data-group="guiinterface" alt="To get the raster value at a location, use the Query raster/vector map button and click on the map at the location for which you want to location. Selecting multiple layers will give you the values of all selected layers. This can be raster or vector layers."></p>
+</div>
+<div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
+<div id="fig-metadata" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="guiinterface" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-metadata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/metadata.png" class="lightbox" data-gallery="guiinterface" title="Figure&nbsp;A.11: Get the metadata using the context menu by right clicking on the layer in the Layer manager or Data catalog. Alternatively, use the r.info or v.info to get the metadata of raster and vector layer respectively."><img src="images/metadata.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metadata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.11: Get the metadata using the context menu by right clicking on the layer in the <a href="https://grass.osgeo.org/grass-stable/manuals/wxGUI.html#layer-manager">Layer manager</a> or <a href="https://grass.osgeo.org/grass84/manuals/wxGUI.datacatalog.html">Data catalog</a>. Alternatively, use the <code>r.info</code> or <code>v.info</code> to get the metadata of raster and vector layer respectively.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-runningfunctions" class="level2" data-number="A.5">
+<h2 data-number="A.5" class="anchored" data-anchor-id="sec-runningfunctions"><span class="header-section-number">A.5</span> GRASS modules</h2>
+<p>GRASS functionality is organized into modules, which are standalone programs with defined interface. They can be executed either through a graphical user interface (GUI) <span class="paneltabcolor"><i class="fa-regular fa-window-restore" aria-label="window-restore"></i></span>, command line interface (CLI) <span class="paneltabcolor"><i class="fa-solid fa-terminal" aria-label="terminal"></i></span> or using Python <span class="paneltabcolor"><i class="fa-brands fa-python" aria-label="python"></i></span>. The GUI offers a user-friendly approach to executing modules where the user can navigate to data layers that they would like to analyze and modify processing options with simple check boxes.</p>
+<p>The CLI allows users to execute a module using command prompts specific to that module. This is handy when you are running similar analyses with minor modification or are familiar with the module commands for quick efficient processing. And you can easily combined both; <a href="https://grass.osgeo.org/grass-stable/manuals/wxGUI.modules.html">this manual page</a> describes in more detail how GUI and command line interface represent the same tool.</p>
+<p>From the three options, Python arguably offers the most flexibility and power, as one can easily combine GRASS-specific functions and generic Python functions. In fact, many of the GRASS modules are written in Python. See <a href="#sec-workinginpython" class="quarto-xref"><span>Section A.9</span></a> for a short introduction of using Python in GRASS.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div id="fig-console" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="interface">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-console-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/interface_console.png" class="lightbox" data-gallery="interface" title="Figure&nbsp;A.12: If you already know the name of the module, you can just use it in the command line or terminal. The GUI offers a Console tab with command line specifically build for running GRASS modules. If you type module name there, you will get suggestions for automatic completion of the name."><img src="images/interface_console.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-console-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.12: If you already know the name of the module, you can just use it in the command line or terminal. The GUI offers a Console tab with command line specifically build for running GRASS modules. If you type module name there, you will get suggestions for automatic completion of the name.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div id="fig-pythonconsole" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="interface">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pythonconsole-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/interface_pythonconsole.png" class="lightbox" data-gallery="interface" title="Figure&nbsp;A.13: The python console offers a convenient interface to quickly run Python commands. The python editor allows you to write and run Python scripts. See also sec-workinginpython."><img src="images/interface_pythonconsole.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pythonconsole-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.13: The python console offers a convenient interface to quickly run Python commands. The python editor allows you to write and run Python scripts. See also <a href="#sec-workinginpython" class="quarto-xref"><span>Section A.9</span></a>.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<div id="fig-toolbox" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="interface">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-toolbox-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/interface_toolbox.png" class="lightbox" data-gallery="interface" title="Figure&nbsp;A.14: Find functions through the menu or use the search box of the toolbox. Note that that after installation, addons are available in the toolbox under ‘addons’."><img src="images/interface_toolbox.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toolbox-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.14: Find functions through the menu or use the search box of the toolbox. Note that that after installation, addons are available in the toolbox under ‘addons’.
+</figcaption>
+</figure>
+</div>
+<p>Their graphical user interface (GUI) is a dialog with several tabs which organize module parameters into groups. They all follow the same structure. The figure below shows the GUI dialog for the <code>r.neighbors</code> module. Each parameter can have different type of input fields, for example text entry or drop-down list. Flags are represented as checkboxes. The parameter (or flag) name is visible on the right side of each input field so that it is simple to understand how the module dialog relates to the command representation which is used in the manuals and tutorials. The commands can be used to call the module in the command line, Shell scripts or, with a slight modification, in a Python script. For a more detailed description, see [here]{https://grass.osgeo.org/grass84/manuals/wxGUI.modules.html}</p>
+<div id="fig-moduleguidialog" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="interface" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-moduleguidialog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/moduleguidialog.png" class="lightbox" data-gallery="interface" title="Figure&nbsp;A.15: The GUI dialog of the module r.neighbors."><img src="images/moduleguidialog.png" class="img-fluid quarto-figure quarto-figure-left figure-img" width="500"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-moduleguidialog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.15: The GUI dialog of the module r.neighbors.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>GRASS contains over 500 programs and tools to import, manipulate, analyse and visualize data. To find the modules or function you need, it is good to know that all raster functions start with <a href="https://grass.osgeo.org/grass-stable/manuals/raster.html">r.*</a> Likewise, vector functions start with a <a href="https://grass.osgeo.org/grass-stable/manuals/vector.html">v.*</a>, temporal functions with a <a href="https://grass.osgeo.org/grass-stable/manuals/temporal.html">t.*</a>, 3D raster functions with <a href="https://grass.osgeo.org/grass-stable/manuals/raster3d.html">r3.*</a>, image functions with a <a href="https://grass.osgeo.org/grass-stable/manuals/imagery.html">i.*</a>, <a href="https://grass.osgeo.org/grassstable/manuals/display.html">d.*</a> and database functions with a <a href="https://grass.osgeo.org/grass-stable/manuals/database.html">db.*</a>. For an overview of all core modules in GRASS, see <a href="https://grass.osgeo.org/grass-stable/manuals/index.html">this page</a>.</p>
+<p>To run a function from the command line or console, simply type in the name of the function, followed by the required arguments. For a quick overview of the function’s argument, type the function’s name followed by <code>--help</code>. Alteratively, you can type in the name of the function in the Console tab or in the terminal and hit enter (<a href="#fig-functionwindow" class="quarto-xref">Figure&nbsp;<span>A.16</span></a>).</p>
+<div id="fig-functionwindow" class="quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-functionwindow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/functionwindow.png" class="lightbox" data-gallery="quarto-lightbox-gallery-23" title="Figure&nbsp;A.16: Type in the name of the function in the console (or terminal) and hit Enter. This will open the function’s window. Now you can explore and set the different parameters and flags. The corresponding code is shown at the bottom of the window and can be copied. Or you can check out the Manual page for more information about the function and its parameters. Note that the same help pages are available online as well, just search for “GRASS + function name”."><img src="images/functionwindow.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-functionwindow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.16: Type in the name of the function in the console (or terminal) and hit Enter. This will open the function’s window. Now you can explore and set the different parameters and flags. The corresponding code is shown at the bottom of the window and can be copied. Or you can check out the Manual page for more information about the function and its parameters. Note that the same help pages are available online as well, just search for “GRASS + function name”.
+</figcaption>
+</figure>
+</div>
+<p>Keeping record of the functions you use in your analysis is good practice. GRASS offers some convenient ways to track and repeat commands you have executed before. In the terminal, you can use the up or down arrow to go through the commands you have run on the command line during the session. For commands carried out using the menu or console, you can check the history browser pane. The history is stored in your database, so they are available across sessions, and can be easily shared along with your data.</p>
+<div id="fig-historypanel" class="quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-historypanel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/historypannel.png" class="lightbox" data-gallery="quarto-lightbox-gallery-24" title="Figure&nbsp;A.17: In the history browser panel, you can track the history of executed commands, and execute them again."><img src="images/historypannel.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-historypanel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.17: In the history browser panel, you can track the history of executed commands, and execute them again.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-usingaddons" class="level2" data-number="A.6">
+<h2 data-number="A.6" class="anchored" data-anchor-id="sec-usingaddons"><span class="header-section-number">A.6</span> GRASS addons</h2>
+<p>There is a <a href="https://grass.osgeo.org/grass8/manuals/addons/">large list of GRASS addons</a> available. These offer functions that are not (yet) part of the core software package. They can be easily installed using the <code>wxGUI Extension Manager</code> to install Addons or using the command line.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div id="fig-installaddons" class="quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-installaddons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/installaddons.png" class="lightbox" data-gallery="quarto-lightbox-gallery-25" title="Figure&nbsp;A.18: Install and manage addons"><img src="images/installaddons.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-installaddons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.18: Install and manage addons
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<p>You can also install addons from the command line using the <a href="https://grass.osgeo.org/grass-stable/manuals/g.extension.html">g.extension</a> function. For example, the code below installs the <span class="style-app">r.maxent.train</span> addon.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">g.extension</span> extension=r.maxent.train</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>Installed addons can be found in the <span class="style-menu">Tools</span> panel under <span class="style-menu">Addons</span> (see <a href="#fig-toolbox" class="quarto-xref">Figure&nbsp;<span>A.14</span></a>) and can be used in the same way as core functions.</p>
+</section>
+<section id="sec-computationalregion" class="level2" data-number="A.7">
+<h2 data-number="A.7" class="anchored" data-anchor-id="sec-computationalregion"><span class="header-section-number">A.7</span> Computational region</h2>
+<p>The region is one of the fundamental concepts of GRASS. Any computation and raster analysis adhere to the so-called computational region<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. This is the currently active bounding box and a defined spatial resolution. This means that if a raster map has an original resolution that is different from the resolution of the current computational region, or when the current computational region’s cells are shifted in space compared to the original raster map, the values are resampled on-the-fly by GRASS, using the nearest neighbor method<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>, to meet the cell resolution and extent of the current computational region setting.</p>
+<p>Importantly, the geographic region is defined per mapset. It is therefore the current region in the mapset you are working in that defines the geographic area and resolution in which raster analyses will be done. See <a href="https://grasswiki.osgeo.org/wiki/Computational_region">this GRASS wiki page</a> for a more detailed explanation of this concept.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Set the region</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon> Using the region</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div id="fig-computationalregion1" class="quarto-float quarto-figure quarto-figure-left anchored" data-group="comutationalregion" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-computationalregion1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/computationalregion.png" class="lightbox" data-gallery="comutationalregion" title="Figure&nbsp;A.19: Different ways to set the computational region, and to view the current settings. The red outline in the Map display shows the extent of the current computation region."><img src="images/computationalregion.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-computationalregion1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.19: Different ways to set the computational region, and to view the current settings. The red outline in the Map display shows the extent of the current computation region.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<p>By changing the computational region, the user can run raster analyses on a subset of a larger extent data for quicker testing or analysis of specific regions, without having to create a new dataset first (avoid clipping). The video below demonstrates this by repeating the same raster calculation using two different region settings.</p>
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://ecodiv.earth/share/sdm_in_grassgis/computationalregion.mp4"></video></div>
+</div>
+</div>
+</div>
+<p>Note that by default, the region settings do not affect how raster layers are imported. GRASS import tools by default always import the entire map data, maintaining the map’s original resolution and alignment.</p>
+<p>The region’s settings are important if the <a href="">r.in.gdal</a> module is used with the <span class="style-parameter">-r</span> flag. This flag tells GRASS to limit the import of the raster data to the area defined by the computational region. If the region and the raster layer are not perfectly aligned, the area that is imported will be slightly larger than the computational region. How much larger depends on the resolution of the computational region, as illustrated in <a href="#fig-importalign" class="quarto-xref">Figure&nbsp;<span>A.20</span></a>.</p>
+<div id="fig-importalign" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-importalign-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/import_align.png" class="lightbox" data-gallery="quarto-lightbox-gallery-27" title="Figure&nbsp;A.20: The green grid represents the import raster. The red solid line shows the bounds and resolution of the computational region of the current mapset. The red dashed outline is a buffer around the region of 1 x the region’s resolution (so imagine the region is extended to all sides with one cell). When using r.in.gdal with the -r flag, all raster cells of the input raster that are within or touching the red dashed outline will be imported. These are the blue cells in the illustration."><img src="images/import_align.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-importalign-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.20: The green grid represents the import raster. The red solid line shows the bounds and resolution of the computational region of the current mapset. The red dashed outline is a buffer around the region of 1 x the region’s resolution (so imagine the region is extended to all sides with one cell). When using <code>r.in.gdal</code> with the <span class="style-parameter">-r</span> flag, all raster cells of the input raster that are within or touching the red dashed outline will be imported. These are the blue cells in the illustration.
+</figcaption>
+</figure>
+</div>
+<p>Importantly, the region’s settings only affect the precise area that will be imported when using the <span class="style-parameter">-r</span> flag. The resolution and alignment of the imported raster layer will be the same as that of the original input raster file.</p>
+</section>
+<section id="sec-mask" class="level2" data-number="A.8">
+<h2 data-number="A.8" class="anchored" data-anchor-id="sec-mask"><span class="header-section-number">A.8</span> Using a MASK</h2>
+<p>In GRASS, a MASK is a raster map that defines areas of interest for raster operations by masking out unwanted areas. It allows users to focus their analysis on specific regions while ignoring others. If a raster map named “MASK” exists, most GRASS raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. This feature is especially useful when working with large datasets or when analyzing a particular region of interest.</p>
+<p>A MASK is typically created from an existing raster map by setting certain cell values as null (masked) and others as valid (unmasked). Commands such as <a href="https://grass.osgeo.org/grass-stable/manuals/r.mask.html">r.mask</a> or <a href="https://grass.osgeo.org/grass-stable/manuals/r.mapcalc.html">r.mapcalc</a> can be used to create a MASK based on specific criteria or thresholds. Read the <a href="https://grass.osgeo.org/grass-stable/manuals/r.mask.htm">manual page</a> for more details concerning creating MASK layers using different methods.</p>
+<p>Once a MASK is set, it is automatically applied to all raster operations, so only the unmasked (valid) areas are considered. I.e., operations like raster algebra, statistics, or interpolation only occur where the MASK allows it. MASKs are not permanent. Once a MASK is created, it remains active until explicitly removed using it with the <code>r.mask -r</code> command. This temporary behavior allows users to switch between different MASKs for various operations without permanently altering their data.</p>
+</section>
+<section id="sec-workinginpython" class="level2" data-number="A.9">
+<h2 data-number="A.9" class="anchored" data-anchor-id="sec-workinginpython"><span class="header-section-number">A.9</span> Working in Python</h2>
+<p>All GRASS modules can be used in Python scripts, using the GRASS Python scripting library or the Python API, as <a href="https://grass.osgeo.org/grass84/manuals/libpython/index.html">described here</a>. Examples in this tutorial will use the Python interface provided by the <span class="style-apps">grass.script</span> package. To use the this package, you first need to import the grass.script library. In the code below, it is imported as <code>gs</code> (this only needs to be done once at the beginning of a session or script). Next, you can run GRASS functions, using for example the <a href="https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.run_command">run_command</a>, <a href="https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.read_command">read_command</a>, <a href="https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.write_command">write_command</a> or <a href="https://grass.osgeo.org/grass-stable/manuals/libpython/script.html#script.core.parse_command">parse_command</a>. Read more about when to use what functions in <a href="https://grasswiki.osgeo.org/wiki/GRASS_Python_Scripting_Library#Uses_for_read,_feed_and_pipe,_start_and_exec_commands">the manual</a>.</p>
+<p>For simply executing a function, you use <code>run_command</code>. The first parameter for functions from this group is the name of the GRASS module as string. Other parameters are options of the module. Flags can be passed in a parameter flags where value of the parameter is a string containing all the flags we want to set. The general syntax is the following:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> grass.script <span class="im">as</span> gs</span>
+<span id="cb2-2"><a href="#cb2-2"></a>gs.run_command(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="st">"module.name"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    option1<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    option2<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    flags<span class="op">=</span><span class="st">"flagletters"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>The function parameters are the same as module options, so you can just use the manual page of the module to learn about the interface. Compare, for example, the command line code (<i class="fa-solid fa-terminal" aria-label="terminal"></i>) and Python code (<i class="fa-brands fa-python" aria-label="python"></i>) to import the raster <span class="style-data">landuse.tif</span> as <span class="style-data">landuse</span> raster layer in GRASS using the <a href="https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html">r.in.gdal</a> module. As you can see, the Python <span class="style-menu">run_command</span> function let’s you ‘wrap’ the command line code in a Python command.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">r.in.gdal</span> input=landuse.tif output=landuse</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">import</span> grass.script <span class="im">as</span> gs</span>
+<span id="cb4-2"><a href="#cb4-2"></a>gs.run_command(<span class="st">'r.in.gdal'</span>, <span class="bu">input</span><span class="op">=</span><span class="st">"landuse.tif"</span>, output<span class="op">=</span><span class="st">"landuse"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>One of the advantages of using Python is that you can combine GRASS specific functions and generic Python code. The following example illustrates this. In <a href="#sec-thedatabase" class="quarto-xref"><span>Section A.2</span></a> you saw how to create a new database. The code below does the same. First, a new folder <span class="style-data">GRASSdb</span> is created using regular Python code<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. Next, we create a new <span class="style-data">project</span> in that folder. This will automatically promote that folder to a GRASS database (After all, a GRASS database is nothing else than a folder with one or more GRASS <span class="style-data">projects</span>). The last step is to change to that new <span class="style-data">project</span>/<span class="style-data">mapset</span>. This will ensure that all subsequent analysis are carried out in that new <span class="style-data">mapset</span>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Import the grass.script and os libraries</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="im">import</span> os</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="im">import</span> grass.script <span class="im">as</span> gs</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># Create a new folder (this will be the location of the GRASS database)</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>os.mkdir(<span class="st">"/media/paulo/HD2/"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co"># Create a new project</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>gs.create_project(path<span class="op">=</span><span class="st">"/media/paulo/HD2/GRASSdb"</span>, name<span class="op">=</span><span class="st">"SDM"</span>, epsg<span class="op">=</span><span class="st">"4326"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co"># Change to the newly created project / mapset</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>gs.run_command(<span class="st">"g.mapset"</span>, mapset<span class="op">=</span><span class="st">"PERMANENT"</span>, project<span class="op">=</span><span class="st">"SDM"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p><br><br></p>
+</section>
+<section id="footnotes" class="level2 unlisted unnumbered hidefootnotes">
+<h2 class="unlisted unnumbered hidefootnotes anchored" data-anchor-id="footnotes">Footnotes</h2>
+
+
+<div id="refs" class="references csl-bib-body" role="list" style="display: none">
+<div id="ref-vanswaay2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">van Swaay C, Wynhoff I, Verovnik R, et al (2010) Erebia albergana. <span>The IUCN Red List</span> of <span>Threatened Species</span> 2010. IUCN Red List of Threatened Species. <a href="https://doi.org/10.2305/IUCN.UK.2010-1.RLTS.T173278A6984115.en">https://doi.org/10.2305/IUCN.UK.2010-1.RLTS.T173278A6984115.en</a></div>
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>In GRASS versions prior to 8.4 these were called locations.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For quality reasons, GRASS handles one CRS per location. Read more about the reasons in <a href="https://grasswiki.osgeo.org/wiki/Map_Reprojection">this Wiki page</a>. To learn more about coordinate references systems, go <a href="https://docs.qgis.org/3.34/en/docs/gentle_gis_introduction/coordinate_reference_systems.html">here</a>. For information about different ways to store and share CRS information, see <a href="https://www.earthdatascience.org/courses/use-data-open-source-python/intro-vector-data-python/spatial-data-vector-shapefiles/epsg-proj4-coordinate-reference-system-formats-python/">here</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The attribute data (non-spatial data) refers to descriptive information associated with each vector feature. For example, if you have a vector layer representing lakes, the attribute data might include information like the lake’s name, area, and depth.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>See <a href="https://grass.osgeo.org/grass83/manuals/sql.html">this manual page</a> for more information.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Read <a href="https://grasswiki.osgeo.org/wiki/Map_Reprojection">this page</a> about map reprojection in GRASS.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>A context menu (also know as a contextual menu, shortcut menu or pop-up menu) is the menu that appears when you right-click on an item in the menu. It offers a set of choices that are available for, or in context of, whatever it was you clicked.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Note that this concept does not apply to vector maps. Vector maps are always processed entirely.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>GRASS will use the nearest neighbor method to resample the raster layer. This might not always be the best method. If not, you need to resample the data yourself, using the most suitable method. See <span class="style-menu">menu: Raster → Develop raster map</span> for options. See <a href="https://grasswiki.osgeo.org/wiki/Computational_region">this wiki page</a> for more insights.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Note, on Windows, paths are written using backslashes (\) as the separator between folder names. On Unix based operating system such as macOS, Linux, and BSDs, the forward slash (/) is used as the path separator.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ecodiv\.earth\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./A3_sampledata.html" class="pagination-link" aria-label="Data sources">
+        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data sources</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> by Paulo van Breugel, Ecodiv.earth, 2024.</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ecodiv/sdm_in_grassgis/edit/main/A1_grassbasics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ecodiv/sdm_in_grassgis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>videojs(video_shortcode_videojs_video1);</script>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
