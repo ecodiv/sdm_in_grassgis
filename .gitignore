@@ -11,3 +11,7 @@ share
 _draft
 
 /.quarto/
+
+**/*.quarto_ipynb
+*/libs/
+site_libs/

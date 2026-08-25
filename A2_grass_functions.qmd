@@ -1,6 +1,6 @@
 ## GRASS functions {#sec-functions}
 
-The list below includes all core functions and functions provided by addons that are used in this tutorial. The addons can be found and installed using the [g.extension]{.style-function} module.
+The list below includes all core functions and functions provided by addons that are used in this tutorial. The addons can be found and installed using the `g.extension` module.
 
 ### Addons {.unnumbered}
 

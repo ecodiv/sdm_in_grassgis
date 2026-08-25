@@ -1,0 +1,2219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paulo van Breugel">
+
+<title>Ecodiv.earth | sdm in grass – Species distribution modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./3_data_preparation.html" rel="next">
+<link href="./the_basics.html" rel="prev">
+<link href="./images/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a2d81309921060cb4eca094a98445b7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-7583084869af5459983b8eb5a0e13933.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-a2d81309921060cb4eca094a98445b7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<meta property="og:title" content="Ecodiv.earth | sdm in grass">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://ecodiv.earth/images/setworkingdirectory.png">
+<meta property="og:site_name" content="Species distribution modeling">
+<meta property="og:image:height" content="815">
+<meta property="og:image:width" content="1468">
+<meta name="twitter:title" content="Ecodiv.earth | sdm in grass">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://ecodiv.earth/images/setworkingdirectory.png">
+<meta name="twitter:site" content="@ecodiv">
+<meta name="twitter:image-height" content="815">
+<meta name="twitter:image-width" content="1468">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title"><span id="sec-data" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Acquire the data</span></span></h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./images/logo_SDM2.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo_SDM2.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SDM in GRASS<br><span class="modifieddate">1st publication date: 2025-2-12</span></a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/ecodiv/sdm_in_grassgis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The basic steps</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_obtaining_data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Acquire the data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_data_preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Prepare the data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4_model_training.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model training</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./5_model_prediction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6_modelvalidation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Model evaluation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./7_finetuning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model fine-tuning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A1_grassbasics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">GRASS basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A3_sampledata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data sources</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A4_scriptmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Scripting a map</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A6_troubleshooting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Trouble shooting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A7_baselayers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Base layers</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-creatingadatabase" id="toc-sec-creatingadatabase" class="nav-link active" data-scroll-target="#sec-creatingadatabase"><span class="header-section-number">2.1</span> The database</a></li>
+  <li><a href="#sec-workingdirectory" id="toc-sec-workingdirectory" class="nav-link" data-scroll-target="#sec-workingdirectory"><span class="header-section-number">2.2</span> Working directory</a></li>
+  <li><a href="#sec-baselayers" id="toc-sec-baselayers" class="nav-link" data-scroll-target="#sec-baselayers"><span class="header-section-number">2.3</span> Base layers</a></li>
+  <li><a href="#sec-rangemap" id="toc-sec-rangemap" class="nav-link" data-scroll-target="#sec-rangemap"><span class="header-section-number">2.4</span> Species range map</a></li>
+  <li><a href="#sec-occurrence" id="toc-sec-occurrence" class="nav-link" data-scroll-target="#sec-occurrence"><span class="header-section-number">2.5</span> Species occurrences</a></li>
+  <li><a href="#sec-climatedata" id="toc-sec-climatedata" class="nav-link" data-scroll-target="#sec-climatedata"><span class="header-section-number">2.6</span> Current climate</a></li>
+  <li><a href="#sec-obtainfutureclimatelayers" id="toc-sec-obtainfutureclimatelayers" class="nav-link" data-scroll-target="#sec-obtainfutureclimatelayers"><span class="header-section-number">2.7</span> Future climates</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ecodiv/sdm_in_grassgis/edit/main/2_obtaining_data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ecodiv/sdm_in_grassgis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span id="sec-data" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Acquire the data</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>For this tutorial, we will download and import various data layers that we need to develop a potential distribution model/map for our species, the almond-eyed ringlet (<em>Erebia alberganus</em>). This includes species distribution data and environmental data layers. For visualization purposes, we’ll use some background layers, including a map of the national borders of European countries, rivers, major roads and urban areas in Europe.</p>
+<section id="sec-creatingadatabase" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-creatingadatabase"><span class="header-section-number">2.1</span> The database</h2>
+<p>Once you have started GRASS, the first thing you normally do is to open the GRASS database, or to create a new one to do for this tutorial is to create a new GRASS database called <span class="style-data">GRASSdb</span>. Next, create a new project called <span class="style-data">SDM</span> with the coordinate reference system (CRS) <span class="style-parameter">WGS84 lat/lon</span> (<a href="https://epsg.io/4326">EPSG 4326</a>). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.</p>
+<div id="exm-2vSeGTk3HW" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.1</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page"><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://ecodiv.earth/share/sdm_in_grassgis/create_project.mp4"></video></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Create the folder for the GRASS database</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>os.mkdir(<span class="st">"path_to_directory"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Create a new Project</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>gs.create_project(</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    path<span class="op">=</span><span class="st">"path_to_directory/GRASSdb"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    name<span class="op">=</span><span class="st">"SDM"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    epsg<span class="op">=</span><span class="st">"4326"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># Change to the newly created Project / mapset</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>gs.run_command(<span class="st">"g.mapset"</span>, mapset<span class="op">=</span><span class="st">"PERMANENT"</span>, project<span class="op">=</span><span class="st">"SDM"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Replace the <code>path_to_directory</code> with the path to the directory where you want to create the database. Note, on Windows, paths are written using backslashes (\) as the separator between folder names. On Unix based operating system such as macOS, Linux, and BSDs, the forward slash (/) is used as the path separator.</p>
+</div>
+</div>
+</div>
+<p>Now that you have your database ready, you can start with the next step, which is getting and preparing the input data for the species distribution modeling.</p>
+</section>
+<section id="sec-workingdirectory" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-workingdirectory"><span class="header-section-number">2.2</span> Working directory</h2>
+<p>Some GRASS GIS modules require a file as input or produce a file as output. You can always specify the full file path. However, if you define a working directory and store your files there, you only need to provide paths relative to that directory.</p>
+<p>It is therefore recommended to create your own dedicated working directory and use it to store the downloaded data. The working directory is the folder where GRASS looks for input files and where it writes output files, helping to keep your project organized and your data management efficient.</p>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Never use the GRASS database directory, that you created in the previous section, for this. The GRASS directory is for GRASS data only</p>
+</div>
+</div>
+</div>
+<div id="exm-qpbGaVxfYh" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.2</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>Type <code>cd</code> followed by the path to the working directory in the <span class="style-menu">wxGUI Command Console</span>. If you prefer to work on the terminal, run the same on the terminal.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">cd</span> replace-for-path-to-working-directory</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">import</span> os</span>
+<span id="cb3-2"><a href="#cb3-2"></a>os.chdir(<span class="st">"replace-for-path-to-working-directory"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<p>The working directory can also be changed in wxGUI menu <span class="style-menu">Settings → GRASS working environment → Change working directory</span></p>
+<div id="fig-setworkingdirectory" class="quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-setworkingdirectory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/setworkingdirectory.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;2.1: Set the working directory via the menu or using the command line. After doing so, GRASS will look for files in that location if the full path is not provided."><img src="images/setworkingdirectory.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-setworkingdirectory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Set the working directory via the menu or using the command line. After doing so, GRASS will look for files in that location if the full path is not provided.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<p>Replace <code>path_to_working_directory</code> with the path to the folder that you want to use as the working directory.</p>
+<p>Be aware that file path notation differs between operating systems. On Windows, backslashes (<code>\</code>) are used to separate folder names. On Unix-based operating systems, such as macOS, Linux, and BSD, forward slashes (<code>/</code>) are used instead.</p>
+</div>
+</div>
+</div>
+<p>Now, whenever you have to refer to an external file, such as text files or GeoTiff files, it is enough to specify the name of the file instead of the full path.</p>
+</section>
+<section id="sec-baselayers" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-baselayers"><span class="header-section-number">2.3</span> Base layers</h2>
+<p>We’ll import a few base layers, including maps of the national boundaries, roads, rivers, and land use. They will serve as reference layers<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div id="fig-baselayers" class="quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-baselayers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/reference_layers.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2.2: This is the study area, which includes the national boundaries, main roads, and shaded relief (source: Natural Earth) and the urban areas (source: GLC)."><img src="images/reference_layers.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-baselayers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: This is the study area, which includes the national boundaries, main roads, and shaded relief (source: <a href="https://www.naturalearthdata.com/">Natural Earth</a>) and the urban areas (source: <a href="https://land.copernicus.eu/en/products/corine-land-cover">GLC</a>).
+</figcaption>
+</figure>
+</div>
+<p>First, download the Geopackage <a href="https://ecodiv.earth/share/sdm_in_grassgis/sdm_base_layers.gpkg">sdm_base_layers.gpkg</a> and copy the file to your working directory. A GeoPackage (GPKG) is an open, standards-based geospatial data format that can contain one data layer or multiple layers. This GPKG contains three vector layers with respectively the boundries of European countries (<span class="style-data">countries</span>), the main rivers (<span class="style-data">rivers</span>) and the roads (<span class="style-data">roads</span>) in Europe. Import these layers in GRASS.</p>
+<div id="exm-XmMn498Mh" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.3</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">v.in.ogr</span> input=sdm_base_layers.gpkg layer=countries output=countries</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="ex">v.in.ogr</span> input=sdm_base_layers.gpkg layer=roads output=roads</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="ex">v.in.ogr</span> input=sdm_base_layers.gpkg layer=rivers output=rivers</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>gs.run_command(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="st">"v.in.ogr"</span>, <span class="bu">input</span><span class="op">=</span><span class="st">"sdm_base_layers.gpkg"</span>, layer<span class="op">=</span><span class="st">"countries"</span>, output<span class="op">=</span><span class="st">"countries"</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>gs.run_command(</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="st">"v.in.ogr"</span>, <span class="bu">input</span><span class="op">=</span><span class="st">"sdm_base_layers.gpkg"</span>, layer<span class="op">=</span><span class="st">"roads"</span>, output<span class="op">=</span><span class="st">"roads"</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>gs.run_command(</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="st">"v.in.ogr"</span>, <span class="bu">input</span><span class="op">=</span><span class="st">"sdm_base_layers.gpkg"</span>, layer<span class="op">=</span><span class="st">"rivers"</span>, output<span class="op">=</span><span class="st">"rivers"</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<p>Open <span class="style-menu">File → v.in.ogr</span> menu or <span class="style-menu">Toolbox → v.in.ogr</span> and on the first tab <span class="style-menu">Required</span> find the GeoPackage you just downloaded. Or, if you copied the file to your working directory, you can simply fill in the name of the file under the <span class="style-menu">Source input</span>.</p>
+<div id="fig-bcs1" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bcs1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/baselayers_countries_step1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;2.3: Name of the GeoPackage"><img src="images/baselayers_countries_step1.png" class="img-fluid quarto-figure quarto-figure-left figure-img" width="500"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bcs1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: Name of the GeoPackage
+</figcaption>
+</figure>
+</div>
+<p>Next, under the <span class="style-menu">Input</span> tab, select the layer <span class="style-parameter">countries</span>. Leave the others unselected.</p>
+<div id="fig-bcs1" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bcs1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/baselayers_countries_step2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;2.4: Layer to import"><img src="images/baselayers_countries_step2.png" class="img-fluid quarto-figure quarto-figure-left figure-img" width="500"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bcs1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: Layer to import
+</figcaption>
+</figure>
+</div>
+<p>And as last step, under the <span class="style-menu">Output</span> tab, give the output layer the name <span class="style-parameter">countries</span></p>
+<div id="fig-bcs1" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bcs1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/baselayers_countries_step3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;2.5: Layer to import"><img src="images/baselayers_countries_step3.png" class="img-fluid quarto-figure quarto-figure-left figure-img" width="500"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bcs1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: Layer to import
+</figcaption>
+</figure>
+</div>
+<p>Now, repeat these steps for the other two layers, naming them <span class="style-parameter">roads</span> and the <span class="style-parameter">rivers</span>, respectively.</p>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<p>Note, the assumption is that the GeoPackage file is in your working directory, which you defined in <a href="#exm-qpbGaVxfYh" class="quarto-xref">Step&nbsp;<span>2.2</span></a>. If not, you will have to provide the full path to the file.</p>
+<p>When using <code>v.in.ogr</code>, a GeoPackage is treated as a container of separate layers, not a single dataset. That means that if the GeoPackage contains multiple layers, each layer must be explicitly specified and imported individually.</p>
+</div>
+</div>
+</div>
+<p>Next, download the Copernicus 90m DEM <a href="https://ecodiv.earth/share/sdm_in_grassgis/cop90.tif">(cop90.tif)</a>, the shaded relief map (<a href="https://ecodiv.earth/share/sdm_in_grassgis/shaded_relief_NE.tif">shaded_relief.tif</a>) and the Urban areas map (<a href="https://ecodiv.earth/share/sdm_in_grassgis/urban_areas.tif">urban_areas.tif</a>) and copy the files to your working directory. Next, import these layers in GRASS with the <code>r.in.gdal</code> function.</p>
+<div id="exm-Xm99Mh" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.4</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Import urban areas raster</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">r.in.gdal</span> input=urban_areas.tif output=urban_areas</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># Import shaded relief raster</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="ex">r.in.gdal</span> input=shaded_relief.tif output=shaded_relief</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co"># Import the digital elevation model (cop90)</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="ex">r.in.gdal</span> input=cop90.tif output=cop90</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Import urban areas raster</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>gs.run_command(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="st">"r.in.gdal"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"urban_areas.tif"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    output<span class="op">=</span><span class="st">"urban_areas"</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co"># Import shaded relief raster</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>gs.run_command(</span>
+<span id="cb7-10"><a href="#cb7-10"></a>    <span class="st">"r.in.gdal"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"shaded_relief_NE.tif"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12"></a>    output<span class="op">=</span><span class="st">"shaded_relief_NE"</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>)</span>
+<span id="cb7-14"><a href="#cb7-14"></a></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co"># Import the digital elevation model (eudem)</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>gs.run_command(</span>
+<span id="cb7-17"><a href="#cb7-17"></a>    <span class="st">"r.in.gdal"</span>,</span>
+<span id="cb7-18"><a href="#cb7-18"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"eudem.tif"</span>,</span>
+<span id="cb7-19"><a href="#cb7-19"></a>    output<span class="op">=</span><span class="st">"eudem"</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<p>Open the <code>r.in.gdal</code> from the <span class="style-menu">File</span> menu or from the <span class="style-menu">Toolbox</span> and on the first tab <span class="style-menu">Required</span></p>
+<ul>
+<li>Select as input the GeoTiff file <span class="style-data">urban_areas.tif</span></li>
+<li>Set the name of the output raster layer as <span class="style-parameter">urban_areas</span>.</li>
+<li>Click on <span class="style-menu">Run</span></li>
+</ul>
+<p>Repeat for the shaded relief map:</p>
+<ul>
+<li>Select as input the GeoTiff file <span class="style-data">shaded_relief_NE.tif</span></li>
+<li>Set the name of the output raster layer as <span class="style-parameter">shaded_relief_NE</span>.</li>
+<li>Click on <span class="style-menu">Run</span></li>
+</ul>
+<p>Repeat for the digital elevation model (eudem) map:</p>
+<ul>
+<li>Select as input the GeoTiff file <span class="style-data">eudem.tif</span></li>
+<li>Set the name of the output raster layer as <span class="style-parameter">eudem</span>.</li>
+<li>Click on <span class="style-menu">Run</span></li>
+</ul>
+</div>
+</div>
+</div>
+<p>Open the layers in the Layers panel and style them as you like. You can also add any other layer. For example, you can add the Corina land use layer. I’ll leave that as an exercise for you.</p>
+</section>
+<section id="sec-rangemap" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-rangemap"><span class="header-section-number">2.4</span> Species range map</h2>
+<p>To get an idea of the distribution of our species, we first consult expert-derived range information. A commonly used source is the <a href="https://www.iucnredlist.org/">IUCN Red List</a>.</p>
+<p>Visit the website and log in. If you do not yet have an account, create one first. Use the search bar to find the species, preferably by its scientific name.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The IUCN Red List uses a different scientific name for this species, namely <em>Erebia albergana</em>. This is something to be aware of; scientific names are not always used consistently across data sources.</p>
+</div>
+</div>
+<p>Download the range data and unzip the files into your working directory. If you plan to use these data in a report or publication, note the citation information provided on the webpage (below the Abstract). Recording this information now will save time later and helps ensure proper data attribution.</p>
+<p>Next, create a new mapset called <span class="style-data">Erebia_alberganus</span>. This mapset will be used to store the distribution data of our species. Import the downloaded range map into this mapset. Because the mapset itself already identifies the species, the names of the layer is kept generic, for example rangemap and occurrences.</p>
+<p>This naming strategy only works if a mapset is dedicated to a single species. If you store data for multiple species in the same mapset, layer names would need to include the species name or another clear identifier to avoid confusion.</p>
+<div id="exm-XmMn4IG2Mh" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.5</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="ex">g.mapset</span> <span class="at">-c</span> mapset=Erebia_alberganus</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="ex">v.in.ogr</span> input=data_0.shp output=rangemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>gs.run_command(<span class="st">"g.mapset"</span>, flags<span class="op">=</span><span class="st">"c"</span>, mapset<span class="op">=</span><span class="st">"Erebia_alberganus"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>gs.run_command(</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">"v.in.ogr"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"data_0.shp"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5"></a>    output<span class="op">=</span><span class="st">"rangemap"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<p>Type in <code>g.mapset</code> in the console to open the dialog, and use the following parameter settings.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mapset</td>
+<td>Erebia_alberganus</td>
+</tr>
+<tr class="even">
+<td>Create mapset if it doesn’t exist (c)</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>Run `v.in.ogr with the following parameter settings:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>input</td>
+<td>data_0.shp</td>
+</tr>
+<tr class="even">
+<td>output</td>
+<td>rangemap</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-occurrence" class="level2 page-columns page-full" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="sec-occurrence"><span class="header-section-number">2.5</span> Species occurrences</h2>
+<p>The Global Biodiversity Information Facility (<a href="https://www.gbif.org/">GBIF</a>) provides openly accessible records of species occurrences, which is the primary type of data used in species distribution modeling.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<div class="callout callout-style-default callout-note callout-titled" title="About GBIF">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>About GBIF
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GBIF is an international biodiversity informatics infrastructure that aggregates occurrence data spanning more than three centuries of natural history, including historical museum specimens and contemporary observations. These data are contributed by a wide range of sources, such as research institutions, citizen science initiatives, and automated monitoring programs, and are made freely available under open-data principles.</p>
+</div>
+</div>
+</div></div><p>Before downloading data, you must first register on the site. Once logged in, search for <em>Erebia alberganus</em> von Prunner, 1798. Select the result and open the page. Then click on the green button with the number of observations to open the table with observations.</p>
+<div id="fig-numerofoccurrences" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-numerofoccurrences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/numberofoccurrences.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;2.6: At the time of writing, GBIF had 20410 occurrences of Erebia alberganus. After applying the filters described below, 17,348 records remained"><img src="images/numberofoccurrences.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-numerofoccurrences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: At the time of writing, GBIF had 20410 occurrences of <em>Erebia alberganus</em>. After applying the filters described below, 17,348 records remained
+</figcaption>
+</figure>
+</div>
+<p>In the new window, apply the filters you consider relevant. For example, under <span class="style-menu">Basis of record</span>, select <span class="style-menu">Human observation</span> and <span class="style-menu">Occurrences</span> to exclude fossil records or machine-based observations. You may also restrict the data to a specific time period, for example, the last 45 years.</p>
+<p>Finally, check the [Issues and flags]]{.style-menu} section to exclude records with known problems, such as missing coordinates. If you only want to exclude a few issues, you can reverse the selection at the bottom of the list.</p>
+<p>Note which filters and what settings you used to select the records. Tip: open the map tab and check the map each time you change a filter to see how it affects the selection of observations.</p>
+<div id="fig-gbiffilters" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gbiffilters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/gbifoccurrencefilters.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;2.7: The table shows all occurrence records for our species. In the panel at the left, you can select specific records based on a number of criteria."><img src="images/gbifoccurrencefilters.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gbiffilters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.7: The table shows all occurrence records for our species. In the panel at the left, you can select specific records based on a number of criteria.
+</figcaption>
+</figure>
+</div>
+<p>Click on the <span class="style-menu">download</span> tab and select the <span class="style-menu">Simple</span> option. This will take you to the download page (it may take a while to complete, but you get an email when the download is ready). When the download is complete, download the file and unzip into to your data .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is good practice to cite the data you use in your publications. GBIF conveniently provides you with the citation on the download page, including a Digital Object Identifier (DOI). This is a link to a web page that describes your search, including any filters you have set. Copy and save the citation, so you can use it in your report. If you are using a reference manager such as <a href="https://www.zotero.org/">Zotero</a> (highly recommended), you can use the provided BibTex or RIS file to import the reference.</p>
+</div>
+</div>
+<p>The downloaded file is a tab delimited text file, which can be imported with the <a href="https://grass.osgeo.org/grass-stable/manuals/v.in.ascii.html">v.in.ascii</a> module. A more convenient way is to import the downloaded data using the <a href="https://grass.osgeo.org/grass-stable/manuals/addons/v.in.gbif.html">v.in.gbif</a> module. It’s an addon, so install it if you haven’t done so yet.</p>
+<div id="exm-EZ65hmOvkK" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.6</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" role="tab" aria-controls="tabset-6-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<p>Replace the name of the input file with the name of the CSV file you downloaded from GBIF.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="ex">v.in.gbif</span> input=0069182-251120083545085.csv output=occurrences</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>gs.run_command(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="st">"v.in.gbif"</span>, <span class="bu">input</span><span class="op">=</span><span class="st">"DataFiles/speciesdata/0069182-251120083545085.csv"</span>, output<span class="op">=</span><span class="st">"occurrences"</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
+<p>Open the <code>v.in.gbif</code> dialog, and run it with the following parameter settings:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>input</td>
+<td>0069182-251120083545085.csv</td>
+</tr>
+<tr class="even">
+<td>output</td>
+<td>occurrences</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>After importing the data in GRASS, it is good practice to check carefully for outliers and other possible problems. If you zoom to the extent of the data, you may find out that there are a outliers that are clearly erroneous, such as points in the ocean. A common problem is features with coordinates at (0, 0). These typically indicate records with missing coordinates that were filled with zeros during data preparation or import. You can easily identify such cases by opening the attribute table and sorting by <span class="style-parameter">g.decidmallatitude</span> or <span class="style-parameter">decimalLongitude</span> (click on the column header).</p>
+<div id="exm-84575" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.7</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-3" role="tab" aria-controls="tabset-7-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-4" role="tab" aria-controls="tabset-7-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<p>You can remove these points using the <a href="https://grass.osgeo.org/grass-stable/manuals/v.db.droprow.html">v.db.droprow</a> module, which creates a new vector map containing only the features that do not match the selection criteria.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Select and remove features</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="ex">v.db.droprow</span> input=occurrences where=<span class="st">"g_decimallatitude=0"</span> output=temp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Because <code>v.db.droprow</code> does not allow to modify data in place, the subsequent <a href="https://grass.osgeo.org/grass-stable/manuals/g.rename.html">g.rename</a> step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Replace previous layer with current version, using the original name</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="ex">g.rename</span> vector=temp,occurrences <span class="at">--overwrite</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<p>You can remove these points using the <a href="https://grass.osgeo.org/grass-stable/manuals/v.db.droprow.html">v.db.droprow</a> module, which creates a new vector map containing only the features that do not match the selection criteria.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>gs.run_command(</span>
+<span id="cb14-2"><a href="#cb14-2"></a>    <span class="st">"v.db.droprow"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"occurrences@Erebia_alberganus"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4"></a>    where<span class="op">=</span><span class="st">"g_decimallatitude=0"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    output<span class="op">=</span><span class="st">"temp"</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Because <code>v.db.droprow</code> does not allow to modify data in place, the subsequent <a href="https://grass.osgeo.org/grass-stable/manuals/g.rename.html">g.rename</a> step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Replace previous layer with current version, using the original name</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>gs.run_command(<span class="st">"g.rename"</span>, vector<span class="op">=</span><span class="st">"temp,occurrences"</span>, overwrite<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-7-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-3-tab">
+<p>Open the <code>v.db.droprow</code> dialog, and run it with the following parameter settings:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>input</td>
+<td>occurrences@Erebia_alberganus</td>
+</tr>
+<tr class="even">
+<td>where</td>
+<td>g_decimallatitude=0</td>
+</tr>
+<tr class="odd">
+<td>output</td>
+<td>temp</td>
+</tr>
+</tbody>
+</table>
+<p>Because <code>v.db.droprow</code> does not allow to modify data in place, the subsequent <a href="https://grass.osgeo.org/grass-stable/manuals/g.rename.html">g.rename</a> step is used to replace the original vector map with the cleaned version and remove the temporary intermediate map. Run it with the following parameter settings:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vector</td>
+<td>temp,occurrences</td>
+</tr>
+<tr class="even">
+<td>overwrite</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-7-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-4-tab">
+<p>Here are several alternative ways to remove these erroneous points:</p>
+<ul>
+<li>One option is to use v.edit to delete the points directly. Be aware, however, that this approach removes only the geometries; the corresponding rows in the attribute table remain.</li>
+<li>Alternatively, you can open the occurrences attribute table, sort by g_decimallatitude, select the rows where g_decimallatitude = 0, then right-click and choose Delete selected features.</li>
+<li>You can also remove the points manually in editing mode. Activate editing by clicking the pencil icon in the Layers panel, select the points with latitude 0, and delete them.</li>
+<li>Another option is to use <a href="https://grass.osgeo.org/grass-stable/manuals/v.extract.html">v.extract</a> to create a new layer containing only valid points—for example, by extracting all features with latitude greater than 0.</li>
+</ul>
+<p>Being aware of these alternatives is useful, as the most appropriate method depends on the specific task and your familiarity with the available tools.</p>
+</div>
+</div>
+</div>
+<p>Not all errors are that obvious. To identify other potential problems, you will need to visually inspect the data and compare them with other sources of information, like the RED list range map (<a href="#fig-rangemapoccurrences" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>).</p>
+<p>One likely error in the data are the points on the northern coast of France (<a href="#fig-rangemapoccurrences" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>). These points are far outside the known range of the species, so we are going to assume that these are errors. You can check that these points are above 50 degrees latitude. We can delete them in the same way as the previous example.</p>
+<div id="exm-845752" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.8</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-3" role="tab" aria-controls="tabset-8-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-4" role="tab" aria-controls="tabset-8-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Select and remove features</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="ex">v.db.droprow</span> input=occurrences where=<span class="st">"g_decimallatitude&gt;=50"</span> output=temp</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="co"># Replace previous layer with current version, using the original name</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="ex">g.rename</span> vector=temp,occurrences <span class="at">--overwrite</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Remove the features (points)</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>gs.run_command(</span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="st">"v.db.droprow"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"occurrences"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5"></a>    where<span class="op">=</span><span class="st">"g_decimallatitude&gt;=50"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6"></a>    output<span class="op">=</span><span class="st">"temp"</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>)</span>
+<span id="cb17-8"><a href="#cb17-8"></a></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="co"># Replace previous layer with current version, using the original name</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a>gs.run_command(</span>
+<span id="cb17-11"><a href="#cb17-11"></a>    <span class="st">"g.rename"</span>,</span>
+<span id="cb17-12"><a href="#cb17-12"></a>    vector<span class="op">=</span><span class="st">"temp,occurrences"</span>,</span>
+<span id="cb17-13"><a href="#cb17-13"></a>    overwrite<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb17-14"><a href="#cb17-14"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-8-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-3-tab">
+<p>Open the <code>v.db.droprow</code> dialog, and run it with the following parameter settings:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>input</td>
+<td>occurrences@Erebia_alberganus</td>
+</tr>
+<tr class="even">
+<td>where</td>
+<td>g_decimallatitude&gt;=50</td>
+</tr>
+<tr class="odd">
+<td>output</td>
+<td>temp</td>
+</tr>
+</tbody>
+</table>
+<p>Run <code>g.rename</code> with the following parameter settings:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vector</td>
+<td>temp,occurrences</td>
+</tr>
+<tr class="even">
+<td>overwrite</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-8-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-4-tab">
+<p>You could also combined <a href="#exm-84575" class="quarto-xref">Step&nbsp;<span>2.7</span></a> and this step into a single command to select and drop the points.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Select and remove features</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="ex">v.db.droprow</span> input=occurrences where=<span class="st">"g_decimallatitude&gt;=50 OR g_decimallatitude=0"</span> output=temp</span>
+<span id="cb18-3"><a href="#cb18-3"></a></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="co"># Replace previous layer with current version, using the original name</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="ex">g.rename</span> vector=temp,occurrences <span class="at">--overwrite</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can obviously do the same in Python as well.</p>
+</div>
+</div>
+</div>
+<p>There are a few other discrepancies between the range map and the occurrence data (<a href="#fig-rangemapoccurrences" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>), which you normally would want to further check. However, for the sake of this tutorial, we’ll assume that the GBIF data is OK.</p>
+<div id="fig-rangemapoccurrences" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rangemapoccurrences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/rangemap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;2.8: The Red List range map (green outline) and the GBIF occurrence data of Erebia alberganus. Blue outlines indicate some possible problems. See here for the code used to create this map."><img src="images/rangemap.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rangemapoccurrences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.8: The Red List range map (green outline) and the GBIF occurrence data of <em>Erebia alberganus</em>. Blue outlines indicate some possible problems. See <a href="A4_scriptmap.html#sec-rangemapoccurrences">here</a> for the code used to create this map.
+</figcaption>
+</figure>
+</div>
+<p>We have now the species occurrence data ready for modeling. Next step is to download the various environmental layers that will be used as explanatory variables in the modeling.</p>
+</section>
+<section id="sec-climatedata" class="level2 page-columns page-full" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="sec-climatedata"><span class="header-section-number">2.6</span> Current climate</h2>
+<p>As explanatory variables for the species distribution modeling, we’ll use the 19 bioclimatic variables from Worldclim<span class="citation" data-cites="fick2017">[<a href="references.html#ref-fick2017" role="doc-biblioref">1</a>]</span>. Bioclimatic (or bioclim in short) variables are derived from the monthly temperature and rainfall values in order to generate more biologically meaningful variables.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<div class="callout callout-style-default callout-note callout-titled" title="Bioclim variables">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Bioclim variables
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The bioclimatic variables represent annual trends (e.g., mean annual temperature, annual precipitation) seasonality (e.g., annual range in temperature and precipitation) and extreme or limiting environmental factors (e.g., temperature of the coldest and warmest month, and precipitation of the wet and dry quarters). See <a href="https://worldclim.org/data/bioclim.html">this page</a> for a description of all 19 variables. <br></p>
+</div>
+</div>
+</div></div><p>You can download historical and future climate data. The former represents climate conditions for the period 1970-2000. For the modeling exercise, they are considered to represent the recent / current climate conditions.</p>
+<p>Both historical and future data sets are available in raster format at different resolutions. Go to the <a href="https://www.worldclim.org/data/worldclim21.html#">Download page</a>, download the 2.5 arc minutes historical bioclim data (<a href="#fig-worldclimhistoricbioclim" class="quarto-xref">Figure&nbsp;<span>2.9</span></a>) and unzip the GeoTiff files to your working directory.</p>
+<div id="fig-worldclimhistoricbioclim" class="quarto-float quarto-figure quarto-figure-left anchored" data-fig-align="left">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-worldclimhistoricbioclim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/worldclim_historic_bioclim.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;2.9: The Worldclim download page for the version 2.1 historical climate data, with the download link for the 2.5 arc-minutes bioclim variables. You can download the data at another resolution as well. If you do, make sure to to adapt the relevant code examples accordingly."><img src="images/worldclim_historic_bioclim.png" class="img-fluid quarto-figure quarto-figure-left figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-worldclimhistoricbioclim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.9: The Worldclim download page for the version 2.1 historical climate data, with the download link for the 2.5 arc-minutes bioclim variables. You can download the data at another resolution as well. If you do, make sure to to adapt the relevant code examples accordingly.
+</figcaption>
+</figure>
+</div>
+<p>We’ll create a new mapset <span class="style-data">climate</span> to store the climate data, using the <a href="https://grass.osgeo.org/grass-stable/manuals/g.mapset.html">g.mapset</a> module with the <span class="style-parameter">-c</span> flag. Next, we use the <a href="https://grass.osgeo.org/grass-stable/manuals/g.region.html">g.region</a> module to set the boundaries of the region for which we want to import the data.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Be aware that a new mapset starts with default settings for the computational region. This means that the region set earlier for the <span class="style-data">Parameter</span> mapset does not apply to the new <span class="style-data">climate</span> mapset. Each mapset has its own computational region settings</p>
+</div>
+</div>
+</div>
+<p>One option is to use the region extent we defined earlier. Or, now that we know more precisely where our species has been observed, we can defined new bounds using the <code>g.region</code> module with the <span class="style-parameter">n</span>, <span class="style-parameter">s</span>, <span class="style-parameter">e</span>, and <span class="style-parameter">w</span> parameters (see below). We set the resolution to match that of the climate layers. This is 2.5 arc minutes, which is equal to 2.5 / 60 = 0.041666666666667.</p>
+<div id="exm-OgizA6dRXy" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.9</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-3" role="tab" aria-controls="tabset-9-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-4" role="tab" aria-controls="tabset-9-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">g.mapset</span> <span class="at">-c</span> mapset=climate</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="ex">g.region</span> n=54 s=36 w=-10 e=32 res=0.041666666666667</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<p>First, we create a new mapset.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>gs.run_command(<span class="st">"g.mapset"</span>, flags<span class="op">=</span><span class="st">"c"</span>, mapset<span class="op">=</span><span class="st">"climate"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2"></a>gs.run_command(<span class="st">"g.region"</span>, n<span class="op">=</span><span class="dv">54</span>, s<span class="op">=</span><span class="dv">36</span>, w<span class="op">=-</span><span class="dv">10</span>, e<span class="op">=</span><span class="dv">32</span>, res<span class="op">=</span><span class="fl">0.041666666666667</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-9-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-3-tab">
+<p>Type in <code>g.mapset</code> in the console to open the dialog, and use the following parameter settings.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Name of mapset (mapset)</td>
+<td>climate</td>
+</tr>
+<tr class="even">
+<td>Create mapset if it doesn’t exist (c)</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>Next, we define the computational region for the new mapset. Open the <code>g.region</code> dialog, and use the following parameter settings.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Value for the northern edge (n)</td>
+<td>54</td>
+</tr>
+<tr class="even">
+<td>Value for the southern edge (s)</td>
+<td>36</td>
+</tr>
+<tr class="odd">
+<td>Value for the eastern edge (e)</td>
+<td>32</td>
+</tr>
+<tr class="even">
+<td>Value for the western edge (w)</td>
+<td>-10</td>
+</tr>
+<tr class="odd">
+<td>2D grid resolution (res)</td>
+<td>0.041666666666667</td>
+</tr>
+</tbody>
+</table>
+<p>Alternatively, you can define the region’s bounds manually in the <span class="style-menu">Map display</span>, as explained in <a href="A1_grassbasics.html#sec-computationalregion" class="quarto-xref"><span>Section A.7</span></a>.</p>
+</div>
+<div id="tabset-9-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-4-tab">
+<p>Note that, if the region and the raster layer are not perfectly aligned, the area that is imported will be slightly larger than the computational region. How much larger depends on the resolution of the computational region, as explained in (<a href="A1_grassbasics.html#sec-computationalregion" class="quarto-xref"><span>Section A.7</span></a>). We therefore use the <span class="style-parameter">res</span> parameter to set the resolution to match the resolution of the layers we want to import.</p>
+<p>Remember to calculate the resolution in decimal degrees. For 2.5 arc minutes, this is 2.5 / 60 = 0.041666666666667. If you work at another resolution, make sure to adapt this value accordingly. For example, when working with 30 arc seconds data, the resolution would be 30 / 3600 = 0.00833333333333333 degrees.</p>
+</div>
+</div>
+</div>
+<p>To import the bioclim data, we use <a href="https://grass.osgeo.org/grass-stable/manuals/r.in.gdal.html">r.in.gdal</a> with the <span class="style-parameter">-r</span> flag to tell GRASS to limit the import of the data to the area defined by the computational region that we defined in the previous step. To speed up the import, we use the <span class="style-parameter">memory</span> parameter to set the maximum memory to be used (in MB) to be equal to the size of the input file (or otherwise to the maximum amount available on your system).</p>
+<p>To avoid having to type in the same command 19 times, we can use a small script to automate the process. If you prefer to use the GUI, the <a href="https://grass.osgeo.org/grass-stable/manuals/r.import.html">r.import</a> functions offers the possibility to batch import layers, as illustrated in the video under the <span class="paneltabcolor"><i class="fa-regular fa-window-restore" aria-label="window-restore"></i></span> tab.</p>
+<div id="exm-vavvH110fv" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.10</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-3" role="tab" aria-controls="tabset-10-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-4" role="tab" aria-controls="tabset-10-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="va">base</span><span class="op">=</span><span class="st">"wc2.1_2.5m_bio_"</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">19</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>    <span class="va">input</span><span class="op">=</span><span class="st">"</span><span class="va">${base}${n}</span><span class="st">.tif"</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="va">output</span><span class="op">=</span><span class="st">"bio_</span><span class="va">${n}</span><span class="st">"</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>    <span class="ex">r.in.gdal</span> <span class="at">-r</span> input=<span class="va">${input}</span> output=<span class="va">${output}</span> memory=1000</span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>base <span class="op">=</span> <span class="st">"wc2.1_2.5m_bio_"</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">20</span>):</span>
+<span id="cb22-3"><a href="#cb22-3"></a>    <span class="bu">input</span> <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>base<span class="sc">}{</span>n<span class="sc">}</span><span class="ss">.tif"</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>    output <span class="op">=</span> <span class="ss">f"bio_</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>    gs.run_command(</span>
+<span id="cb22-6"><a href="#cb22-6"></a>        <span class="st">"r.in.gdal"</span>,</span>
+<span id="cb22-7"><a href="#cb22-7"></a>        flags<span class="op">=</span><span class="st">"r"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8"></a>        <span class="bu">input</span><span class="op">=</span><span class="bu">input</span>,</span>
+<span id="cb22-9"><a href="#cb22-9"></a>        output<span class="op">=</span>output,</span>
+<span id="cb22-10"><a href="#cb22-10"></a>        memory<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb22-11"><a href="#cb22-11"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-10-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-3-tab">
+<div class="quarto-video"><video id="video_shortcode_videojs_video2" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://ecodiv.earth/share/sdm_in_grassgis/import_climate_data.mp4"></video></div>
+</div>
+<div id="tabset-10-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-4-tab">
+<p>The code does the follow.</p>
+<p>In the first line, you define the base name <code>wc2.1_30s_bio_</code>. Note that if you downloaded the lower resolution data, you need to change this to match the base name of the GeoTIFF files that you downloaded. In the for loop, the base name, number and file extension will be combined to the name of the file to be imported.</p>
+<p>The ‘for’ loop will import the layer 1 to 19. Each round,</p>
+<ol type="1">
+<li>the names of the input and output layers are created and used as input for r.in.gdal.</li>
+<li>The number and file extension are added to complete the path+name of the file to be imported.</li>
+<li>The name of the imported raster layer is created by combining the base name (bio_) and the number.</li>
+</ol>
+<p>In the <code>r.in.gdal</code> command:</p>
+<ul>
+<li>the <span class="style-parameter">-r</span> flag is set to limit the import to the regional bounds.</li>
+<li>To speed up the import, the <span class="style-parameter">memory</span> parameter should be set to be equal to the size of the import file. If that is not possible, use the maximum value that is possible on your system.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>As mentioned earlier, GRASS will import raster layers with the resolution and alignment of the original raster files. This means the computational region and the raster layers may not be perfectly aligned. In addition, the region’s resolution may not match that of the imported layers. To check this, you can run with the <span class="style-parameter">-g</span> and compare the outcomes with those of the <a href="https://grass.osgeo.org/grass-stable/manuals/r.info.html">r.info</a> module.</p>
+<div id="exm-uqHZOxgy43" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.11</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-3" role="tab" aria-controls="tabset-11-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li></ul>
+<div class="tab-content">
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1"></a><span class="ex">g.region</span> <span class="at">-p</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="ex">r.info</span> map=bio_1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>gs.run_command(<span class="st">"g.region"</span>, flags<span class="op">=</span><span class="st">"p"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a>gs.run_command(<span class="st">"r.info"</span>, <span class="bu">map</span><span class="op">=</span><span class="st">"bio_1"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-11-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-3-tab">
+<p>Type in in the console to open the <code>g.region</code> dialog, and use the following parameter settings.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Print the current region (p)</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>Open the <code>r.info</code> dialog, and run it with the following parameter settings:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>map</td>
+<td>bio_1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>If the extent differs, we use the <a href="https://grass.osgeo.org/grass-stable/manuals/.html">g.region</a> module again, but this time with the <span class="style-parameter">raster</span> parameter to set the region extent and resolution to match that of one of the imported bioclim layers<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. We use the <span class="style-parameter">save</span> parameter to save the current region settings as <span class="style-data">region_aoi</span> for future use.</p>
+<div id="exm-V0FK31454" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.12</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-3" role="tab" aria-controls="tabset-12-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-4" role="tab" aria-controls="tabset-12-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1"></a><span class="ex">g.region</span> raster=bio_1 save=region_aoi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>gs.run_command(<span class="st">"g.region"</span>, raster<span class="op">=</span><span class="st">"bio_1"</span>, save<span class="op">=</span><span class="st">"region_aoi"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-12-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-3-tab">
+<p>Open the dialog of the <code>g.region</code> module, and run it with the following parameter settings:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>raster</td>
+<td>bio_1</td>
+</tr>
+<tr class="even">
+<td>save</td>
+<td>region_aoi</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-12-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-4-tab">
+<p>With the <span class="style-parameter">raster</span> parameter, the region extent and resolution are set to match that of the specified raster layer (here bio_1). The <span class="style-parameter">save</span> parameter saves the current region settings as a region file called <span class="style-data">region_aoi</span>, which can be used later to quickly set the region to these settings again, for example when creating new mapsets.</p>
+</div>
+</div>
+</div>
+<p>It is important to note that the geographic region is defined per mapset. It is therefore the computational region of the mapset you are working in that defines the geographic area and resolution in which raster analyses are performed. See the <a href="https://grass.osgeo.org/grass-stable/manuals/g.region.html">manual page</a> for more information.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If a raster map does not match the resolution or extent of the current computational region, GRASS will resample it on the fly. By default, this resampling uses the nearest-neighbor method, which is not always the most appropriate choice. In such cases, it is better to resample the raster explicitly in advance, using a method suited to the data and analysis. See <span class="style-menu">menu: Raster → Develop raster map</span> for options.</p>
+</div>
+</div>
+</div>
+<p><a href="#fig-bioclimvars" class="quarto-xref">Figure&nbsp;<span>2.10</span></a> shows the bioclimatic maps 1 to 19 that we have just imported for our study area. The maps also show the range map of the Almond-eyed Ringlet butterfly. In case you are interested, see <a href="A4_scriptmap.html#sec-bioclimvars">here</a> for the code used to create the maps.</p>
+<div id="fig-bioclimvars" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bioclimvars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_1.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_1.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_2.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_2.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_3.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_3.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_4.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_4.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_5.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_5.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_6.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_6.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_7.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_7.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_8.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_8.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_9.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_9.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_10.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_10.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_11.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_11.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_12.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_12.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_13.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_13.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_14.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_14.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_15.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_15.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_16.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_16.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_17.png" class="lightbox" data-gallery="LRNlhoGosy" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_17.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_18.png" class="lightbox" data-gallery="group" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_18.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/bio_19.png" class="lightbox" data-gallery="group" title="Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/bio_19.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bioclimvars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.10: Bioclimatic variable 1 to 19 from <a href="https://www.worldclim.org/data/bioclim.html">Worldclim version 2.0</a>. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the <a href="https://www.iucnredlist.org/species/173278/6984115">IUCN Red List</a>. Click on the image to enlarge and view the maps in detail.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-obtainfutureclimatelayers" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="sec-obtainfutureclimatelayers"><span class="header-section-number">2.7</span> Future climates</h2>
+<p>To model the potential distribution of our species under future climate conditions, we use downscaled <a href="https://www.worldclim.org/data/cmip6/cmip6climate.html">future climate projections</a> from Worldclim. There are bioclim data from 14 different general circulation models (GCMs) available for download. For each GCM, you can choose between data representing projected conditions in the periods (2021–2040, 241–2060, 2061–2080, and 2081-2100). You can furthermore choose between data based on the Shared Socio-economic Pathways (<a href="https://www.carbonbrief.org/cmip6-the-next-generation-of-climate-models-explained">SSPs</a>) 126, 245, 370 and 585. We’ll use the <em>2.5 arc-minute</em> bioclim variables for the period <em>2081-2100</em> based on the <em>SSP585</em> from the GCM <span class="style-data">EC-Earth3-Veg</span>. Download the data and save it to your working directory.</p>
+<p>Note that the future climate layers come as one multi-band GeoTiff file, unlike the current climate data where each bioclim variable is stored as a separate GeoTiff file. The file has 19 bands, representing the 19 bioclimatic variables (band 1 represents bioclim 1, band 2 bioclim 2, etc.). To verify this, you can use the <a href="https://gdal.org/en/latest/programs/gdalinfo.html">gdalinfo</a> function from the command line.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1"></a><span class="ex">gdalinfo</span> wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-gdalinfofutclim" class="quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gdalinfofutclim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/gdalinfo_futclim.png" class="lightbox" data-gallery="quarto-lightbox-gallery-29" title="Figure&nbsp;2.11: gdalinfo prints the names and some basic information about each of the bands in the GeoTiff file. The names of the first two bands are marked with a red outline."><img src="images/gdalinfo_futclim.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdalinfofutclim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.11: <code>gdalinfo</code> prints the names and some basic information about each of the bands in the GeoTiff file. The names of the first two bands are marked with a red outline.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>We will store the data in the <span class="style-data">climate</span> mapset. The <code>r.in.gdal</code> module conveniently imports each band of the input file as a separate raster layer.</p>
+<p>Using the <span class="style-parameter">output</span> parameter, we assign the imported layers a common name that includes, in abbreviated form, the model name, the SSP, and the time period, for example ECE3V_585_8100. The module then appends the band number to this prefix.</p>
+<p>When choosing a naming pattern, aim to keep the name short while ensuring that the key information can still be reconstructed from it. This makes it easier to manage and compare layers, especially if you later work with multiple future climate scenarios. In addition, always keep a clear record of which names correspond to which datasets.</p>
+<p>When possible, increase the value of the <span class="style-parameter">memory</span> parameter, as this can considerably speed up the import process.</p>
+<div id="exm-1a5tTJ1LeP" class="hiddendiv theorem example">
+<p><span class="theorem-title"><strong>Step 2.13</strong></span> &nbsp;</p>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-14-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-1" role="tab" aria-controls="tabset-14-1" aria-selected="true" href=""><i class="fa-solid fa-terminal" aria-label="terminal"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-14-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-2" role="tab" aria-controls="tabset-14-2" aria-selected="false" href=""><i class="fa-brands fa-python" aria-label="python"></i></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-14-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-3" role="tab" aria-controls="tabset-14-3" aria-selected="false" href=""><iconify-icon inline="" icon="carbon:gui" style="font-size: 1.25em;" aria-label="Icon gui from carbon Iconify.design set." title="Icon gui from carbon Iconify.design set."></iconify-icon></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-14-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-4" role="tab" aria-controls="tabset-14-4" aria-selected="false" href=""><i class="fa-solid fa-question" aria-label="question"></i></a></li></ul>
+<div class="tab-content">
+<div id="tabset-14-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-14-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1"></a><span class="ex">r.in.gdal</span> input=/home/paulo/Downloads/wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif output=ECE3V_585_8100 memory=1000 <span class="at">-r</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-14-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a>gs.run_command(</span>
+<span id="cb29-2"><a href="#cb29-2"></a>    <span class="st">"r.in.gdal"</span>,</span>
+<span id="cb29-3"><a href="#cb29-3"></a>    flags<span class="op">=</span><span class="st">"r"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4"></a>    <span class="bu">input</span><span class="op">=</span><span class="st">"wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5"></a>    output<span class="op">=</span><span class="st">"ECE3V_585_8100"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6"></a>    memory<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-14-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-3-tab">
+<p>Type in <code>r.in.gdal</code> in the console to open the dialog, and use the following parameter settings.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>input</td>
+<td>wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2081-2100.tif</td>
+</tr>
+<tr class="even">
+<td>output</td>
+<td>ECE3V_585_8100</td>
+</tr>
+<tr class="odd">
+<td>memory</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td>Limit import to current region (r)</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-14-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-4-tab">
+<p>Remember that we set the computational region in the previous step so that:</p>
+<ul>
+<li>it matches the extent of our area of interest</li>
+<li>it matches the resolution of the current climate data</li>
+<li>it is aligned with the current climate data</li>
+</ul>
+<p>As the future climate layers are derived from the same source as the current climate data, they have the same alignment and resolution as the current climate layers. By setting the computational region as we did, and by using the <span class="style-parameter">-r</span> flag of the <code>r.in.gdal</code>, we ensure that the future climate layers are imported for the same geographic area and at the same resolution as the current climate layers.</p>
+</div>
+</div>
+</div>
+<p><a href="#fig-futbioclimvars" class="quarto-xref">Figure&nbsp;<span>2.12</span></a> shows the projected bioclimatic conditions for 2081-2100 (bioclim variables 1 to 19) that we have just imported for our study area. The maps also show the range map of the Almond-eyed Ringlet butterfly.</p>
+<div id="fig-futbioclimvars" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-futbioclimvars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_1.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_1.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_2.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_2.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_3.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_3.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_4.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_4.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_5.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_5.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_6.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_6.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_7.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_7.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_8.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_8.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_9.png" class="lightbox" data-gallery="&quot;NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_9.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_10.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_10.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_11.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_11.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_12.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_12.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_13.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_13.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_14.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_14.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_15.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_15.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_16.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_16.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_17.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_17.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_18.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_18.png" class="img-fluid figure-img"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><a href="images/futbio_19.png" class="lightbox" data-gallery="NsFOs6E8BO" title="Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: Worldclim version 2.0. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the IUCN Red List. Click on the image to enlarge and view the maps in detail."><img src="images/futbio_19.png" class="img-fluid figure-img"></a></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-futbioclimvars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.12: Projected bioclimatic conditions for the period 2081-2100 based on the SSP585 from the GCM EC-Earth3-Veg. Source: <a href="https://www.worldclim.org/data/bioclim.html">Worldclim version 2.0</a>. The red outlines show the distribution of the Almond-eyed Ringlet butterfly according to the <a href="https://www.iucnredlist.org/species/173278/6984115">IUCN Red List</a>. Click on the image to enlarge and view the maps in detail.
+</figcaption>
+</figure>
+</div>
+<p><br><br></p>
+</section>
+<section id="footnotes" class="level2 unlisted unnumbered hidefootnotes">
+<h2 class="unlisted unnumbered hidefootnotes anchored" data-anchor-id="footnotes">Footnotes</h2>
+
+
+<div id="refs" class="references csl-bib-body" role="list" style="display: none">
+<div id="ref-fick2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Fick SE, Hijmans RJ (2017) <span>WorldClim</span> 2: New 1-km spatial resolution climate surfaces for global land areas. International Journal of Climatology 37(12):4302–4315. <a href="https://doi.org/10.1002/joc.5086">https://doi.org/10.1002/joc.5086</a></div>
+</div>
+<div id="ref-vanswaay2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">van Swaay C, Wynhoff I, Verovnik R, et al (2010) Erebia albergana. <span>The IUCN Red List</span> of <span>Threatened Species</span> 2010. IUCN Red List of Threatened Species. <a href="https://doi.org/10.2305/IUCN.UK.2010-1.RLTS.T173278A6984115.en">https://doi.org/10.2305/IUCN.UK.2010-1.RLTS.T173278A6984115.en</a></div>
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p><em>Reference layers</em> are datasets that provide context and help you to visually navigate the map and understand the geographic setting of the area being analyzed. One of the key advantages of modeling in a GIS environment is the ability to seamlessly integrate and compare model outcomes with these reference layers, and thus to explore and interpret results in their geographic context.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The different options of the <code>g.region</code> function provide a lot of flexibility in to how to define the region. You are encouraged to carefully consider the different options each time you use this module.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ecodiv\.earth\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./the_basics.html" class="pagination-link" aria-label="The basic steps">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">The basic steps</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./3_data_preparation.html" class="pagination-link" aria-label="Prepare the data">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Prepare the data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> by Paulo van Breugel, Ecodiv.earth, 2024.</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ecodiv/sdm_in_grassgis/edit/main/2_obtaining_data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ecodiv/sdm_in_grassgis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>videojs(video_shortcode_videojs_video1);</script>
+<script>videojs(video_shortcode_videojs_video2);</script>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"none","descPosition":"bottom","loop":true,"openEffect":"none","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
