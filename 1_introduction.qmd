@@ -48,13 +48,13 @@ Before diving into this reader, make sure to install GRASS, Maxent, and Java. Be
 
 ### GRASS software
 
-Visit the GRASS website and navigate to the [download page](https://grass.osgeo.org/download/) for your operating system via the menu. Be sure to use the stable release (at the time of writing, this is version 8.4.2).
+Visit the GRASS website and navigate to the [download page](https://grass.osgeo.org/download/) for your operating system via the menu. Be sure to use the stable release (at the time of writing, this is version 8.5).
 
 ::: {.callout-tip appearance="simple" collapse="true"}
 Note that if you already have QGIS installed on your Windows system, there’s a good chance you also have GRASS installed. In that case, simply check whether the latest version is installed.
 :::
 
-For Windows users, the [download page](https://grass.osgeo.org/download/windows/) offers two main options: the standalone winGRASS installer and the OSGeo4W installer. I recommend using the OSGeo4W installer, as it allows you to install a wide range of open-source geospatial software packages, including QGIS and GDAL/OGR. Additionally, it provides a more convenient way to keep your software up to date.
+For Windows users, go to the [download page](https://grass.osgeo.org/download/windows/) and download the OSGeo4W (version 2) installer. It not only allows you to install GRASS, but a wide range of open-source geospatial software packages, including QGIS and GDAL/OGR. Additionally, it provides a convenient way to keep your software up to date.
 
 
 ### GRASS addons {#sec-addons}

@@ -11,7 +11,9 @@ For this tutorial, we will download and import various data layers that we need 
 
 ## The database {#sec-creatingadatabase}
 
-Once you have started GRASS, the first thing you normally do is to open the GRASS database, or to create a new one to do for this tutorial is to create a new GRASS database called [GRASSdb]{.style-data}. Next, create a new project called [SDM]{.style-data} with the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
+The data you use in GRASS is stored in a database. Each database consists of one or more projects. These are containers in which you store data with the same projection/coordinate reference system (CRS). Each project consists of one or more mapsets, which you can use to further organize your data. For more details, see @sec-dbstructure. 
+
+So, once you have started GRASS, the first thing you normally do is to open a project in a GRASS database. For this tutorial, you will create a new GRASS database called [GRASSdb]{.style-data} with a project called [SDM]{.style-data}. The project will have the coordinate reference system (CRS) [WGS84 lat/lon]{.style-parameter} ([EPSG 4326](https://epsg.io/4326)). The easiest way to do this is using the GUI, but if you want to make it part of an automated process, you can do this in Python as well.
 
 ::: {#exm-2vSeGTk3HW .hiddendiv}
 :::
@@ -19,7 +21,7 @@ Once you have started GRASS, the first thing you normally do is to open the GRAS
 ::: panel-tabset
 ## {{< iconify carbon gui size=lg >}}
 
-{{< video "https://ecodiv.earth/share/sdm_in_grassgis/create_project.mp4" >}}
+{{< video "https://ecodiv.earth/share/sdm_in_grassgis/create_GRASS_project.mp4" >}}
 
 ## {{< fa brands python >}}
 
@@ -47,13 +49,13 @@ Now that you have your database ready, you can start with the next step, which i
 
 ## Working directory {#sec-workingdirectory}
 
-Some GRASS GIS modules require a file as input or produce a file as output. You can always specify the full file path. However, if you define a working directory and store your files there, you only need to provide paths relative to that directory.
+Every time you import data, you need to specify where the input file is located. When exporting data, you need to specify where the output file should be saved. You can provide the full path each time, but it is more convenient to set a fixed **working directory**. You can then use paths relative to that directory.
 
-It is therefore recommended to create your own dedicated working directory and use it to store the downloaded data. The working directory is the folder where GRASS looks for input files and where it writes output files, helping to keep your project organized and your data management efficient.
+It is therefore recommended to create a separate working directory for this tutorial and use it to store downloaded and exported files. The working directory is an ordinary folder on your computer and is not part of the GRASS database. Do not confuse it with a **mapset**, which is part of the GRASS database and is used to organize GRASS data.
 
 ::: {.callout-warning appearance="simple"}
-Never use the GRASS database directory, that you created in the previous section, for this. The GRASS directory is for GRASS data only
-:::
+Never use the GRASS database directory you created in the previous section as your working directory. The GRASS database is reserved exclusively for data managed from within GRASS.
+
 
 ::: {#exm-qpbGaVxfYh .hiddendiv}
 :::
