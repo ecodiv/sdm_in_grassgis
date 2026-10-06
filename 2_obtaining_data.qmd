@@ -19,6 +19,7 @@ So, once you have started GRASS, the first thing you normally do is to open a pr
 :::
 
 ::: panel-tabset
+
 ## {{< iconify carbon gui size=lg >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/create_GRASS_project.mp4" >}}
@@ -43,6 +44,7 @@ gs.run_command("g.mapset", mapset="PERMANENT", project="SDM")
 ## {{< fa question >}}
 
 Replace the `path_to_directory` with the path to the directory where you want to create the database. Note, on Windows, paths are written using backslashes (\\) as the separator between folder names. On Unix based operating system such as macOS, Linux, and BSDs, the forward slash (/) is used as the path separator.
+
 :::
 
 Now that you have your database ready, you can start with the next step, which is getting and preparing the input data for the species distribution modeling.
@@ -55,6 +57,7 @@ It is therefore recommended to create a separate working directory for this tuto
 
 ::: {.callout-warning appearance="simple"}
 Never use the GRASS database directory you created in the previous section as your working directory. The GRASS database is reserved exclusively for data managed from within GRASS.
+:::
 
 
 ::: {#exm-qpbGaVxfYh .hiddendiv}

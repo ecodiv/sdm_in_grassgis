@@ -26,6 +26,7 @@ Undersampling is particularly difficult to address when large parts of a species
 
 Although it does not solve the problem, comparing GBIF occurrence data with other information sources, such as Red List range maps (@fig-rangemapoccurrences), can help you assess where undersampling is likely to occur and how it is distributed across the study area.
 
+<!--
 ### Point densities {#sec-pointdensities}
 
 Before proceeding, let's check whether our GBIF occurrence dataset shows any signs of bias by analyzing how the density of occurrences varies across the study area. We can do this by counting the number of observations within each grid cell. To accomplish this, we will use the [r.vect.stats](https://grass.osgeo.org/grass-stable/manuals/addons/r.vect.stats.html) module. It is one of the addons installed in @sec-addons. With the module we can create a raster layer with per raster cell the number of points from a vector point layer that fall within that cell.
@@ -217,18 +218,19 @@ The [-e]{.style-parameter} flag tells `r.univar` to calculate extended statistic
 :::
 
 The results of `r.univar` show that the number of observations per raster cell range from 1 to 346, with a median of 3, and an average of 10. These results and the boxplot in @fig-pointdensitiesboxplot show that even though within the majority of non-NULL raster cells there is only one observation, there are also raster cells with many more observations, up to 240 point observations.
-
+-->
 <!---
 r.boxplot -o -h map=pointdensities@Erebia_alberganus output=/home/paulo/Nextcloud/Projects/Readers/Ecodiv/sdm_in_grassgis/images/pointdensityboxplot.png plot_dimensions=7,1 --overwrite dpi=100 fontsize=6 median_color="#008021" flier_color="#008021"
 -->
-
+<!--
 ![The boxplot shows the range, quartiles, outliers of the point densities.](images/pointdensityboxplot.png){#fig-pointdensitiesboxplot fig-align="left"}
 
-If we look at the attribute table, we'll see that where there are many observations, they often span several years and often involve the same observer. This suggests that certain areas have been surveyed more extensively than others, potentially leading to uneven sampling effort across the species's range.
+If we look at the attribute table, we'll see that where there are many observations, they often span several years and often involve the same observer. This suggests that certain areas have been surveyed more extensively than others, potentially leading to uneven sampling effort across the species's range. 
+-->
 
 ### Spatially thinning {#sec-spatialthinning}
 
-The results above show that in some areas many observations are clustered close together. This indicates sampling bias and may cause the model to place too much weight on these locations.
+Often, you will find that in some areas the GBIF occurrences are clustered close together. This may indicate sampling bias and may cause the model to place too much weight on these locations.
 
 A common way to reduce this effect is spatial thinning, also called subsampling [@beck2014a; @steen2021]. Spatial thinning reduces clustering by removing observations that are very close to each other. One implementation is to remove points that occur within a specified minimum distance. This approach is available in the [v.decimate](https://grass.osgeo.org/grass-stable/manuals/v.decimate.html) module.
 
