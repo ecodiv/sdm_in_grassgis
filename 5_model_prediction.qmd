@@ -43,7 +43,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `r.maxent.predict` dialog and run it with the following parameter settings:
 
@@ -82,7 +82,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Run the [r.mapcalc]{.style-function} function with the following parameters:
 
@@ -116,7 +116,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Run the [g.remove]{.style-function} function with the following parameters:
 
@@ -169,7 +169,7 @@ gs.run_command(
 
 1.  The names of the future bioclim layers differ from the variables, so we need to provide the variable names. Note that they must be provided in the same order as the corresponding raster layers.
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `r.maxent.predict` dialog and run it with the following parameter settings:
 
@@ -219,7 +219,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `r.colors` dialog and run it with the following parameter settings:
 
@@ -273,7 +273,7 @@ gs.run_command(
 gs.run_command("r.colors", map="model01_diff", color="differences")
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `raster map calculator` from the [raster]{.style-menu} and run it with the following expression.
 
@@ -336,7 +336,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the [raster map calculator]{.style-menu} in the menu [raster → raster map calculator → raster map calculator]{.style-menu}
 
@@ -390,7 +390,7 @@ gs.write_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/definecolortableinteractively.mp4" >}}
 
@@ -449,7 +449,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the [r.cross]{.style-menu} module and run it with the following parameters.
 
@@ -490,7 +490,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the [r.report]{.style-menu} module and run it with the following parameters.
 
@@ -573,7 +573,7 @@ gs.write_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 You can find the `r.category` in the [raster]{.style-menu} menu.
 

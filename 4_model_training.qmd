@@ -46,7 +46,7 @@ gs.run_command("g.mapset", mapset="Erebia_alberganus")
 gs.run_command("g.region", raster="bio_1@climate")
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open your file explorer, go to your working directory, and create a new folder in your working directory. Give it the name [model_01]{.style-data}.
 
@@ -106,7 +106,7 @@ gs.run_command(
 )  
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `r.maxent.train` dialog and run the module with the following parameter settings:
 
@@ -316,7 +316,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 One option is to use `r.recode`. Check out the function's [help page](https://grass.osgeo.org/grass-stable/manuals/r.recode.html) for an explanation of the recode rules.
 

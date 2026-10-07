@@ -78,7 +78,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Create the folder [model_02]{.style-data} in your working directory using your favorite file manager/explorer. Next, create a new mapset and switch to this mapset using the Data panel. Alternatively, open the `g.mapsets` dialog and run it with the following parameter settings:
 
@@ -170,7 +170,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the [v.colors]() dialog and run it with:
 
@@ -227,7 +227,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Run the `v.scatterplot` module with the following parameters:
 
@@ -267,7 +267,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Extract outliers to new map using [v.extract](.style-function) with the following parameters:
 
@@ -411,7 +411,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `g.mapset` dialog and run it with:
 
@@ -491,7 +491,7 @@ gs.run_command("r.mess", flags="mnkci",
 
 Check the [manual page](https://grass.osgeo.org/grass-stable/manuals/addons/r.mess.html) about the meaning of the flags [m]{.style-parameter}, [n]{.style-parameter}, [k]{.style-parameter}, [c]{.style-parameter} and [i]{.style-parameter}.
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `r.mess` dialog and run it with:
 

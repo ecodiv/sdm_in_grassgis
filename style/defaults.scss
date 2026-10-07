@@ -92,8 +92,8 @@ $min-contrast-ratio: 2.6 !default;
 // ------------- Typography ---------------------------------------------------
 
 // stylelint-disable-next-line value-keyword-case
-$font-family-sans-serif: "Helvetica Neue", Arial, sans-serif, "Verdana", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
-$headings-font-weight: 400 !default;
+// $font-family-sans-serif: "Helvetica Neue", Arial, sans-serif, "Verdana", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+//$headings-font-weight: 400 !default;
 
 $font-size-root: 16px !default;
 $h1-font-size: 1.6rem !default;
@@ -520,18 +520,22 @@ div.callout-note.callout-style-default>.callout-header {
 
 // ------------- Tabsets: Default Panel Tabs ----------------------------------
 
-.nav {
-  --bs-nav-link-padding-x: 0.8rem;
-  --bs-nav-link-padding-y: 0.4rem !important;
-  border-bottom: 1px solid $grass-color-light-borders !important;
-}
+// .nav {
+//   --bs-nav-link-padding-x: 0.8rem;
+//   --bs-nav-link-padding-y: 0.4rem !important;
+//   border-bottom: 1px solid $has-border-subtle !important;
+// }
 
 .nav-tabs .nav-item .nav-link {
   font-size: .95rem !important;
   color: $grass-color !important;
-  border: 0.5px solid $grass-color-light-borders !important;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
+  //border: 0.5px solid $grass-color-light-borders !important;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right:1rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.2rem;
 }
 
 .panel-tabset {
@@ -539,32 +543,19 @@ div.callout-note.callout-style-default>.callout-header {
   margin-bottom: 1.4rem;
 }
 
-.nav-tabs .nav-link.active,
-.nav-tabs .nav-item.show .nav-link.active {
-  color: $white;
-  background-color: $grass-color-light !important;
-  border: 1px solid $grass-color-light-borders !important;
-  border-bottom: 0;
-}
+.nav-tabs {
+  .nav-link:not(.active),
+  .nav-item.show .nav-link:not(.active) {
+    background-color: $grass-color-light !important;
+    border: 1px solid $grass-color-light-borders !important;
+    padding-left: 1rem;
+    padding-right:1rem;
+  }
 
-.tab-content {
-  padding: 0.5em;
-  margin-bottom: 0.1em;
-  border: 1px solid $grass-color-light-borders !important;
-  border-top: none !important;
-}
-
-
-.tab-content .table > :not(caption) > * > * {
-  word-wrap: anywhere;
-}
-
-.tab-pane>p {
-  padding-top: 0em;
-}
-
-.paneltabcolor {
-  color: $grass-color !important;
+  .nav-link.active,
+  .nav-item.show .nav-link.active {
+    background-color: transparent !important;
+  }
 }
 
 .panel-tabset .style-parameter,
@@ -577,7 +568,12 @@ div.callout-note.callout-style-default>.callout-header {
   font-size: 0.95rem !important;
 }
 
+
 // ------------- Tabsets: Exercise Tabs ----------------------------------------
+
+.tab-content {
+  padding: 0.5em;
+}
 
 .panel-tabset.exercise .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link.active {
@@ -880,6 +876,34 @@ theorem.exercise {
 .hidefootnotes,
 .footnotes {
   display: none;
+}
+
+// ------------- Numbered questions ---------------------------
+
+/* Reset 1x per pagina */
+main.content,
+.quarto-container .content,
+#quarto-content {
+  counter-reset: vraag;
+}
+ 
+/* Losse vraag */
+.vraag {
+  counter-increment: vraag;
+  margin: 0.8em 0;
+  padding: 0.2em 1em;
+  border-left: 4px solid var(--vraag-accent);
+  background: var(--vraag-bg);
+  color: var(--algemeen-text);
+  border-radius: 4px;
+}
+ 
+.vraag::before {
+  content: "Vraag " counter(vraag);
+  display: block;
+  font-weight: 700;
+  color: var(--vraag-accent);
+  margin-bottom: 0.35em;
 }
 
 // ------------- Responsive Design -------------------------------------------

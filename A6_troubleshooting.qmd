@@ -8,13 +8,73 @@ This appendix includes common issues encountered by others, along with proposed 
 
 If model training takes an unusually long time, use the [-v]{.style-parameter} flag to display the Maxent user interface for more detailed process information. And try if the solutions outlined below help.
 
-### Reduce number of presence points.
+### Reduce number of presence points. 
 
 A large number of presence points may result in slow performance. When this becomes problematic depends on factors such as hardware specifications and model complexity. On reasonably modern hardware, up to 5,000 presence points should not cause significant issues. However, with 20,000 or more, training is likely to slow down considerably.
 
-You can reduce the number of presence points using the `v.extract` module. If you also use the spatial thinning option ([paragraph -@sec-spatialthinning]), it is advisable to first carry out spatial thinning mannually (instead of doing this when running `v.maxent.swd`), as this will already reduce the number of points. If the number of points are still too many, use the `v.extract` module.
+If there are areas with more than one presence point per grid cell, you can use spatial thinning ([paragraph -@sec-spatialthinning]) to reduce the number of presence points to a maximum of one per raster. We'll create the layer in the [Erebia_alberganus]{.style-data} mapset, so we switch to that mapset first. 
 
-The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using `g.region`. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
+::: {#exm-3Tw6fEB0hg .hiddendiv}
+:::
+
+::: {.panel-tabset}
+## {{< fa solid terminal >}}
+
+``` bash
+g.mapset mapset=Erebia_alberganus
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command("g.mapset", mapset="Erebia_alberganus")
+```
+
+## {{< fa regular display >}}
+
+![To change the mapset, right click on the name of the mapset in the [Data]{.style-menu} panel. In the context menu, select [Switch mapset]{.style-menu}.](images/switchmapset.png){#fig-switchmapset fig-align="left"}
+:::
+
+To create the thinned point layer, we need to set the region to match the spatial extent of the point data and the spatial resolution of the bioclimatic layers (2.5 arc degrees). 
+
+::: {.panel-tabset}
+## {{< fa solid terminal >}}
+
+``` bash
+g.region raster=bio_1@climate vector=occurrences align=bio_1@climate
+```
+
+## {{< fa brands python >}}
+
+``` python
+gs.run_command(
+    "g.region",
+    raster="bio_1@climate",
+    vector="occurrences",
+    align="bio_1@climate",
+)
+```
+
+## {{< fa regular display >}}
+
+To change the region settings, open the `g.region` dialog, and fill in the following parameters:
+
+| Parameter                      | Value                 |
+|--------------------------------|-----------------------|
+| raster                            | bio_1@climate              |
+| align                            | bio_1@climate              |
+| vector                         | occurrences |
+
+: {tbl-colwidths="\[40,60\]"}
+
+
+## {{< fa question >}}
+
+We use the [g.region](https://grass.osgeo.org/grass-stable/manuals/g.region.html) module for this. The spatial extent of the region is defined using the [vector]{.style-parameter} parameter, which is set to the [occurrences]{.style-data} layer. The spatial resolution is taken from the [bio_1@climate]{.style-data} layer by setting the [raster]{.style-parameter} parameter. Finally, the [align]{.style-parameter} parameter ensures that the computational region is aligned with the grid of the [bio_1@climate]{.style-data} raster.
+
+:::
+
+The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell.
 
 ::: {#exm-FhtMdyrrbX .hiddendiv}
 :::
@@ -29,8 +89,6 @@ r.to.vect input=Erebia_alberganus_obs output=Erebia_alberganus_tmp type=point
 ```
 
 ## {{< fa brands python >}}
-
-The steps below assume you have carried out the steps up to @exm-Xj32c2jubU in @sec-pointdensities. Check your region settings of the current mapset using `g.region`. The following steps with [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) will reduce the point density to one presence point per grid cell as explained in [paragraph -@sec-spatialthinning].
 
 ``` python
 # Thin the points
@@ -48,7 +106,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open [v.to.rast](https://grass.osgeo.org/grass-stable/manuals/v.to.rast.html) and run it with the following parameters:
 
@@ -65,9 +123,20 @@ Open [r.to.vect](https://grass.osgeo.org/grass-stable/manuals/r.to.vect.html) an
 | input     | Erebia_alberganus_obs |
 | output    | Erebia_alberganus_tmp |
 | type      | point                 |
+
+## {{< fa question >}}
+
+We use the module `v.to.rast` with the parameter **use** set to *value* to create a raster where raster cells have a value of *1* if one or more occurrence points fall within that cell, and otherwise *no data*. 
+
+Next, we use `v.to.vect` to convert that raster layer back to a vector point layers. Each raster cell with a value (1) is converted to a point. All other cells are ignored. 
+
+The result is a point layer with one point for each raster cell that contained one or more occurrence points.
+
+![Reduce number of sample points to a maximum of 1 point per raster cell.](images/spatialthinning.png){#fig-spatialthinning2 fig-align="left" width="450"}
+
 :::
 
-Now, if we still have too many points, we can use the [v.extract](https://grass.osgeo.org/grass-stable/manuals/v.extract.html) module to randomly extract for example 5000 points.
+Now, if we still have too many points, we can use the [v.extract](https://grass.osgeo.org/grass-stable/manuals/v.extract.html) module to randomly extract the number of required points.
 
 ::: {#exm-FhaaaX .hiddendiv}
 :::
@@ -98,7 +167,7 @@ gs.run_command(
 gs.run_command("g.remove", flags="f", type="vector", name="Erebia_alberganus_tmp")
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `v.extract` and run it with the following settings:
 
@@ -115,6 +184,7 @@ Use the `g.remove` module to remove the intermediate layer.
 | name      | Erebia_alberganus_tmp |
 | type      | vector                |
 | f         | ✅                    |
+
 :::
 
 ### Feature selection
@@ -164,7 +234,7 @@ gs.run_command(
 
 1.  We add the [-a]{.style-parameter}, [-p]{.style-parameter}, and [-h]{.style-parameter} parameters. Check the manual page to see what these flags are for.
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `r.maxent.train` dialog and run the module with the following parameter settings:
 

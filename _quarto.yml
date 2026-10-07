@@ -77,7 +77,7 @@ book:
       logo: "images/logo_SDM2.png"
       style: "floating"
       search: true
-      collapse-level: 0
+      collapse-level: 4
       # footer: |
       #   <span class="modifieddate">Last modified: 2025-2-23</span>
   sharing: [twitter, facebook, linkedin]
@@ -101,6 +101,9 @@ crossref:
 
 format:
   html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 1
     footnotes-hover: true
     reference-location: document
     lightbox: true

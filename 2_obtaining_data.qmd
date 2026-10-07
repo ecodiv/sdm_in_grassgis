@@ -20,7 +20,7 @@ So, once you have started GRASS, the first thing you normally do is to open a pr
 
 ::: panel-tabset
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/create_GRASS_project.mp4" >}}
 
@@ -79,7 +79,7 @@ import os
 os.chdir("replace-for-path-to-working-directory")
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 The working directory can also be changed in wxGUI menu [Settings → GRASS working environment → Change working directory]{.style-menu}
 
@@ -131,7 +131,7 @@ gs.run_command(
 
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open  [File → v.in.ogr]{.style-menu} menu or [Toolbox → v.in.ogr]{.style-menu} and on the first tab [Required]{.style-menu} find the GeoPackage you just downloaded. Or, if you copied the file to your working directory, you can simply fill in the name of the file under the [Source input]{.style-menu}.
 
@@ -202,7 +202,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `r.in.gdal` from the [File]{.style-menu} menu or from the [Toolbox]{.style-menu} and on the first tab [Required]{.style-menu} 
 
@@ -264,7 +264,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Type in `g.mapset` in the console to open the dialog, and use the following parameter settings.
 
@@ -335,7 +335,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `v.in.gbif` dialog, and run it with the following parameter settings:
 
@@ -390,7 +390,7 @@ gs.run_command("g.rename", vector="temp,occurrences", overwrite=True)
 ```
 
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `v.db.droprow` dialog, and run it with the following parameter settings:
 
@@ -461,7 +461,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the `v.db.droprow` dialog, and run it with the following parameter settings:
 
@@ -550,7 +550,7 @@ gs.run_command("g.mapset", flags="c", mapset="climate")
 gs.run_command("g.region", n=54, s=36, w=-10, e=32, res=0.041666666666667)
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Type in `g.mapset` in the console to open the dialog, and use the following parameter settings.
 
@@ -618,7 +618,7 @@ for n in range(1, 20):
     )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 {{< video "https://ecodiv.earth/share/sdm_in_grassgis/import_climate_data.mp4" >}}
 
@@ -662,7 +662,7 @@ gs.run_command("g.region", flags="p")
 gs.run_command("r.info", map="bio_1")
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Type in in the console to open the `g.region` dialog, and use the following parameter settings.
 
@@ -701,7 +701,7 @@ g.region raster=bio_1 save=region_aoi
 gs.run_command("g.region", raster="bio_1", save="region_aoi")
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Open the dialog of the `g.region` module, and run it with the following parameter settings:
 
@@ -815,7 +815,7 @@ gs.run_command(
 )
 ```
 
-## {{< iconify carbon gui size=lg >}}
+## {{< fa regular display >}}
 
 Type in `r.in.gdal` in the console to open the dialog, and use the following parameter settings.
 
